@@ -1,0 +1,34 @@
+name: Feature request
+description: Propose a focused improvement that preserves the documented safety model.
+title: "[Idea] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please keep proposals bounded. Arbitrary website import, imported script execution, direct writeback, and unreviewed sandbox or CSP expansion are outside the current model.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user need without prescribing a large implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Bounded proposal
+      description: Explain the smallest useful change and how it preserves local-first safety.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request does not require imported JavaScript, remote fetching, or overwriting the original file.
+          required: true

@@ -1,0 +1,4985 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c1320">
+  <meta name="color-scheme" content="dark">
+  <title>Little Things Studio v0.1.0-beta.1｜Local-first visual editor</title>
+  <style>
+    :root {
+      --ink-950: #070b17;
+      --ink-900: #0a1323;
+      --ink-850: #101d31;
+      --ink-800: #172943;
+      --ink-750: #203754;
+      --ink-700: #294664;
+      --line: rgba(162, 210, 247, 0.18);
+      --line-strong: rgba(139, 221, 255, 0.42);
+      --ice: #8ee3ff;
+      --ice-strong: #4bc8ff;
+      --ice-soft: #d7f6ff;
+      --violet: #a89cff;
+      --teal: #72e3d1;
+      --fox: #ffae62;
+      --text: #f0f8ff;
+      --text-soft: #b4c8dc;
+      --text-faint: #7e97b2;
+      --success: #8be0c0;
+      --warning: #ffd28a;
+      --danger: #ff9d9d;
+      --panel-radius: 18px;
+      --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.36);
+      --font-ui: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", system-ui, -apple-system, sans-serif;
+      --font-serif: "Iowan Old Style", "Noto Serif TC", "Songti TC", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--ink-950);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% -8%, rgba(63, 175, 235, 0.25), transparent 34rem),
+        radial-gradient(circle at 91% 2%, rgba(132, 111, 224, 0.17), transparent 32rem),
+        radial-gradient(circle at 20% 100%, rgba(255, 157, 79, 0.08), transparent 30rem),
+        linear-gradient(150deg, #07101d, #090d1b 52%, #0b1020);
+      font-family: var(--font-ui);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+    }
+
+    button,
+    select,
+    input[type="range"],
+    input[type="color"],
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    select:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--ice);
+      outline-offset: 3px;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .studio-app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      position: relative;
+      z-index: 30;
+      min-height: 76px;
+      padding: 12px 18px;
+      display: grid;
+      grid-template-columns: minmax(238px, 1fr) auto minmax(238px, 1fr);
+      align-items: center;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(105deg, rgba(24, 48, 76, 0.91), rgba(15, 25, 48, 0.95) 55%, rgba(32, 27, 62, 0.93)),
+        rgba(11, 18, 30, 0.94);
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.24), inset 0 -1px 0 rgba(132, 220, 255, 0.04);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 45px;
+      height: 45px;
+      flex: 0 0 45px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(145deg, rgba(88, 201, 255, 0.22), rgba(163, 126, 255, 0.12) 58%, rgba(255, 169, 89, 0.12));
+      border: 1px solid rgba(150, 224, 255, 0.33);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: 50%;
+      background: rgba(76, 188, 255, 0.19);
+      filter: blur(8px);
+    }
+
+    .brand-mark .project-mark {
+      position: relative;
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      color: var(--ink-950);
+      background: linear-gradient(145deg, var(--fox), #ffd28a);
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      box-shadow: 0 5px 16px rgba(255, 174, 98, 0.28);
+      filter: drop-shadow(0 0 7px rgba(82, 191, 255, 0.42));
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      color: #f5fbff;
+      font-size: 16px;
+      font-weight: 760;
+      letter-spacing: 0.015em;
+      white-space: nowrap;
+    }
+
+    .brand-copy p {
+      margin: 4px 0 0;
+      color: var(--text-faint);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .prototype-badge {
+      margin-left: 2px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      color: var(--warning);
+      background: rgba(255, 210, 138, 0.09);
+      border: 1px solid rgba(255, 210, 138, 0.19);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .header-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .device-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(5, 11, 20, 0.44);
+    }
+
+    .device-button {
+      min-width: 72px;
+      height: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border-radius: 9px;
+      color: var(--text-soft);
+      background: transparent;
+      transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+    }
+
+    .device-button:hover {
+      color: var(--text);
+      background: rgba(143, 218, 255, 0.07);
+    }
+
+    .device-button[aria-pressed="true"] {
+      color: var(--ice-soft);
+      background: linear-gradient(135deg, rgba(68, 184, 241, 0.30), rgba(118, 94, 215, 0.22));
+      box-shadow: inset 0 0 0 1px rgba(143, 226, 255, 0.30), 0 5px 20px rgba(7, 17, 35, 0.25);
+    }
+
+    .device-button svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+    }
+
+    .zoom-select {
+      height: 42px;
+      padding: 0 28px 0 12px;
+      color: var(--text-soft);
+      background: var(--ink-850);
+      border: 1px solid var(--line);
+      border-radius: 11px;
+    }
+
+    .header-actions {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .icon-button,
+    .quiet-button,
+    .primary-button {
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 11px;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease, color 150ms ease;
+    }
+
+    .icon-button {
+      width: 40px;
+      flex: 0 0 40px;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--line);
+    }
+
+    .icon-button:hover:not(:disabled),
+    .quiet-button:hover:not(:disabled) {
+      color: var(--ice-soft);
+      border-color: var(--line-strong);
+      background: rgba(143, 218, 255, 0.07);
+    }
+
+    .icon-button svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .primary-button {
+      padding: 0 15px;
+      color: #07131f;
+      background: linear-gradient(135deg, #b6efff, #71d8ed 55%, #88e3cb);
+      border: 1px solid rgba(206, 241, 255, 0.82);
+      box-shadow: 0 8px 24px rgba(65, 178, 240, 0.17);
+      font-weight: 760;
+    }
+
+    .primary-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #d1f6ff, #86e3f3 55%, #9cebd7);
+    }
+
+    .primary-button .count {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #dff5ff;
+      background: rgba(6, 21, 34, 0.78);
+      font-size: 11px;
+    }
+
+    .workspace {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 344px;
+      align-items: stretch;
+    }
+
+    .stage {
+      min-width: 0;
+      min-height: 720px;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(180deg, rgba(47, 86, 127, 0.20), transparent 18rem),
+        radial-gradient(circle at 78% 12%, rgba(111, 94, 201, 0.07), transparent 22rem),
+        var(--ink-900);
+    }
+
+    .stage-toolbar {
+      min-height: 48px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid rgba(150, 197, 235, 0.10);
+      background: linear-gradient(90deg, rgba(18, 35, 56, 0.88), rgba(17, 26, 48, 0.82));
+    }
+
+    .project-crumb {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-soft);
+      font-size: 12px;
+    }
+
+    .project-crumb strong {
+      max-width: 270px;
+      overflow: hidden;
+      color: #d8e8f6;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .demo-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: var(--warning);
+      box-shadow: 0 0 10px rgba(255, 210, 138, 0.52);
+    }
+
+    .canvas-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-faint);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .safe-state {
+      padding: 4px 8px;
+      color: var(--success);
+      border: 1px solid rgba(139, 224, 192, 0.17);
+      border-radius: 999px;
+      background: rgba(139, 224, 192, 0.06);
+    }
+
+    .import-file-button,
+    .return-demo-button {
+      min-height: 30px;
+      height: 30px;
+      padding: 0 10px;
+      white-space: nowrap;
+    }
+
+    .import-preview-shell {
+      width: min(100%, 980px);
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+      align-self: flex-start;
+    }
+
+    .import-preview-summary {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      color: var(--text-soft);
+      background: linear-gradient(135deg, rgba(24, 48, 76, 0.96), rgba(29, 28, 60, 0.95));
+      border: 1px solid rgba(143, 218, 255, 0.20);
+      border-radius: 14px;
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.24);
+    }
+
+    .import-summary-top {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .import-summary-top strong {
+      display: block;
+      overflow: hidden;
+      color: #eef9ff;
+      font-size: 13px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .import-summary-top span {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-faint);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .import-counts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .import-count-chip {
+      padding: 5px 8px;
+      color: #cfe3f2;
+      background: rgba(5, 12, 22, 0.35);
+      border: 1px solid rgba(145, 201, 240, 0.14);
+      border-radius: 999px;
+      font-size: 10px;
+    }
+
+    .import-count-chip.is-safe { color: var(--success); }
+    .import-count-chip.is-view-only { color: var(--warning); }
+    .import-count-chip.is-blocked { color: #ffb6b6; }
+
+    .import-safety-summary {
+      margin: 0;
+      color: #9eb7ca;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .import-preview-frame {
+      width: 100%;
+      height: 680px;
+      display: block;
+      color-scheme: light;
+      background: white;
+      border: 1px solid rgba(143, 218, 255, 0.24);
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .import-inspector {
+      display: grid;
+      gap: 10px;
+    }
+
+    .import-mode-notice {
+      margin: 0;
+      color: #c5d9e8;
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .import-mode-notice strong {
+      color: var(--warning);
+    }
+
+    .import-detail-list {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+    }
+
+    .import-detail-row {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .import-detail-row dt {
+      color: var(--text-faint);
+    }
+
+    .import-detail-row dd {
+      min-width: 0;
+      margin: 0;
+      overflow-wrap: anywhere;
+      color: #d8e8f4;
+    }
+
+    .import-support-chip {
+      display: inline-flex;
+      padding: 4px 7px;
+      border-radius: 999px;
+      font-weight: 760;
+    }
+
+    .import-support-chip.is-safe {
+      color: var(--success);
+      background: rgba(139, 224, 192, 0.08);
+    }
+
+    .import-support-chip.is-view-only {
+      color: var(--warning);
+      background: rgba(255, 210, 138, 0.08);
+    }
+
+    .import-edit-summary {
+      padding-top: 9px;
+      display: grid;
+      gap: 4px;
+      border-top: 1px solid rgba(143, 218, 255, 0.12);
+      color: #b7ccdc;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .import-edit-summary strong {
+      color: var(--ice-soft);
+      font-size: 11px;
+    }
+
+    .import-edit-fieldset {
+      min-width: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+      border: 0;
+    }
+
+    .import-edit-fieldset:disabled {
+      opacity: 0.5;
+    }
+
+    .import-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .import-edit-control {
+      min-width: 0;
+      display: grid;
+      gap: 6px;
+      color: #b8cada;
+      font-size: 10px;
+      font-weight: 680;
+    }
+
+    .import-edit-control.is-wide {
+      grid-column: 1 / -1;
+    }
+
+    .import-edit-input {
+      width: 100%;
+      min-width: 0;
+      height: 36px;
+      padding: 0 9px;
+      color: #e2eef7;
+      background: rgba(7, 13, 23, 0.42);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      font: inherit;
+      font-weight: 600;
+    }
+
+    .import-edit-input:focus {
+      border-color: var(--ice);
+      outline: 2px solid rgba(83, 211, 255, 0.13);
+    }
+
+    .import-edit-color-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 42px;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .import-edit-color-row output {
+      min-width: 0;
+      overflow: hidden;
+      color: var(--text-faint);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 9px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .import-edit-color-row input[type="color"] {
+      width: 42px;
+      height: 36px;
+    }
+
+    .import-edit-gate {
+      margin: 0;
+      color: var(--text-faint);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .workbench {
+      position: relative;
+      flex: 1;
+      min-height: 610px;
+      padding: 34px 36px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      overflow: auto;
+      scrollbar-gutter: stable;
+      background-color: #0b1320;
+      /*
+        第一層是上下暗角，疊在格線與環境光之上。
+        它必須留在背景層：背景層以 padding box 為基準，捲動時不跟著內容移動。
+        若改用容器內的絕對定位覆蓋層，會隨 scrollTop 位移，
+        暗角下緣就成為掠過畫布的黑色橫線（LTS-001）。
+      */
+      background-image:
+        linear-gradient(180deg, rgba(7, 12, 21, 0.18), transparent 24%, transparent 78%, rgba(7, 12, 21, 0.38)),
+        linear-gradient(rgba(144, 202, 242, 0.052) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(144, 202, 242, 0.052) 1px, transparent 1px),
+        radial-gradient(circle at 45% 28%, rgba(68, 164, 219, 0.18), transparent 37%),
+        radial-gradient(circle at 80% 78%, rgba(139, 107, 224, 0.12), transparent 34%),
+        radial-gradient(circle at 12% 90%, rgba(80, 217, 192, 0.08), transparent 29%);
+      background-size: auto, 24px 24px, 24px 24px, auto, auto, auto;
+    }
+
+    .canvas-sizer {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .demo-page {
+      position: absolute;
+      inset: 0 auto auto 0;
+      overflow: hidden;
+      color: #3d342d;
+      background:
+        radial-gradient(circle at 100% 0, rgba(229, 166, 110, 0.16), transparent 23rem),
+        linear-gradient(180deg, #f8f3e9, #f5efe4);
+      border: 1px solid rgba(224, 232, 237, 0.92);
+      box-shadow: var(--shadow-lg), 0 0 0 7px rgba(102, 146, 181, 0.08);
+      transform-origin: 0 0;
+      isolation: isolate;
+      transition: border-radius 160ms ease, box-shadow 160ms ease;
+    }
+
+    .demo-page[data-device="phone"] {
+      border-radius: 34px;
+    }
+
+    .demo-page[data-device="tablet"] {
+      border-radius: 26px;
+    }
+
+    .demo-page[data-device="desktop"] {
+      border-radius: 16px;
+    }
+
+    .demo-ambient {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .demo-ambient::before,
+    .demo-ambient::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+    }
+
+    .demo-ambient::before {
+      width: 260px;
+      height: 260px;
+      top: -150px;
+      left: -90px;
+      background: rgba(239, 202, 128, 0.18);
+    }
+
+    .demo-ambient::after {
+      width: 320px;
+      height: 320px;
+      right: -190px;
+      bottom: 70px;
+      background: rgba(157, 196, 182, 0.13);
+    }
+
+    .demo-header {
+      position: relative;
+      min-height: 190px;
+      padding: 48px 30px 28px;
+      background:
+        linear-gradient(135deg, rgba(255, 251, 238, 0.96), rgba(242, 221, 181, 0.68)),
+        #f5e4c3;
+      border-bottom: 1px solid rgba(130, 100, 70, 0.09);
+    }
+
+    .demo-kicker {
+      margin: 0 0 7px;
+      color: #a27757;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+    }
+
+    .demo-title {
+      position: relative;
+      z-index: 2;
+      width: max-content;
+      max-width: 72%;
+      margin: 0;
+      color: #49392f;
+      font-family: var(--font-ui);
+      font-size: 31px;
+      font-weight: 860;
+      line-height: 1.15;
+      letter-spacing: 0.035em;
+    }
+
+    .demo-subtitle {
+      width: 72%;
+      margin: 10px 0 0;
+      color: #8a705c;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .star-pair {
+      position: absolute;
+      top: 50px;
+      right: 30px;
+      width: 76px;
+      height: 75px;
+      color: #8a6a49;
+      transform-origin: 50% 50%;
+    }
+
+    .star {
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      display: block;
+      background: currentColor;
+      clip-path: polygon(50% 0, 61% 36%, 100% 50%, 61% 64%, 50% 100%, 39% 64%, 0 50%, 39% 36%);
+      filter: drop-shadow(0 4px 8px rgba(91, 62, 37, 0.18));
+      transform: rotate(-8deg);
+    }
+
+    .star:last-child {
+      width: 27px;
+      height: 27px;
+      right: 0;
+      bottom: 0;
+      transform: rotate(17deg);
+    }
+
+    .demo-main {
+      position: relative;
+      padding: 22px 22px 116px;
+    }
+
+    .hello-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .hello-row h2 {
+      margin: 0;
+      color: #56483f;
+      font-size: 15px;
+      font-weight: 820;
+    }
+
+    .hello-row span {
+      color: #a48c78;
+      font-size: 10px;
+    }
+
+    .observation-note {
+      position: relative;
+      min-height: 157px;
+      padding: 24px 22px;
+      overflow: hidden;
+      color: #5d4a36;
+      background: #fff0b8;
+      border: 1px solid rgba(174, 137, 77, 0.16);
+      border-radius: 22px;
+      box-shadow: 0 13px 30px rgba(106, 80, 50, 0.11);
+      transform-origin: 50% 50%;
+    }
+
+    .observation-note::after {
+      content: "";
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      right: -22px;
+      bottom: -31px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .note-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #9b7450;
+      font-size: 10px;
+      font-weight: 780;
+      letter-spacing: 0.08em;
+    }
+
+    .note-label::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d48259;
+    }
+
+    .note-main {
+      margin: 13px 0 8px;
+      color: inherit;
+      font-size: 20px;
+      font-weight: 840;
+    }
+
+    .note-meta {
+      margin: 0;
+      color: rgba(93, 74, 54, 0.68);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .quick-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .quick-card {
+      min-height: 78px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #69594d;
+      background: rgba(255, 255, 255, 0.63);
+      border: 1px solid rgba(111, 88, 67, 0.10);
+      border-radius: 18px;
+      transform-origin: 50% 50%;
+    }
+
+    .quick-card strong {
+      font-size: 12px;
+    }
+
+    .quick-card span {
+      color: #a38b78;
+      font-size: 10px;
+    }
+
+    .photo-card {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      align-items: center;
+      gap: 11px;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 54px;
+      height: 48px;
+      overflow: hidden;
+      border: 1px solid rgba(119, 91, 66, 0.12);
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.72), transparent 9px),
+        linear-gradient(145deg, #d9e9df, #efc99e 62%, #cf9b78);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .photo-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(97, 73, 55, 0.68);
+      font-size: 22px;
+    }
+
+    .photo-copy {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+
+    .photo-copy strong,
+    .photo-copy span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .demo-page[data-device="phone"] .quick-card:last-child {
+      grid-column: 1 / -1;
+      min-height: 76px;
+    }
+
+    .record-button {
+      position: relative;
+      width: min(100%, 252px);
+      height: 54px;
+      margin: 18px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #fffaf4;
+      background: #c96f50;
+      border: 1px solid rgba(126, 64, 45, 0.10);
+      border-radius: 27px;
+      box-shadow: 0 12px 24px rgba(151, 78, 52, 0.20);
+      font-size: 15px;
+      font-weight: 820;
+      transform-origin: 50% 50%;
+    }
+
+    .record-button::before {
+      content: "+";
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #c56e50;
+      background: #fff7ee;
+      font-size: 21px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .demo-nav {
+      position: absolute;
+      z-index: 5;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      min-height: 66px;
+      padding: 7px 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      color: #8e7968;
+      background: #fffaf1;
+      border: 1px solid rgba(104, 81, 63, 0.10);
+      border-radius: 28px;
+      box-shadow: 0 12px 35px rgba(84, 62, 45, 0.13);
+      transform-origin: 50% 50%;
+    }
+
+    .demo-nav-item {
+      min-width: 0;
+      display: grid;
+      justify-items: center;
+      gap: 4px;
+      font-size: 9px;
+    }
+
+    .demo-nav-icon {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 13px;
+    }
+
+    .demo-nav-item.is-active {
+      color: #9b583f;
+      font-weight: 820;
+    }
+
+    .demo-nav-item.is-active .demo-nav-icon {
+      color: white;
+      background: #c96f50;
+      box-shadow: 0 4px 10px rgba(158, 82, 55, 0.22);
+    }
+
+    .demo-page[data-device="tablet"] .demo-header {
+      min-height: 210px;
+      padding: 58px 56px 34px;
+    }
+
+    .demo-page[data-device="tablet"] .demo-title {
+      font-size: 38px;
+    }
+
+    .demo-page[data-device="tablet"] .demo-subtitle {
+      font-size: 14px;
+    }
+
+    .demo-page[data-device="tablet"] .star-pair {
+      top: 56px;
+      right: 62px;
+      width: 92px;
+      height: 88px;
+    }
+
+    .demo-page[data-device="tablet"] .demo-main {
+      padding: 34px 52px 126px;
+    }
+
+    .demo-page[data-device="tablet"] .observation-note {
+      min-height: 190px;
+      padding: 30px;
+    }
+
+    .demo-page[data-device="tablet"] .quick-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .demo-page[data-device="tablet"] .quick-card:last-child {
+      display: grid;
+    }
+
+    .demo-page[data-device="tablet"] .record-button {
+      width: 290px;
+      height: 58px;
+    }
+
+    .demo-page[data-device="tablet"] .demo-nav {
+      left: 95px;
+      right: 95px;
+    }
+
+    .demo-page[data-device="desktop"] .demo-header {
+      min-height: 185px;
+      padding: 54px 76px 32px;
+    }
+
+    .demo-page[data-device="desktop"] .demo-title {
+      font-size: 42px;
+    }
+
+    .demo-page[data-device="desktop"] .demo-subtitle {
+      width: 48%;
+      font-size: 14px;
+    }
+
+    .demo-page[data-device="desktop"] .star-pair {
+      top: 46px;
+      right: 80px;
+      width: 98px;
+      height: 91px;
+    }
+
+    .demo-page[data-device="desktop"] .demo-main {
+      padding: 32px 76px 105px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      grid-template-rows: auto auto;
+      gap: 15px 20px;
+    }
+
+    .demo-page[data-device="desktop"] .hello-row {
+      grid-column: 1 / -1;
+      margin-bottom: 0;
+    }
+
+    .demo-page[data-device="desktop"] .observation-note {
+      grid-row: span 2;
+      min-height: 292px;
+      padding: 36px;
+    }
+
+    .demo-page[data-device="desktop"] .note-main {
+      margin-top: 26px;
+      font-size: 27px;
+    }
+
+    .demo-page[data-device="desktop"] .quick-grid {
+      margin-top: 0;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .demo-page[data-device="desktop"] .record-button {
+      width: 100%;
+      max-width: none;
+      margin-top: 0;
+      align-self: end;
+    }
+
+    .demo-page[data-device="desktop"] .demo-nav {
+      width: 480px;
+      left: calc(50% - 240px);
+      right: auto;
+    }
+
+    [data-editable] {
+      touch-action: none;
+      user-select: none;
+      cursor: grab;
+      will-change: transform;
+    }
+
+    [data-editable]:active {
+      cursor: grabbing;
+    }
+
+    [data-editable]:hover {
+      outline: 1px dashed rgba(54, 164, 225, 0.52);
+      outline-offset: 4px;
+    }
+
+    [data-editable]:focus-visible {
+      outline: 2px solid rgba(111, 220, 255, 0.86);
+      outline-offset: 4px;
+    }
+
+    .is-manipulating [data-editable] {
+      transition: none !important;
+    }
+
+    .selection-overlay {
+      position: absolute;
+      z-index: 90;
+      pointer-events: none;
+      border: 2px solid #55d5ff;
+      border-radius: 7px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.82),
+        0 0 18px rgba(48, 190, 246, 0.56),
+        0 0 34px rgba(137, 105, 229, 0.20);
+    }
+
+    .selection-overlay::before {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      border: 1px solid rgba(111, 212, 255, 0.25);
+      border-radius: 10px;
+    }
+
+    .selection-label {
+      position: absolute;
+      left: -2px;
+      bottom: calc(100% + 7px);
+      min-width: max-content;
+      padding: 5px 8px;
+      border-radius: 7px;
+      color: #ecfaff;
+      background: linear-gradient(135deg, #177fb5, #6255b7);
+      box-shadow: 0 5px 15px rgba(17, 69, 98, 0.26);
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 760;
+      line-height: 1;
+    }
+
+    .resize-handle {
+      position: absolute;
+      right: -8px;
+      bottom: -8px;
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      pointer-events: auto;
+      border: 2px solid white;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #53d4ff, #8b78ea);
+      box-shadow: 0 2px 8px rgba(12, 75, 109, 0.35);
+      cursor: nwse-resize;
+      touch-action: none;
+    }
+
+    .canvas-tip {
+      position: absolute;
+      z-index: 12;
+      left: 50%;
+      bottom: 18px;
+      max-width: min(420px, calc(100% - 40px));
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #c1d6e8;
+      background: rgba(14, 25, 40, 0.91);
+      border: 1px solid rgba(141, 213, 255, 0.22);
+      border-radius: 999px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(12px);
+      transform: translateX(-50%);
+      font-size: 11px;
+      line-height: 1.4;
+      transition: opacity 180ms ease, transform 180ms ease;
+      pointer-events: none;
+    }
+
+    .canvas-tip.is-dismissed {
+      opacity: 0;
+      transform: translate(-50%, 8px);
+    }
+
+    .tip-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: var(--ice);
+      box-shadow: 0 0 12px rgba(143, 218, 255, 0.72);
+    }
+
+    .change-dock {
+      position: relative;
+      z-index: 20;
+      flex: 0 0 auto;
+      margin: 10px 14px 12px;
+      min-height: 50px;
+      padding: 7px 9px 7px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-soft);
+      background:
+        linear-gradient(105deg, rgba(20, 42, 65, 0.95), rgba(28, 27, 58, 0.94)),
+        rgba(14, 24, 39, 0.94);
+      border: 1px solid rgba(142, 213, 255, 0.18);
+      border-radius: 15px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.30);
+      backdrop-filter: blur(16px);
+    }
+
+    .change-summary {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .change-icon {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: grid;
+      place-items: center;
+      color: var(--ice);
+      border: 1px solid rgba(143, 218, 255, 0.18);
+      border-radius: 9px;
+      background: rgba(143, 218, 255, 0.07);
+    }
+
+    .change-copy {
+      min-width: 0;
+    }
+
+    .change-copy strong {
+      display: block;
+      color: #dcecf8;
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .change-copy span {
+      display: block;
+      max-width: 620px;
+      margin-top: 2px;
+      overflow: hidden;
+      color: var(--text-faint);
+      font-size: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dock-button {
+      height: 34px;
+      padding: 0 12px;
+      flex: 0 0 auto;
+      color: var(--ice-soft);
+      background: rgba(143, 218, 255, 0.08);
+      border: 1px solid rgba(143, 218, 255, 0.18);
+      border-radius: 9px;
+      font-size: 11px;
+      font-weight: 720;
+    }
+
+    .dock-button:hover {
+      background: rgba(143, 218, 255, 0.13);
+    }
+
+    .inspector {
+      position: relative;
+      z-index: 16;
+      min-width: 0;
+      padding: 0 14px 18px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      border-left: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 100% 8%, rgba(135, 104, 222, 0.13), transparent 18rem),
+        radial-gradient(circle at 0 38%, rgba(63, 191, 224, 0.10), transparent 18rem),
+        linear-gradient(180deg, rgba(37, 64, 96, 0.33), transparent 22rem),
+        var(--ink-850);
+    }
+
+    .inspector-head {
+      position: sticky;
+      z-index: 4;
+      top: 0;
+      margin: 0 -14px 12px;
+      padding: 17px 18px 15px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(145, 193, 232, 0.11);
+      background: linear-gradient(110deg, rgba(19, 38, 60, 0.97), rgba(29, 27, 58, 0.96));
+      backdrop-filter: blur(16px);
+    }
+
+    .eyebrow {
+      margin: 0 0 5px;
+      color: var(--text-faint);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .selected-name {
+      margin: 0;
+      color: #f2f9ff;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .kind-chip {
+      padding: 5px 8px;
+      color: var(--ice-soft);
+      border: 1px solid rgba(143, 218, 255, 0.18);
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(111, 216, 255, 0.12), rgba(156, 121, 236, 0.10));
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .inspector-section {
+      margin-top: 10px;
+      padding: 15px;
+      border: 1px solid rgba(153, 207, 247, 0.11);
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(32, 55, 82, 0.52), rgba(14, 25, 43, 0.42));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    .inspector-section:nth-of-type(3n + 2) {
+      background: linear-gradient(145deg, rgba(38, 48, 87, 0.50), rgba(17, 27, 47, 0.43));
+    }
+
+    .inspector-section:nth-of-type(3n) {
+      background: linear-gradient(145deg, rgba(24, 61, 74, 0.43), rgba(16, 27, 45, 0.43));
+    }
+
+    .section-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 0;
+      color: #d9e8f4;
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    .section-note {
+      margin: 0 0 12px;
+      color: var(--text-faint);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .scope-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(6, 12, 21, 0.36);
+    }
+
+    .scope-option {
+      position: relative;
+    }
+
+    .scope-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scope-option span {
+      min-height: 35px;
+      padding: 0 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-faint);
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 720;
+      text-align: center;
+      transition: color 150ms ease, background 150ms ease;
+    }
+
+    .scope-option input:checked + span {
+      color: var(--ice-soft);
+      background: linear-gradient(135deg, rgba(80, 184, 232, 0.20), rgba(133, 101, 218, 0.15));
+      box-shadow: inset 0 0 0 1px rgba(143, 218, 255, 0.16);
+    }
+
+    .scope-option input:focus-visible + span {
+      outline: 2px solid var(--ice);
+      outline-offset: 2px;
+    }
+
+    .scope-message {
+      margin: 9px 2px 0;
+      color: var(--text-faint);
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .control-stack {
+      display: grid;
+      gap: 15px;
+    }
+
+    .control {
+      display: grid;
+      gap: 8px;
+    }
+
+    .control-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .control-label {
+      color: #b8cada;
+      font-size: 11px;
+      font-weight: 680;
+    }
+
+    .value-readout {
+      min-width: 48px;
+      padding: 3px 6px;
+      color: var(--ice-soft);
+      background: rgba(143, 218, 255, 0.07);
+      border-radius: 7px;
+      font-size: 10px;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .range-row {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) 30px;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nudge-button {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .nudge-button:hover {
+      color: var(--ice-soft);
+      border-color: var(--line-strong);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      margin: 0;
+      appearance: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(104, 190, 241, 0.56), rgba(70, 100, 137, 0.48));
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      width: 16px;
+      height: 16px;
+      appearance: none;
+      border: 3px solid #dff6ff;
+      border-radius: 50%;
+      background: #47bcff;
+      box-shadow: 0 0 0 3px rgba(71, 188, 255, 0.14);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 11px;
+      height: 11px;
+      border: 3px solid #dff6ff;
+      border-radius: 50%;
+      background: #47bcff;
+      box-shadow: 0 0 0 3px rgba(71, 188, 255, 0.14);
+    }
+
+    .select-control {
+      width: 100%;
+      height: 39px;
+      padding: 0 34px 0 11px;
+      color: #dcebf7;
+      background: #111d2e;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .color-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-value {
+      min-width: 0;
+      height: 39px;
+      padding: 0 11px;
+      display: flex;
+      align-items: center;
+      color: var(--text-soft);
+      background: rgba(7, 13, 23, 0.32);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      text-transform: uppercase;
+    }
+
+    input[type="color"] {
+      width: 44px;
+      height: 39px;
+      padding: 4px;
+      overflow: hidden;
+      background: #111d2e;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch {
+      border: 0;
+      border-radius: 6px;
+    }
+
+    .toggle-row {
+      min-height: 42px;
+      padding: 0 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(7, 13, 23, 0.28);
+    }
+
+    .toggle-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .toggle-copy strong {
+      color: #c7d8e6;
+      font-size: 11px;
+    }
+
+    .toggle-copy span {
+      color: var(--text-faint);
+      font-size: 9px;
+    }
+
+    .switch {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      flex: 0 0 38px;
+    }
+
+    .switch input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .switch-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #2b3b50;
+      transition: background 150ms ease;
+    }
+
+    .switch-track::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 3px;
+      left: 3px;
+      border-radius: 50%;
+      background: #c7d4df;
+      transition: transform 150ms ease, background 150ms ease;
+    }
+
+    .switch input:checked + .switch-track {
+      background: #278fc5;
+    }
+
+    .switch input:checked + .switch-track::after {
+      background: white;
+      transform: translateX(16px);
+    }
+
+    .switch input:focus-visible + .switch-track {
+      outline: 2px solid var(--ice);
+      outline-offset: 3px;
+    }
+
+    .quiet-button {
+      padding: 0 12px;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--line);
+      font-size: 11px;
+      font-weight: 690;
+    }
+
+    .quiet-button.is-danger:hover {
+      color: #ffd2d2;
+      border-color: rgba(255, 157, 157, 0.32);
+      background: rgba(255, 157, 157, 0.07);
+    }
+
+    .selected-help {
+      padding: 12px;
+      color: #a9c2d4;
+      background: linear-gradient(135deg, rgba(81, 178, 220, 0.10), rgba(126, 99, 205, 0.08));
+      border: 1px solid rgba(119, 199, 247, 0.13);
+      border-radius: 12px;
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .signature {
+      min-height: 52px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #7890a7;
+      border-top: 1px solid rgba(142, 193, 232, 0.10);
+      background: linear-gradient(90deg, #09131f, #101329 50%, #0a1420);
+      font-size: 11px;
+      letter-spacing: 0.035em;
+      text-align: center;
+    }
+
+    .signature .collaboration-mark {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(72, 181, 246, 0.38));
+      flex: 0 0 auto;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      background: rgba(4, 8, 14, 0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal {
+      width: min(560px, 100%);
+      max-height: min(720px, calc(100dvh - 44px));
+      overflow: auto;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 95% 0, rgba(143, 108, 226, 0.13), transparent 18rem),
+        linear-gradient(180deg, rgba(42, 78, 108, 0.32), transparent 15rem),
+        #111b2b;
+      border: 1px solid rgba(143, 218, 255, 0.22);
+      border-radius: 20px;
+      box-shadow: 0 32px 100px rgba(0, 0, 0, 0.55);
+    }
+
+    .modal-head {
+      padding: 21px 22px 17px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      color: #f2f9ff;
+      font-size: 19px;
+    }
+
+    .modal-head p {
+      margin: 7px 0 0;
+      color: var(--text-faint);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .modal-close {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 20px;
+    }
+
+    .modal-body {
+      padding: 18px 22px 22px;
+    }
+
+    .prototype-notice {
+      margin-bottom: 14px;
+      padding: 12px 13px;
+      display: flex;
+      gap: 10px;
+      color: #c2d7e8;
+      background: rgba(255, 210, 138, 0.07);
+      border: 1px solid rgba(255, 210, 138, 0.17);
+      border-radius: 12px;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .prototype-notice strong {
+      color: var(--warning);
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-item {
+      padding: 11px 12px;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 9px;
+      align-items: start;
+      color: #c7d9e7;
+      background: rgba(5, 11, 19, 0.28);
+      border: 1px solid rgba(142, 193, 232, 0.10);
+      border-radius: 11px;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .summary-device {
+      padding: 3px 6px;
+      color: var(--ice-soft);
+      background: rgba(80, 180, 239, 0.10);
+      border-radius: 6px;
+      font-size: 9px;
+      white-space: nowrap;
+    }
+
+    .empty-summary {
+      padding: 30px 18px;
+      color: var(--text-faint);
+      border: 1px dashed rgba(142, 193, 232, 0.17);
+      border-radius: 13px;
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .modal-actions {
+      padding-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 9px;
+    }
+
+    .modal-actions .primary-button {
+      width: auto;
+      padding: 0 18px;
+    }
+
+    .image-control-box {
+      display: grid;
+      gap: 12px;
+    }
+
+    .image-file-status {
+      min-width: 0;
+      padding: 10px 11px;
+      display: grid;
+      gap: 3px;
+      color: var(--text-soft);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(7, 14, 25, 0.34);
+    }
+
+    .image-file-status strong {
+      color: #d7e9f6;
+      font-size: 11px;
+    }
+
+    .image-file-status span {
+      overflow: hidden;
+      color: var(--text-faint);
+      font-size: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .image-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .upload-button {
+      min-height: 40px;
+      padding: 0 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #ddf7ff;
+      background: linear-gradient(135deg, rgba(61, 171, 224, 0.23), rgba(126, 99, 216, 0.18));
+      border: 1px solid rgba(132, 220, 255, 0.25);
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 740;
+      cursor: pointer;
+    }
+
+    .upload-button:hover {
+      border-color: var(--line-strong);
+      background: linear-gradient(135deg, rgba(68, 187, 235, 0.30), rgba(139, 109, 227, 0.24));
+    }
+
+    .remove-image-button {
+      min-height: 40px;
+    }
+
+    .workbench,
+    .inspector,
+    .modal {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(112, 192, 235, 0.48) rgba(7, 13, 24, 0.24);
+    }
+
+    .workbench::-webkit-scrollbar,
+    .inspector::-webkit-scrollbar,
+    .modal::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    .workbench::-webkit-scrollbar-thumb,
+    .inspector::-webkit-scrollbar-thumb,
+    .modal::-webkit-scrollbar-thumb {
+      border: 3px solid transparent;
+      border-radius: 999px;
+      background: linear-gradient(#61bfe9, #7e70d6) padding-box;
+    }
+
+    .workbench::-webkit-scrollbar-track,
+    .inspector::-webkit-scrollbar-track,
+    .modal::-webkit-scrollbar-track {
+      background: rgba(7, 13, 24, 0.24);
+    }
+
+    .help-steps {
+      display: grid;
+      gap: 11px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: steps;
+    }
+
+    .help-steps li {
+      position: relative;
+      min-height: 38px;
+      padding-left: 48px;
+      color: #bfd1df;
+      font-size: 11px;
+      line-height: 1.65;
+      counter-increment: steps;
+    }
+
+    .help-steps li::before {
+      content: counter(steps);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      color: var(--ice-soft);
+      background: rgba(79, 180, 239, 0.10);
+      border: 1px solid rgba(143, 218, 255, 0.18);
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 780;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 1200;
+      left: 50%;
+      bottom: 24px;
+      max-width: min(460px, calc(100% - 32px));
+      padding: 10px 14px;
+      color: #e9f7ff;
+      background: rgba(20, 38, 57, 0.96);
+      border: 1px solid rgba(143, 218, 255, 0.23);
+      border-radius: 11px;
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.38);
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (min-width: 921px) and (min-height: 760px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .studio-app {
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .workspace,
+      .stage,
+      .workbench,
+      .inspector {
+        min-height: 0;
+      }
+
+      .stage {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .inspector {
+        height: 100%;
+      }
+    }
+
+    @media (min-width: 921px) and (max-height: 759px) {
+      html,
+      body {
+        height: auto;
+        overflow: auto;
+      }
+
+      .studio-app {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow: visible;
+      }
+
+      .workspace {
+        display: block;
+      }
+
+      .stage {
+        height: auto;
+        min-height: 720px;
+        overflow: visible;
+      }
+
+      .workbench {
+        min-height: 610px;
+      }
+
+      .inspector {
+        max-height: none;
+        height: auto;
+        overflow: visible;
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .app-header {
+        grid-template-columns: minmax(210px, 1fr) auto auto;
+        gap: 10px;
+      }
+
+      .brand-copy p,
+      .primary-button .action-label {
+        display: none;
+      }
+
+      .header-actions .primary-button {
+        position: relative;
+        width: 44px;
+        padding: 0;
+      }
+
+      .header-actions .primary-button .count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        margin: 0;
+      }
+
+      .workspace {
+        grid-template-columns: minmax(0, 1fr) 326px;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .app-header {
+        grid-template-columns: 1fr auto;
+      }
+
+      .header-center {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: stretch;
+      }
+
+      .device-switch {
+        flex: 1;
+      }
+
+      .device-button {
+        flex: 1;
+      }
+
+      .zoom-select {
+        height: 42px;
+      }
+
+      .workspace {
+        display: block;
+      }
+
+      .stage {
+        min-height: 690px;
+      }
+
+      .workbench {
+        min-height: 620px;
+      }
+
+      .inspector {
+        max-height: none;
+        height: auto;
+        overflow: visible;
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+
+      .inspector-head {
+        top: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-header {
+        min-height: auto;
+        padding: 10px 12px 9px;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        flex-basis: 36px;
+        border-radius: 12px;
+      }
+
+      .brand-mark .project-mark {
+        width: 25px;
+        height: 25px;
+        font-size: 7px;
+      }
+
+      .brand {
+        gap: 8px;
+      }
+
+      .brand-copy h1 {
+        overflow: hidden;
+        font-size: 13px;
+        text-overflow: ellipsis;
+      }
+
+      .prototype-badge {
+        display: none;
+      }
+
+      .header-actions {
+        gap: 4px;
+      }
+
+      .icon-button {
+        width: 34px;
+        height: 36px;
+        flex-basis: 34px;
+      }
+
+      .header-actions .primary-button {
+        width: 36px;
+        height: 36px;
+      }
+
+      .header-actions .primary-button .count {
+        top: -6px;
+        right: 0;
+      }
+
+      .device-button {
+        min-width: 0;
+        padding: 0 7px;
+      }
+
+      .device-button span {
+        font-size: 10px;
+      }
+
+      .zoom-select {
+        width: 76px;
+        padding-left: 8px;
+        font-size: 10px;
+      }
+
+      .stage {
+        min-height: 635px;
+      }
+
+      .stage-toolbar {
+        padding: 8px 12px;
+      }
+
+      .project-crumb strong {
+        max-width: 160px;
+      }
+
+      .canvas-status > span:not(.safe-state) {
+        display: none;
+      }
+
+      .canvas-status {
+        gap: 5px;
+      }
+
+      .import-file-button,
+      .return-demo-button {
+        padding-inline: 8px;
+        font-size: 10px;
+      }
+
+      .workbench {
+        min-height: 565px;
+        padding: 24px 14px;
+      }
+
+      .change-dock {
+        margin: 8px 10px 10px;
+        padding-left: 11px;
+      }
+
+      .change-copy span {
+        max-width: 180px;
+      }
+
+      .dock-button {
+        padding: 0 9px;
+      }
+
+      .canvas-tip {
+        bottom: 14px;
+        border-radius: 14px;
+      }
+
+      .inspector {
+        padding-inline: 14px;
+      }
+
+      .inspector-head {
+        margin-inline: -14px;
+        padding-inline: 14px;
+      }
+
+      .signature {
+        padding-inline: 12px;
+        font-size: 10px;
+      }
+
+      .modal-backdrop {
+        padding: 12px;
+      }
+
+      .modal-head,
+      .modal-body {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+
+    /*
+      桌機高倍率／短視窗：
+      保留畫布與調整面板並排，兩邊各自捲動。
+      畫布不再為了把整支手機塞進短視窗而縮成難以操作的大小。
+    */
+    @media (min-width: 700px) and (max-height: 759px) {
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .studio-app {
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .app-header {
+        min-height: 62px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      .workspace {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) clamp(282px, 35vw, 326px);
+        align-items: stretch;
+        overflow: hidden;
+      }
+
+      .stage,
+      .workbench,
+      .inspector {
+        min-height: 0;
+      }
+
+      .stage {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .stage-toolbar {
+        min-height: 40px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+      }
+
+      .workbench {
+        min-height: 0;
+        padding: 20px 24px;
+        overscroll-behavior: contain;
+      }
+
+      .change-dock {
+        min-height: 42px;
+        margin: 6px 10px 8px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+
+      .change-icon {
+        width: 24px;
+        height: 24px;
+        flex-basis: 24px;
+      }
+
+      .dock-button {
+        height: 30px;
+      }
+
+      .inspector {
+        height: 100%;
+        max-height: none;
+        padding-bottom: 12px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        border-top: 0;
+        border-left: 1px solid var(--line);
+        scrollbar-gutter: stable;
+      }
+
+      .inspector-head {
+        top: 0;
+        padding-top: 12px;
+        padding-bottom: 11px;
+      }
+
+      .selected-name {
+        font-size: 16px;
+      }
+
+      .inspector-section {
+        margin-top: 8px;
+        padding: 12px;
+      }
+
+      .signature {
+        min-height: 36px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+
+      .signature .collaboration-mark {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="studio-app">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="project-mark" aria-hidden="true">LTS</span>
+        </div>
+        <div class="brand-copy">
+          <h1>Little Things Studio</h1>
+          <p>直接碰畫面，把 CSS 留在背後</p>
+        </div>
+        <span class="prototype-badge">v0.1.0-beta.1</span>
+      </div>
+
+      <div class="header-center" aria-label="預覽裝置與縮放">
+        <div class="device-switch" role="group" aria-label="預覽裝置">
+          <button class="device-button" type="button" data-device-button="phone" aria-pressed="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.4"/><path d="M10 5h4M11 18.5h2"/></svg>
+            <span>手機</span>
+          </button>
+          <button class="device-button" type="button" data-device-button="tablet" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.3"/><path d="M10.5 18.5h3"/></svg>
+            <span>平板</span>
+          </button>
+          <button class="device-button" type="button" data-device-button="desktop" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="13" rx="1.8"/><path d="M8 20.5h8M12 16.5v4"/></svg>
+            <span>電腦</span>
+          </button>
+        </div>
+        <label>
+          <span class="sr-only">畫布縮放</span>
+          <select class="zoom-select" id="zoomSelect">
+            <option value="0.75">75%</option>
+            <option value="1" selected>適合畫布</option>
+            <option value="1.25">125%</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-button" id="undoButton" type="button" title="復原" aria-label="復原" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5"/><path d="M5 12h8.5a5.5 5.5 0 0 1 5.5 5.5"/></svg>
+        </button>
+        <button class="icon-button" id="redoButton" type="button" title="重做" aria-label="重做" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5"/><path d="M19 12h-8.5A5.5 5.5 0 0 0 5 17.5"/></svg>
+        </button>
+        <button class="icon-button" id="helpButton" type="button" title="操作說明" aria-label="操作說明">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.47 2.07c-.9.49-1.27.92-1.27 1.93M12 17h.01"/></svg>
+        </button>
+        <button class="primary-button" id="summaryButton" type="button">
+          <span class="action-label">查看調整摘要</span>
+          <span aria-hidden="true">✓</span>
+          <span class="count" id="headerChangeCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="stage" aria-label="預覽工作臺">
+        <div class="stage-toolbar">
+          <div class="project-crumb">
+            <span class="demo-dot" aria-hidden="true"></span>
+            <span id="projectModeLabel">示範畫面</span>
+            <span aria-hidden="true">/</span>
+            <strong id="projectNameLabel">Little Things Demo・首頁</strong>
+          </div>
+          <div class="canvas-status">
+            <span id="deviceDimensions">390 × 780</span>
+            <span class="safe-state" id="safeStateLabel">不讀寫檔案</span>
+            <label class="quiet-button import-file-button" for="htmlImportInput">匯入 HTML</label>
+            <input class="sr-only" id="htmlImportInput" type="file" accept=".html,.htm,text/html">
+            <button class="quiet-button" id="exportHtmlButton" type="button" hidden disabled>下載修改後 HTML</button>
+            <button class="quiet-button return-demo-button" id="returnDemoButton" type="button" hidden>返回內建示範</button>
+          </div>
+        </div>
+
+        <div class="workbench" id="workbench">
+          <section class="import-preview-shell" id="importPreviewShell" aria-label="隔離的匯入 HTML 預覽" hidden>
+            <header class="import-preview-summary">
+              <div class="import-summary-top">
+                <div>
+                  <strong id="importFileName">尚未匯入 HTML</strong>
+                  <span id="importRecognizedCount">可辨認元素 0</span>
+                </div>
+                <span class="safe-state">腳本停用・外部連線封鎖</span>
+              </div>
+              <div class="import-counts" aria-label="元素支援狀態摘要">
+                <span class="import-count-chip is-safe" id="importSafeCount">safe 0</span>
+                <span class="import-count-chip is-view-only" id="importViewOnlyCount">view-only 0</span>
+                <span class="import-count-chip is-blocked" id="importBlockedCount">blocked 0</span>
+              </div>
+              <p class="import-safety-summary" id="importSafetySummary">選取本機 HTML 副本後，這裡會列出被停用或移除的能力。</p>
+              <div class="import-edit-summary" aria-live="polite">
+                <strong><span id="importEditCount">0</span> 個匯入元素有調整</strong>
+                <span id="importEditSummary">尚未修改；所有變更只留在這次的清理後預覽副本。</span>
+              </div>
+              <div class="import-edit-summary" aria-live="polite">
+                <strong>安全靜態下載</strong>
+                <span id="importExportReason">匯入並修改 safe 元素後，才能下載新的 HTML 副本。</span>
+              </div>
+            </header>
+            <iframe
+              class="import-preview-frame"
+              id="importPreviewFrame"
+              title="隔離的匯入 HTML 預覽"
+              sandbox="allow-same-origin"
+              referrerpolicy="no-referrer"
+            ></iframe>
+          </section>
+          <div class="canvas-sizer" id="canvasSizer">
+            <article class="demo-page" id="demoPage" data-device="phone" aria-label="Little Things 通用示範頁">
+              <div class="demo-ambient" aria-hidden="true"></div>
+
+              <header class="demo-header" id="demo-header" data-editable="header" data-label="頁首區塊" tabindex="0">
+                <p class="demo-kicker" id="demo-kicker" data-editable="kicker" data-label="英文眉題" tabindex="0">LITTLE THINGS DEMO</p>
+                <h1 class="demo-title" id="demo-title" data-editable="title" data-label="標題" tabindex="0">一頁小日常</h1>
+                <p class="demo-subtitle" id="demo-subtitle" data-editable="subtitle" data-label="副標文字" tabindex="0">把今天的一件小事，留成可以慢慢看的頁面。</p>
+
+                <div class="star-pair" id="demo-stars" data-editable="stars" data-label="雙星光" tabindex="0" aria-label="雙星光裝飾">
+                  <span class="star" aria-hidden="true"></span>
+                  <span class="star" aria-hidden="true"></span>
+                </div>
+              </header>
+
+              <div class="demo-main">
+                <div class="hello-row">
+                  <h2 id="demo-hello-title" data-editable="helloTitle" data-label="今日標題" tabindex="0">今天的小事</h2>
+                  <span id="demo-update-time" data-editable="updateTime" data-label="更新時間" tabindex="0">示範時間 15:20</span>
+                </div>
+
+                <section class="observation-note" id="demo-note" data-editable="note" data-label="最新紀錄卡" tabindex="0">
+                  <span class="note-label" id="demo-note-label" data-editable="noteLabel" data-label="紀錄標籤" tabindex="0">範例卡片</span>
+                  <p class="note-main" id="demo-note-main" data-editable="noteMain" data-label="紀錄標題" tabindex="0">午後的光落在桌角</p>
+                  <p class="note-meta" id="demo-note-meta" data-editable="noteMeta" data-label="紀錄內容" tabindex="0">窗邊角落 · 示範紀錄<br>翻過一頁書，杯子裡的茶還有一點溫度。</p>
+                </section>
+
+                <div class="quick-grid" aria-label="今日摘要">
+                  <div class="quick-card" id="demo-water-card" data-editable="waterCard" data-label="閱讀摘要卡" tabindex="0"><strong>閱讀</strong><span>20 分鐘</span></div>
+                  <div class="quick-card" id="demo-activity-card" data-editable="activityCard" data-label="散步摘要卡" tabindex="0"><strong>散步</strong><span>天氣很好</span></div>
+                  <figure class="quick-card photo-card" id="demo-photo-card" data-editable="photo" data-label="最近片段卡" tabindex="0">
+                    <span class="photo-frame">
+                      <img id="demo-photo-image" alt="" hidden>
+                      <span class="photo-placeholder" id="photoPlaceholder" aria-hidden="true">♢</span>
+                    </span>
+                    <figcaption class="photo-copy">
+                      <strong>最近片段</strong>
+                      <span id="photoCaption">點右側上傳更換</span>
+                    </figcaption>
+                  </figure>
+                </div>
+
+                <button class="record-button" id="demo-record" data-editable="record" data-label="新增紀錄按鈕" tabindex="0" type="button">新增一筆小事</button>
+              </div>
+
+              <nav class="demo-nav" id="demo-nav" data-editable="nav" data-label="底部導覽列" tabindex="0" aria-label="示範底部導覽">
+                <span class="demo-nav-item is-active" id="demo-nav-home" data-editable="navHome" data-label="首頁導覽項目" tabindex="0"><span class="demo-nav-icon">⌂</span><span>首頁</span></span>
+                <span class="demo-nav-item" id="demo-nav-wiki" data-editable="navWiki" data-label="靈感導覽項目" tabindex="0"><span class="demo-nav-icon">◇</span><span>靈感</span></span>
+                <span class="demo-nav-item" id="demo-nav-records" data-editable="navRecords" data-label="記錄導覽項目" tabindex="0"><span class="demo-nav-icon">≡</span><span>記錄</span></span>
+              </nav>
+
+              <div class="selection-overlay" id="selectionOverlay" aria-hidden="true">
+                <span class="selection-label" id="selectionLabel">雙星光 · 拖曳移動</span>
+                <button class="resize-handle" id="resizeHandle" type="button" tabindex="-1" aria-label="拖曳縮放選取元素"></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="canvas-tip" id="canvasTip" aria-hidden="true">
+            <span class="tip-dot"></span>
+            <span>已選中雙星光：直接拖動，或拉右下角縮放。也可以點其他元素。</span>
+          </div>
+        </div>
+
+        <div class="change-dock" id="changeDock" aria-live="polite">
+          <div class="change-summary">
+            <span class="change-icon" aria-hidden="true">✦</span>
+            <div class="change-copy">
+              <strong><span id="dockChangeCount">0</span> 項本次調整</strong>
+              <span id="dockChangeText">還沒有修改；畫面現在只是安全的示範草稿。</span>
+            </div>
+          </div>
+          <button class="dock-button" id="dockSummaryButton" type="button">展開</button>
+        </div>
+      </section>
+
+      <aside class="inspector" id="inspector" aria-label="元素調整面板">
+        <div class="inspector-head">
+          <div>
+            <p class="eyebrow">目前選取</p>
+            <h2 class="selected-name" id="selectedName">雙星光</h2>
+          </div>
+          <span class="kind-chip" id="selectedKind">裝飾</span>
+        </div>
+
+        <div class="import-inspector" id="importInspector" hidden>
+          <section class="inspector-section">
+            <p class="import-mode-notice"><strong>v0.1.0-beta.1 可另存安全的靜態副本。</strong>safe 元素可調文字與外觀；只有通過 export gate 才能下載，view-only 與原檔都不會被修改。</p>
+          </section>
+          <section class="inspector-section">
+            <dl class="import-detail-list">
+              <div class="import-detail-row"><dt>Tag</dt><dd id="importSelectedTag">—</dd></div>
+              <div class="import-detail-row"><dt>名稱／文字</dt><dd id="importSelectedLabel">請點選預覽中的元素</dd></div>
+              <div class="import-detail-row"><dt>Runtime ID</dt><dd id="importSelectedRuntimeId">—</dd></div>
+              <div class="import-detail-row"><dt>支援狀態</dt><dd><span class="import-support-chip" id="importSelectedStatus">—</span></dd></div>
+              <div class="import-detail-row"><dt>說明</dt><dd id="importSelectedReason">safe 與 view-only 元素都可以選取查看。</dd></div>
+            </dl>
+          </section>
+          <section class="inspector-section">
+            <div class="section-row">
+              <h3 class="section-title">Safe 元素調整</h3>
+            </div>
+            <p class="import-edit-gate" id="importEditGate">請先選取預覽中的 safe 元素。</p>
+            <fieldset class="import-edit-fieldset" id="importEditControls" disabled>
+              <div class="import-edit-grid">
+                <label class="import-edit-control is-wide">
+                  文字內容
+                  <input class="import-edit-input" id="importTextControl" data-import-control="text" type="text" autocomplete="off">
+                </label>
+                <label class="import-edit-control">
+                  字體大小（px）
+                  <input class="import-edit-input" id="importFontSizeControl" data-import-control="fontSize" type="number" min="6" max="240" step="1">
+                </label>
+                <label class="import-edit-control">
+                  圓角（px）
+                  <input class="import-edit-input" id="importRadiusControl" data-import-control="radius" type="number" min="0" max="400" step="1">
+                </label>
+                <label class="import-edit-control">
+                  寬度（px）
+                  <input class="import-edit-input" id="importWidthControl" data-import-control="width" type="number" min="12" max="1600" step="1">
+                </label>
+                <label class="import-edit-control">
+                  高度（px）
+                  <input class="import-edit-input" id="importHeightControl" data-import-control="height" type="number" min="12" max="1600" step="1">
+                </label>
+                <label class="import-edit-control">
+                  X 位移（px）
+                  <input class="import-edit-input" id="importXControl" data-import-control="x" type="number" min="-800" max="800" step="1">
+                </label>
+                <label class="import-edit-control">
+                  Y 位移（px）
+                  <input class="import-edit-input" id="importYControl" data-import-control="y" type="number" min="-800" max="800" step="1">
+                </label>
+                <label class="import-edit-control">
+                  文字顏色
+                  <span class="import-edit-color-row">
+                    <output id="importTextColorOutput">#000000</output>
+                    <input id="importTextColorControl" data-import-control="color" type="color" value="#000000">
+                  </span>
+                </label>
+                <label class="import-edit-control">
+                  背景色
+                  <span class="import-edit-color-row">
+                    <output id="importBackgroundColorOutput">#FFFFFF</output>
+                    <input id="importBackgroundColorControl" data-import-control="backgroundColor" type="color" value="#ffffff">
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+          </section>
+        </div>
+
+        <section class="inspector-section">
+          <div class="section-row">
+            <h3 class="section-title">套用到</h3>
+          </div>
+          <div class="scope-switch" role="radiogroup" aria-label="調整套用範圍">
+            <label class="scope-option">
+              <input type="radio" name="scope" value="current" checked>
+              <span id="currentDeviceScope">目前手機尺寸</span>
+            </label>
+            <label class="scope-option">
+              <input type="radio" name="scope" value="all">
+              <span>所有尺寸</span>
+            </label>
+          </div>
+          <p class="scope-message" id="scopeMessage">接下來的移動與外觀調整，只會套用到手機預覽。</p>
+        </section>
+
+        <section class="inspector-section">
+          <div class="section-row">
+            <h3 class="section-title">位置與大小</h3>
+            <button class="quiet-button" id="resetElementButton" type="button">重設此元素</button>
+          </div>
+          <div class="control-stack">
+            <label class="control">
+              <span class="control-label-row">
+                <span class="control-label">左右位置</span>
+                <output class="value-readout" id="xOutput" for="xControl">0 px</output>
+              </span>
+              <span class="range-row">
+                <button class="nudge-button" type="button" data-nudge="x" data-amount="-1" aria-label="向左移動 1 像素">−</button>
+                <input id="xControl" data-control="x" type="range" min="-100" max="100" step="1" value="0">
+                <button class="nudge-button" type="button" data-nudge="x" data-amount="1" aria-label="向右移動 1 像素">+</button>
+              </span>
+            </label>
+
+            <label class="control">
+              <span class="control-label-row">
+                <span class="control-label">上下位置</span>
+                <output class="value-readout" id="yOutput" for="yControl">0 px</output>
+              </span>
+              <span class="range-row">
+                <button class="nudge-button" type="button" data-nudge="y" data-amount="-1" aria-label="向上移動 1 像素">−</button>
+                <input id="yControl" data-control="y" type="range" min="-100" max="100" step="1" value="0">
+                <button class="nudge-button" type="button" data-nudge="y" data-amount="1" aria-label="向下移動 1 像素">+</button>
+              </span>
+            </label>
+
+            <label class="control">
+              <span class="control-label-row">
+                <span class="control-label">整體大小</span>
+                <output class="value-readout" id="scaleOutput" for="scaleControl">100%</output>
+              </span>
+              <input id="scaleControl" data-control="scale" type="range" min="60" max="170" step="1" value="100">
+            </label>
+          </div>
+        </section>
+
+        <section class="inspector-section" id="textSection">
+          <div class="section-row">
+            <h3 class="section-title" id="textSectionTitle">顏色</h3>
+          </div>
+          <div class="control-stack">
+            <label class="control" id="fontSizeControlRow">
+              <span class="control-label-row">
+                <span class="control-label">字級</span>
+                <output class="value-readout" id="fontSizeOutput" for="fontSizeControl">31 px</output>
+              </span>
+              <input id="fontSizeControl" data-control="fontSize" type="range" min="9" max="56" step="1" value="31">
+            </label>
+
+            <label class="control" id="fontFamilyControlRow">
+              <span class="control-label">字體氣質</span>
+              <select class="select-control" id="fontFamilyControl" data-control="fontFamily">
+                <option value="clear">清楚俐落</option>
+                <option value="round">柔和圓潤</option>
+                <option value="serif">安靜典雅</option>
+              </select>
+            </label>
+
+            <label class="control" id="textColorControlRow">
+              <span class="control-label">文字／圖形顏色</span>
+              <span class="color-row">
+                <span class="color-value" id="colorValue">#59453B</span>
+                <input id="colorControl" data-control="color" type="color" value="#59453b" aria-label="文字或圖形顏色">
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="inspector-section" id="surfaceSection">
+          <div class="section-row">
+            <h3 class="section-title">外觀</h3>
+          </div>
+          <div class="control-stack">
+            <label class="control" id="backgroundControlRow">
+              <span class="control-label">底色</span>
+              <span class="color-row">
+                <span class="color-value" id="backgroundValue">#FFF0B8</span>
+                <input id="backgroundControl" data-control="background" type="color" value="#fff0b8" aria-label="元素底色">
+              </span>
+            </label>
+
+            <label class="control" id="radiusControlRow">
+              <span class="control-label-row">
+                <span class="control-label">圓角</span>
+                <output class="value-readout" id="radiusOutput" for="radiusControl">22 px</output>
+              </span>
+              <input id="radiusControl" data-control="radius" type="range" min="0" max="42" step="1" value="22">
+            </label>
+
+            <label class="toggle-row" id="shadowControlRow">
+              <span class="toggle-copy">
+                <strong>柔和陰影</strong>
+                <span>讓元素與背景稍微分開</span>
+              </span>
+              <span class="switch">
+                <input id="shadowControl" data-control="shadow" type="checkbox">
+                <span class="switch-track" aria-hidden="true"></span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="inspector-section" id="imageSection" hidden>
+          <div class="section-row">
+            <h3 class="section-title">圖片</h3>
+          </div>
+          <div class="image-control-box">
+            <div class="image-file-status">
+              <strong>目前圖片</strong>
+              <span id="imageFileName">尚未選擇圖片</span>
+            </div>
+            <div class="image-actions">
+              <label class="upload-button" for="imageUpload">
+                <span aria-hidden="true">＋</span>
+                <span>上傳／更換圖片</span>
+              </label>
+              <input class="sr-only" id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+              <button class="quiet-button remove-image-button" id="removeImageButton" type="button" disabled>移除</button>
+            </div>
+            <label class="control">
+              <span class="control-label">圖片顯示方式</span>
+              <select class="select-control" id="imageFitControl" data-control="imageFit">
+                <option value="cover">填滿框格</option>
+                <option value="contain">完整顯示</option>
+              </select>
+            </label>
+            <p class="section-note">圖片只留在這次預覽裡；重新開啟檔案就會消失。</p>
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <div class="selected-help" id="selectedHelp">
+            妳現在選的是一組裝飾。拖動畫面會改位置，拉右下角會等比例縮放；鍵盤方向鍵也能微調。
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <button class="quiet-button is-danger" id="resetAllButton" type="button">清除這一輪全部調整</button>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="signature">
+      <img class="collaboration-mark" alt="" aria-hidden="true" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAPc0lEQVR4nO1ZCYxc5X1fDFVR1VKVqOKwd+fYnfve2Zm1d20vxAGMjTm8WVKugAxJKEeJ7Z1jd443187O7PoQhJQiUNKQtmksNYncgETTlCpH0xBCQ4siNQ2EhHJ753rHzO68937V//verBfbrBuESFT1SX997813/H/H/3tvZl5f3//RY0Pf1NS5LPr6zvkN4jhnFQfw/nFMfchEAJxj5Py1DwbSHr5p61DwupIz+ie7fb6b/6jX9yEQOWdqqm81x4VDOy8YDE3tHAzckBsMTo7xIcKGdebzTlvw43/v2XwrXCNTWiBy/auXje0p3r5r18XUh76+c47xJB/ocWyq71xam85vueqqS3Zsuy4TGp18yRaaVN2jt8EZmTrOIa5LgC9gDUz+wBOZxNjmPStXb9+t377rGsT37nhn4cbx/HeTW5kjEPo2UKy3GAHqgXrPMcLJdZ66JXrB4s3bE4nJK9+6+crduGrbHn18y7UrnsheDIX2PjsxIZy3Fud7HpHo3h9/bOs1+MSOK7QH9lym5SbHug/dvEU7fs8Y/uH+yC9+fNB/G8AXwbGpc+mcAaFzYeI81q5JwvqNvmeoXxA2sM+mTpbkS9Oeye/eG/z58bujePimLVrmhvHu3TsntMnLr1AvH78G4ej1/26auP38dQn0ku4Z/+i//Nm1V2DmunH10I1RfOn2MJ76dEB7/gF396W4Q5cKTrRy9qc7c15nD+C6ipwpV0+Aot+iFD3faAt2vB4f0l98wNl9+lN+7at3hPDgJyLYv2tM/fSuK3Djjp3fWTP9zPkEw8qZ67Z/88FbxvGFW4fV4/t8ePY+N16O2fHOrAVSekCVBauql11oF92SPBfYjy9OnI8j4572oW13LB/ZVlKOXvYF5fC24/Lhrc8oh8e/3T409rXOka2Py5XN88vV6L7loxNBPLXzd6WC745O0VNH1QM5a1HFWbN2ImHGr2I2/OheF56804e/uT3U/dwtW5G8YYLtgXXvTr3N+eU7Rh556jNhfP9et/rywSEsJc2Q02ZKAjk3BLnghFT0qMuVkK4eGdXlavSVzpGxZTy8DfhzIx4eBx4c4/EQxRYeR7egvbhFlSqRV7qL4ZVuNQi56O7KOacuZ22Q0ySSCScSVrx80Ibn73d1n7kvjCf2jf4FYXtmYuK897bVYPe9P/XEX0268Xbc0hVnByCnhyBnrZDzdiglL+S5IORyGHIlosmViKoeGkVncVRfPhRVO4ci3fbiSHd5MdJtL0TV9kJEbVcjXWV+pCtXIl25ElXl+YjeXYyiXY2oCq0xH4Y8F4Jc8ELOOSELQ1AyZkhpM95OWtRXEm78ZDp0P8N4bB0HcIw70EwPXrucNaOVHNDElBkSKVNwQSn5oJTDUOYjUCpRIyJoL0S1djWqtxci6CxGiQzovF2NQKlGoVRH0a5GiTDk+Qi1urIwqirVUZ3WkCujLJT5MBQSp+SDnHdByg5CSpm0bs4KMe+4nIu8zi28dztDcWhQTplbZGcrY9OlvAdyMQB5bhhymUCMQKGoRNGujBgRYdEh4ESkOoJOZcQgQIT5uE7lFGILm6FQVDeTEFAoqL88DLHg09t5B5Sco4GKe2AtxnUPGqSkB/9jOe9EK+/RpGIQ8lz4ZDAXwgYgasNQjJZAEMBOZZh9JlZGGGFGusyJ0zzuyugqkVWirN3MxJHKw6peDaBd8j23etc62zOgx7Cdd38JlRBahaAqzYUhrYIfgVwmJwwCVa48lUjbAEGfE2C14sfKfAASlQ45R/uGiPTUr5Az5GiUlRaRYyXGrolARMWRKFbmhx89a/2f3Ad8kJTz34aFMMRiUJWKw7x8VgmEjRLiADgQKifaEyOQqlGg7MUPi5N4YX4vtHkvRObAMCe6MAq52qv7qAGar8ncYmU6CpEIHB2DsrBl6tcmIM6F9usLwxCLAU0u0cYKGsoTEIMAI8Hrn5UH3UkqYXTKQdQXtmHf3z6Pe574Z4isL8DAtQ3iEilciXIxDFF40PkIqb9KQFrcHCNMx872DbVXZ3LFt6ldCryxPB+EWArqDBhFeZiBZzXPFOObkz6TS+RQEMp8CNqcG8IjT+DzP5eQfK6G+cXDwJwTEoErhfhYUr1MZUn7i5ck9Slzw1CoZDkJndzqLETrneqobW2Jr6t+tzoyj8NhSAV/Vy4FmPp0e2NRDrFS6LnA7+HDbI+Qat2CE19/LIf0vzXxo1ffwLd++SY+80+v4emj90PN2akkITESBulSaDWUYggKE4K7IZXDaM6Fuji6GctHtz+0bhmt7nLBfWGnHPjlSjkIqejX5IKfiPCg5MwNgwCVVM+dOQ5MzdtReOQvUX5Rwouvv4kf/Pcb2P+chMOHF4C8FS0CVhpmYyUGnJcnW9sgQv28DaJVCukkVGdx9G1Z8G1a+5XnjOrLpdCkPh+AmPdqHHiAR94gQAnnuAs94CxKAUilADolD94ojGLfF7+Pr/yigUd+Vse9j30TzWwA7aKPCdATQaa2FGSuiAWKAMRCCFJhGHIxxJ49IpEoBlUsUulG73xPF3pPuE7R/xjm/WjlPKqY94GCFpJWw1COSKwqH4Ay54c8FyDFoOWH8J3ix3Hnt9/Bfd96BS8IV0DL2Y25AUjlECsPmUqPRGHrBiHm/YwAd8W/Kkoz71dxKIzOoS1fPeM+6D0c2AMs73lBmyMCXq2V80IqEAEfpAI/P5nQv0pKZJ/TOPrMi0beD+QtePxwDn9dPQAIFjTyAdZPwAiUaJSIRPPZmj0CdE2ue9l3IynvRavo15bnmXM/w6Ph31tb8n1rawqlwEap4HtLyXvRFLw6cyDnhUhfJfJu0FcKke2FHgG/kczYI+RW3gul6OEABAckwYUWc9LLiRrzebkE1gRfo1XwMyKUi9YjDM2cT5dIzFKgrRza1n+aC72L5UrE0yz4l1tZN5pZry4KHrQEN7kBMefhQYoUfGQrmpSw6IPIHPIxtZhjBU6c5vXAc0AGKJqXY8DQyPlRz/nZOY3l4435AhMSTcGti4KbEZerkZHTCRgPiJYQ2q5S+QhulcA3My40swTccCLnRZPagg9a2Qt9joMihwi8WODKUxDZlmCQzrlYkIq0Vg+8mPdBL3vRLXnYuk0SrDeGgJOQGRdaWZfeyrl1mXIJ/o+u3bPvIlDLBCfUuQBNVMWsCy02ubcob1vkQN6Hr90VwZc/OYITAinvYcmYSgahFgNOKrrRElwQKQxSDYETfSvjx1/tG8WTd0cg5UgwJ+unOdx9D8+fdenNjEuXWI4zETDsEOdGvI2sb7mRcqCRdupUSi0iItDCLtQFD7olLz530xZc4rwaF7muRvL67WjnnKhnKJExfhU8B0HKMvBZctTNrpWCF5/dPYGLXLsx4N2Nx2+NsodgPeNGK+MECUjuNzNUzowAE04uByOnl1DvIbYQubiZdrwuZexopBwaJWNJMw6WuJ51Y7nowW07LsMm107Y/LswMboDjYwTTVKQWe5kbatXEoKxF4TeWi7IOTfeTHkwHv0YHIFd2Oi6GndduR160YmllAvNtJPlbKSdPDJOXcy5IRa8bUUIv+fvAkZCzDh/2Mk60Eg5NUrWSLtQT5MaLjQYARe+8akw/KGr4PRfhcc+uQXLBerjY5hiGQ8azBEjyAWjn0gQKPoX4vO3jMEV2o2RkSvx9N0hdAQ7apQv5URj1o46RcqORtqhdQq0h9w/hTBx/hl/F/RqSsm4jmh5F2qzDrVFSqQ5CQq2qTMudPIu/HTajxf2B6DkqMb5ZuObns559Ag0SIgMU5Kp20rZIKbtaOcceOGzPvzXQS/aggN1Kl0CT61BoEEEUvYu5jxQ8u7Hz/okFjOOy5WsE/UZm96ctaGZsqNONs7a2Xkz7WDXctbBkhI4ftt1cxcMIo2M2wgiT8Ao7OBr2tBiwGxQsjZQydZnWNnyPEYuNj7NiGjLBTc6ec+e0zbwaUSEvg3trONfOxkbagmrRkmYjTM2NGeHWHIKBorVu9PYnATasN/o48CNUpgxgPWEMNappxxc6Vkby9GYGWR52PWsDbVZu9bJOqFkXc/i0fDvnLF8TnMh5ZjiBCwqLVifGWJBC7dSvCViBJDuGHS7JWdqsxwQnTP1mOI9Alz1JgHuiTHLg64papQnOchjZhCN5CBqMzZ1JeeCknXedFb117JTUva/02hTJSwr9YQF9aTVUIe3DaaSYbWhFgUDYwCncmE1zMZyVetJG2pJGsfBNpg4/LqWGFyNOgvripanW6rzyXVBv4uAcUt9R3BcKs0MvtSZtWApZlqpJawGCQsaSTPqScsqCK7YEANDqjWSPbCDqLE+mmfloOKDqMWtVJ5oGKKw/qQVTRKK8jAS1m47bYeUtr9ST9kta7GdnYRxj61Pm4JSYuC15VkzlqZNK/W4WW8mzGjEKUxgzhjEem3TqGEG3ADD+zhRAl6LmVGPkxBWNJLUWtCkNm5GjSJhXVlOD0FM2V+rJWyBtZj+904YEzpps6NxcOAn2qwJjYRZrcXNaj1m0uvTA6jHBlA3iNTinAxTNGnlKscsWIpbUY+bUU+YsZSwYilmZsEIJExoUpAgMRNqMZNaj5m7WnYIjcTgf745bfEzLO/3hcrqP3Wxj/xB7aDpUWXGrK+kCZBJrcUGurXpAb1GJCh5gqu3RGApCGTMwkjU4wNoxAd4f8xMQEHzGrF+clKn9Zam+9XOjEnvpMgl81ea5Us/8r6UP/Wg3wq9RVoz5ol6YvB7StKkd1ME1KQvTfd3a9P9GoFaig9gKdbPAVIp9MgZbtUO9vOY7sfS9Ca9Nr2pW48NaCtpC7oZKxF6vhkzX8vy9vVtAL0t/SAO41URd+NY37libGBHI27+eithUrSMBWJ8QD9xoJ9U1GpxIkBqc5VZEOADG1E7sBFL+zdqJ/Zv7NanN+k6/WU/Y+42EpZ/bCUGJvFoH7/Pk2jv46XJ2YmcsnArbnM1ZgaP1mOmd7qzFrQSZv1ErF81SoKrPt2P2oFNqB24VF3av6nbnO7XtZQFrbhZqh/of0KeNW2m16psffba6YN/gXg6EXqjyMuKJW7NXPzHS3F7vDZt+hWVlpw06UsHmSPdpQMbKVQxTsBp0w+8VU+Yy43k4NC7yvTDAH4akVMSI2H9w1bMdM/SAdNLKykrtJRZR8aqqykT6gcuebWVNCfEGctFq2UpnP1N54dy8DeUJ9/zQnD/fnPacmszbnmomRx6WJq13NXYf8GFq8Bp7G8D8FMPBm6dUvitBX7qsUbl8/h745Pu/P/R9+7jfwBBKCOmh1T0lQAAAABJRU5ErkJggg==">
+      <span>✦ Created together by Lexian &amp; Yao ✦</span>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="summaryModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
+      <header class="modal-head">
+        <div>
+          <h2 id="summaryTitle">本次調整摘要</h2>
+          <p>先用人話看懂，再決定要不要寫回原本的小程式。</p>
+        </div>
+      </header>
+      <div class="modal-body">
+        <div class="prototype-notice">
+          <span aria-hidden="true">◇</span>
+          <span><strong>這是介面操作原型。</strong>今天只會預覽與整理摘要，不會建立、覆蓋或讀取任何真實檔案。</span>
+        </div>
+        <div id="summaryContent"></div>
+        <div class="modal-actions">
+          <button class="primary-button" type="button" data-close-modal="summaryModal">繼續調整</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="helpModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <header class="modal-head">
+        <div>
+          <h2 id="helpTitle">先直接碰畫面</h2>
+          <p>這版是用來確認 Studio 的操作手感，不需要妳懂 CSS。</p>
+        </div>
+      </header>
+      <div class="modal-body">
+        <ol class="help-steps">
+          <li>點畫面上的文字、區塊、雙星光、摘要卡、按鈕或導覽項目。</li>
+          <li>直接拖動選中的元素；拉選取框右下角，可以等比例放大或縮小。</li>
+          <li>右側可以微調位置、大小、顏色、圓角與陰影；不同元素只顯示適合它的項目。</li>
+          <li>選中「最近片段卡」後，可以在右側上傳自己的圖片並切換填滿或完整顯示。</li>
+          <li>切換手機、平板與電腦，確認這次調整要只留在目前尺寸，還是套到所有尺寸。</li>
+          <li>用復原／重做回頭；「查看調整摘要」會把 CSS 數字翻成妳看得懂的變更。</li>
+        </ol>
+        <div class="modal-actions">
+          <button class="primary-button" type="button" data-close-modal="helpModal">開始玩</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      document.querySelectorAll('img[src^="data:image/png;base64,"]').forEach(image => {
+        image.src = image.src.replace("HnByCnhyB", "HnByCnByB");
+      });
+
+      const DEVICE_NAMES = {
+        phone: "手機",
+        tablet: "平板",
+        desktop: "電腦"
+      };
+
+      const DEVICE_SIZES = {
+        phone: { width: 390, height: 780 },
+        tablet: { width: 768, height: 880 },
+        desktop: { width: 1120, height: 720 }
+      };
+
+      const FONT_STACKS = {
+        clear: '"Microsoft JhengHei", "PingFang TC", system-ui, sans-serif',
+        round: '"Arial Rounded MT Bold", "Microsoft JhengHei", "PingFang TC", system-ui, sans-serif',
+        serif: '"Iowan Old Style", "Noto Serif TC", "Songti TC", serif'
+      };
+
+      const makeProps = extra => ({ x: 0, y: 0, scale: 1, ...extra });
+      const sameDefaults = extra => ({
+        phone: makeProps(extra),
+        tablet: makeProps(extra),
+        desktop: makeProps(extra)
+      });
+      const responsiveDefaults = (phone, tablet = phone, desktop = tablet) => ({
+        phone: makeProps(phone),
+        tablet: makeProps(tablet),
+        desktop: makeProps(desktop)
+      });
+
+      const ELEMENTS = {
+        header: {
+          label: "頁首區塊",
+          kind: "區塊",
+          nodeId: "demo-header",
+          controls: ["background"],
+          help: "這是整個頁首區塊。點空白處就能選中它，調整整區位置、大小或背景色。",
+          defaults: sameDefaults({ background: "#f5e4c3" })
+        },
+        kicker: {
+          label: "英文眉題",
+          kind: "文字",
+          nodeId: "demo-kicker",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是標題上方的小字。可以單獨移動、縮放，也能調字級、字體與顏色。",
+          defaults: sameDefaults({ fontSize: 11, fontFamily: "clear", color: "#a27757" })
+        },
+        title: {
+          label: "標題",
+          kind: "文字",
+          nodeId: "demo-title",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是主標題。可以拖動、縮放，也能在右側改字級、字體氣質與顏色。",
+          defaults: responsiveDefaults(
+            { fontSize: 31, fontFamily: "round", color: "#49392f" },
+            { fontSize: 38, fontFamily: "round", color: "#49392f" },
+            { fontSize: 42, fontFamily: "round", color: "#49392f" }
+          )
+        },
+        subtitle: {
+          label: "副標文字",
+          kind: "文字",
+          nodeId: "demo-subtitle",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是主標題下方的說明文字，可以單獨調整位置、大小、字體與顏色。",
+          defaults: responsiveDefaults(
+            { fontSize: 12, fontFamily: "clear", color: "#8a705c" },
+            { fontSize: 14, fontFamily: "clear", color: "#8a705c" },
+            { fontSize: 14, fontFamily: "clear", color: "#8a705c" }
+          )
+        },
+        stars: {
+          label: "雙星光",
+          kind: "裝飾",
+          nodeId: "demo-stars",
+          controls: ["color"],
+          help: "這是一組裝飾。拖動畫面會改位置，拉右下角會等比例縮放；鍵盤方向鍵也能微調。",
+          defaults: sameDefaults({ color: "#8a6a49" })
+        },
+        helloTitle: {
+          label: "今日標題",
+          kind: "文字",
+          nodeId: "demo-hello-title",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是內容區的小標題，可以單獨移動、縮放與換色。",
+          defaults: sameDefaults({ fontSize: 15, fontFamily: "round", color: "#56483f" })
+        },
+        updateTime: {
+          label: "更新時間",
+          kind: "文字",
+          nodeId: "demo-update-time",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是更新時間文字，可以單獨調整，不會連帶移動旁邊的標題。",
+          defaults: sameDefaults({ fontSize: 10, fontFamily: "clear", color: "#a48c78" })
+        },
+        note: {
+          label: "最新紀錄卡",
+          kind: "卡片",
+          nodeId: "demo-note",
+          controls: ["background", "radius", "shadow"],
+          shadowStyle: "0 13px 30px rgba(106, 80, 50, 0.11)",
+          help: "這是整張最新紀錄卡。可以調位置、大小、底色、圓角和陰影；卡內文字也能分開選。",
+          defaults: responsiveDefaults(
+            { background: "#fff0b8", radius: 22, shadow: true },
+            { background: "#fff0b8", radius: 22, shadow: true },
+            { background: "#fff0b8", radius: 24, shadow: true }
+          )
+        },
+        noteLabel: {
+          label: "紀錄標籤",
+          kind: "文字",
+          nodeId: "demo-note-label",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是紀錄卡上方的小標籤，可以獨立調整。",
+          defaults: sameDefaults({ fontSize: 10, fontFamily: "clear", color: "#9b7450" })
+        },
+        noteMain: {
+          label: "紀錄標題",
+          kind: "文字",
+          nodeId: "demo-note-main",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是紀錄卡的主要文字，可以單獨改大小、字體與顏色。",
+          defaults: responsiveDefaults(
+            { fontSize: 20, fontFamily: "round", color: "#5d4a36" },
+            { fontSize: 20, fontFamily: "round", color: "#5d4a36" },
+            { fontSize: 27, fontFamily: "round", color: "#5d4a36" }
+          )
+        },
+        noteMeta: {
+          label: "紀錄內容",
+          kind: "文字",
+          nodeId: "demo-note-meta",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是紀錄卡內的補充內容，可以獨立移動、縮放與換色。",
+          defaults: sameDefaults({ fontSize: 11, fontFamily: "clear", color: "#806b58" })
+        },
+        waterCard: {
+          label: "閱讀摘要卡",
+          kind: "卡片",
+          nodeId: "demo-water-card",
+          controls: ["color", "background", "radius", "shadow"],
+          shadowStyle: "0 10px 24px rgba(80, 62, 45, 0.10)",
+          help: "這是一張摘要卡，可以單獨移動、縮放並調整卡片外觀。",
+          defaults: sameDefaults({ color: "#69594d", background: "#fffdf8", radius: 18, shadow: false })
+        },
+        activityCard: {
+          label: "活動摘要卡",
+          kind: "卡片",
+          nodeId: "demo-activity-card",
+          controls: ["color", "background", "radius", "shadow"],
+          shadowStyle: "0 10px 24px rgba(80, 62, 45, 0.10)",
+          help: "這是一張摘要卡，可以單獨移動、縮放並調整卡片外觀。",
+          defaults: sameDefaults({ color: "#69594d", background: "#fffdf8", radius: 18, shadow: false })
+        },
+        photo: {
+          label: "最近片段卡",
+          kind: "圖片",
+          nodeId: "demo-photo-card",
+          controls: ["background", "radius", "shadow", "image"],
+          shadowStyle: "0 10px 24px rgba(80, 62, 45, 0.10)",
+          help: "這是圖片卡。除了位置與外觀，還能在右側上傳自己的圖片，或切換填滿與完整顯示。",
+          defaults: sameDefaults({
+            background: "#fffdf8",
+            radius: 18,
+            shadow: false,
+            imageSrc: "",
+            imageName: "",
+            imageFit: "cover"
+          })
+        },
+        record: {
+          label: "新增紀錄按鈕",
+          kind: "按鈕",
+          nodeId: "demo-record",
+          controls: ["fontSize", "fontFamily", "color", "background", "radius", "shadow"],
+          shadowStyle: "0 12px 24px rgba(151, 78, 52, 0.20)",
+          help: "這是主要按鈕。可以調位置、大小、文字與底色；這版不會觸發按鈕原本的功能。",
+          defaults: responsiveDefaults(
+            { fontSize: 15, fontFamily: "round", color: "#fffaf4", background: "#c96f50", radius: 27, shadow: true },
+            { fontSize: 16, fontFamily: "round", color: "#fffaf4", background: "#c96f50", radius: 29, shadow: true },
+            { fontSize: 16, fontFamily: "round", color: "#fffaf4", background: "#c96f50", radius: 27, shadow: true }
+          )
+        },
+        nav: {
+          label: "底部導覽列",
+          kind: "導覽",
+          nodeId: "demo-nav",
+          controls: ["background", "radius", "shadow"],
+          shadowStyle: "0 12px 35px rgba(84, 62, 45, 0.13)",
+          help: "這是整組底部導覽。點空白處會選整組；裡面的三個項目也能分開選。",
+          defaults: sameDefaults({ background: "#fffaf1", radius: 28, shadow: true })
+        },
+        navHome: {
+          label: "首頁導覽項目",
+          kind: "導覽項目",
+          nodeId: "demo-nav-home",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是首頁導覽項目，可以單獨調位置、大小與文字顏色。",
+          defaults: sameDefaults({ fontSize: 9, fontFamily: "clear", color: "#9b583f" })
+        },
+        navWiki: {
+          label: "靈感導覽項目",
+          kind: "導覽項目",
+          nodeId: "demo-nav-wiki",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是靈感導覽項目，可以單獨調位置、大小與文字顏色。",
+          defaults: sameDefaults({ fontSize: 9, fontFamily: "clear", color: "#8e7968" })
+        },
+        navRecords: {
+          label: "記錄導覽項目",
+          kind: "導覽項目",
+          nodeId: "demo-nav-records",
+          controls: ["fontSize", "fontFamily", "color"],
+          help: "這是記錄導覽項目，可以單獨調位置、大小與文字顏色。",
+          defaults: sameDefaults({ fontSize: 9, fontFamily: "clear", color: "#8e7968" })
+        }
+      };
+
+      const dom = {
+        workbench: document.getElementById("workbench"),
+        canvasSizer: document.getElementById("canvasSizer"),
+        projectModeLabel: document.getElementById("projectModeLabel"),
+        projectNameLabel: document.getElementById("projectNameLabel"),
+        safeStateLabel: document.getElementById("safeStateLabel"),
+        htmlImportInput: document.getElementById("htmlImportInput"),
+        exportHtmlButton: document.getElementById("exportHtmlButton"),
+        returnDemoButton: document.getElementById("returnDemoButton"),
+        importPreviewShell: document.getElementById("importPreviewShell"),
+        importPreviewFrame: document.getElementById("importPreviewFrame"),
+        importFileName: document.getElementById("importFileName"),
+        importRecognizedCount: document.getElementById("importRecognizedCount"),
+        importSafeCount: document.getElementById("importSafeCount"),
+        importViewOnlyCount: document.getElementById("importViewOnlyCount"),
+        importBlockedCount: document.getElementById("importBlockedCount"),
+        importSafetySummary: document.getElementById("importSafetySummary"),
+        importEditCount: document.getElementById("importEditCount"),
+        importEditSummary: document.getElementById("importEditSummary"),
+        importExportReason: document.getElementById("importExportReason"),
+        importInspector: document.getElementById("importInspector"),
+        importSelectedTag: document.getElementById("importSelectedTag"),
+        importSelectedLabel: document.getElementById("importSelectedLabel"),
+        importSelectedRuntimeId: document.getElementById("importSelectedRuntimeId"),
+        importSelectedStatus: document.getElementById("importSelectedStatus"),
+        importSelectedReason: document.getElementById("importSelectedReason"),
+        importEditGate: document.getElementById("importEditGate"),
+        importEditControls: document.getElementById("importEditControls"),
+        importTextControl: document.getElementById("importTextControl"),
+        importFontSizeControl: document.getElementById("importFontSizeControl"),
+        importTextColorControl: document.getElementById("importTextColorControl"),
+        importTextColorOutput: document.getElementById("importTextColorOutput"),
+        importBackgroundColorControl: document.getElementById("importBackgroundColorControl"),
+        importBackgroundColorOutput: document.getElementById("importBackgroundColorOutput"),
+        importWidthControl: document.getElementById("importWidthControl"),
+        importHeightControl: document.getElementById("importHeightControl"),
+        importRadiusControl: document.getElementById("importRadiusControl"),
+        importXControl: document.getElementById("importXControl"),
+        importYControl: document.getElementById("importYControl"),
+        changeDock: document.getElementById("changeDock"),
+        inspector: document.getElementById("inspector"),
+        page: document.getElementById("demoPage"),
+        overlay: document.getElementById("selectionOverlay"),
+        selectionLabel: document.getElementById("selectionLabel"),
+        resizeHandle: document.getElementById("resizeHandle"),
+        canvasTip: document.getElementById("canvasTip"),
+        deviceDimensions: document.getElementById("deviceDimensions"),
+        zoomSelect: document.getElementById("zoomSelect"),
+        undoButton: document.getElementById("undoButton"),
+        redoButton: document.getElementById("redoButton"),
+        summaryButton: document.getElementById("summaryButton"),
+        dockSummaryButton: document.getElementById("dockSummaryButton"),
+        headerChangeCount: document.getElementById("headerChangeCount"),
+        dockChangeCount: document.getElementById("dockChangeCount"),
+        dockChangeText: document.getElementById("dockChangeText"),
+        selectedName: document.getElementById("selectedName"),
+        selectedKind: document.getElementById("selectedKind"),
+        selectedHelp: document.getElementById("selectedHelp"),
+        currentDeviceScope: document.getElementById("currentDeviceScope"),
+        scopeMessage: document.getElementById("scopeMessage"),
+        resetElementButton: document.getElementById("resetElementButton"),
+        resetAllButton: document.getElementById("resetAllButton"),
+        xControl: document.getElementById("xControl"),
+        yControl: document.getElementById("yControl"),
+        scaleControl: document.getElementById("scaleControl"),
+        fontSizeControl: document.getElementById("fontSizeControl"),
+        fontFamilyControl: document.getElementById("fontFamilyControl"),
+        colorControl: document.getElementById("colorControl"),
+        backgroundControl: document.getElementById("backgroundControl"),
+        radiusControl: document.getElementById("radiusControl"),
+        shadowControl: document.getElementById("shadowControl"),
+        imageFitControl: document.getElementById("imageFitControl"),
+        imageUpload: document.getElementById("imageUpload"),
+        removeImageButton: document.getElementById("removeImageButton"),
+        imageFileName: document.getElementById("imageFileName"),
+        photoImage: document.getElementById("demo-photo-image"),
+        photoPlaceholder: document.getElementById("photoPlaceholder"),
+        photoCaption: document.getElementById("photoCaption"),
+        xOutput: document.getElementById("xOutput"),
+        yOutput: document.getElementById("yOutput"),
+        scaleOutput: document.getElementById("scaleOutput"),
+        fontSizeOutput: document.getElementById("fontSizeOutput"),
+        radiusOutput: document.getElementById("radiusOutput"),
+        colorValue: document.getElementById("colorValue"),
+        backgroundValue: document.getElementById("backgroundValue"),
+        textSection: document.getElementById("textSection"),
+        textSectionTitle: document.getElementById("textSectionTitle"),
+        surfaceSection: document.getElementById("surfaceSection"),
+        imageSection: document.getElementById("imageSection"),
+        fontSizeControlRow: document.getElementById("fontSizeControlRow"),
+        fontFamilyControlRow: document.getElementById("fontFamilyControlRow"),
+        textColorControlRow: document.getElementById("textColorControlRow"),
+        backgroundControlRow: document.getElementById("backgroundControlRow"),
+        radiusControlRow: document.getElementById("radiusControlRow"),
+        shadowControlRow: document.getElementById("shadowControlRow"),
+        summaryModal: document.getElementById("summaryModal"),
+        helpModal: document.getElementById("helpModal"),
+        summaryContent: document.getElementById("summaryContent"),
+        helpButton: document.getElementById("helpButton"),
+        toast: document.getElementById("toast")
+      };
+
+      const clone = value => JSON.parse(JSON.stringify(value));
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const objectUrls = new Set();
+
+      const defaults = {};
+      Object.entries(ELEMENTS).forEach(([id, config]) => {
+        defaults[id] = clone(config.defaults);
+      });
+
+      const state = {
+        mode: "demo",
+        importSession: null,
+        device: "phone",
+        zoom: 1,
+        fitScale: 1,
+        renderScale: 1,
+        scope: "current",
+        selected: "stars",
+        edits: clone(defaults),
+        history: [],
+        future: [],
+        controlStart: null,
+        gesture: null,
+        lastModalTrigger: null
+      };
+
+      const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
+      const IMPORT_CSP = [
+        "default-src 'none'",
+        "script-src 'none'",
+        "connect-src 'none'",
+        "object-src 'none'",
+        "frame-src 'none'",
+        "form-action 'none'",
+        "base-uri 'none'",
+        "style-src 'unsafe-inline'",
+        "img-src data: blob:",
+        "font-src data: blob:",
+        "media-src data: blob:",
+        "worker-src 'none'",
+        "child-src 'none'",
+        "navigate-to 'none'"
+      ].join("; ");
+      const IMPORT_BLOCKED_TAGS = new Set([
+        "script", "iframe", "frame", "frameset", "object", "embed", "applet",
+        "portal", "fencedframe", "link", "base", "template"
+      ]);
+      const IMPORT_EXCLUDED_TAGS = new Set(["html", "head", "body", "meta", "style", "title"]);
+      const IMPORT_VIEW_ONLY_TAGS = new Set([
+        "a", "button", "form", "fieldset", "input", "select", "option", "textarea",
+        "canvas", "svg", "math", "audio", "video", "source", "track", "details",
+        "summary", "dialog", "map", "area"
+      ]);
+      const IMPORT_URL_ATTRIBUTES = new Set([
+        "href", "src", "srcset", "poster", "action", "formaction", "data", "cite",
+        "background", "longdesc", "usemap", "manifest", "profile", "xlink:href", "srcdoc"
+      ]);
+      const IMPORT_EXPORT_PROPERTIES = new Set([
+        "text", "fontSize", "color", "backgroundColor", "width", "height", "radius", "x", "y"
+      ]);
+      const IMPORT_EXPORT_RANGES = Object.freeze({
+        fontSize: [6, 240],
+        width: [12, 1600],
+        height: [12, 1600],
+        radius: [0, 400],
+        x: [-800, 800],
+        y: [-800, 800]
+      });
+      const IMPORT_INTERNAL_ATTRIBUTES = new Set(["data-lts-runtime-id", "data-lts-source-key"]);
+      const IMPORT_INTERNAL_IDS = new Set(["lts-import-edit-overlay", "lts-import-resize-handle"]);
+      const IMPORT_INTERNAL_CLASSES = new Set(["lts-import-selected"]);
+      const IMPORT_PREVIEW_STYLE = `
+        :root { color-scheme: light; }
+        html { min-height: 100%; background: #fffdf8; }
+        body { min-height: 100%; margin: 0; }
+        [data-lts-runtime-id] { cursor: pointer !important; }
+        .lts-import-selected {
+          outline: 3px solid #d86a4a !important;
+          outline-offset: 2px !important;
+          box-shadow: 0 0 0 2px rgba(255, 253, 248, 0.92) !important;
+        }
+        #lts-import-edit-overlay {
+          position: absolute;
+          z-index: 2147483646;
+          display: none;
+          pointer-events: none;
+          border: 2px solid #d86a4a;
+          border-radius: 5px;
+          box-shadow: 0 0 0 2px rgba(255, 253, 248, 0.9);
+        }
+        #lts-import-resize-handle {
+          position: absolute;
+          right: -9px;
+          bottom: -9px;
+          width: 18px;
+          height: 18px;
+          padding: 0;
+          pointer-events: auto;
+          border: 2px solid white;
+          border-radius: 5px;
+          background: #d86a4a;
+          box-shadow: 0 3px 10px rgba(61, 35, 25, 0.35);
+          cursor: nwse-resize;
+        }
+      `;
+
+      function isSafeDataOrBlobUrl(value, purpose = "media") {
+        const normalized = value.trim().replace(/[\u0000-\u001f\u007f\s]+/g, "");
+        if (/^blob:/i.test(normalized)) return true;
+        if (purpose === "font") {
+          return /^data:(?:font\/(?:woff2?|ttf|otf)|application\/(?:font-woff|font-sfnt|vnd\.ms-fontobject));/i.test(normalized);
+        }
+        return /^data:image\/(?:png|jpe?g|gif|webp|avif);/i.test(normalized)
+          || /^data:(?:audio|video)\/[a-z0-9.+-]+;/i.test(normalized);
+      }
+
+      function sanitizeImportedCss(cssText, noteBlocked) {
+        let cleaned = String(cssText || "");
+        cleaned = cleaned.replace(/@import\s+(?:url\s*\([^)]*\)|[^;]+);?/gi, () => {
+          noteBlocked("CSS @import");
+          return "";
+        });
+        cleaned = cleaned.replace(/url\s*\(\s*(['\"]?)(.*?)\1\s*\)/gi, (match, quote, rawUrl) => {
+          const purpose = /(?:font-face|font-family)/i.test(cleaned) ? "font" : "media";
+          if (isSafeDataOrBlobUrl(rawUrl, purpose)) return `url("${rawUrl.trim().replace(/\"/g, "%22")}")`;
+          noteBlocked("CSS external resource");
+          return "none";
+        });
+        cleaned = cleaned.replace(/(['\"])(?:https?:)?\/\/[^'\"]*\1/gi, () => {
+          noteBlocked("CSS external resource");
+          return "none";
+        });
+        cleaned = cleaned.replace(/(?:https?:)?\/\/[^\s)'\";}]+/gi, () => {
+          noteBlocked("CSS external resource");
+          return "none";
+        });
+        cleaned = cleaned.replace(/(?:expression\s*\(|-moz-binding\s*:|behavior\s*:)/gi, () => {
+          noteBlocked("unsafe CSS behavior");
+          return "blocked-";
+        });
+        cleaned = cleaned.replace(/javascript\s*:/gi, () => {
+          noteBlocked("javascript URL");
+          return "blocked:";
+        });
+        return cleaned;
+      }
+
+      function importElementLabel(element) {
+        const explicit = element.getAttribute("aria-label")
+          || element.getAttribute("alt")
+          || element.getAttribute("title")
+          || element.getAttribute("name");
+        const text = (explicit || element.textContent || "").replace(/\s+/g, " ").trim();
+        return (text || `<${element.tagName.toLowerCase()}>`).slice(0, 80);
+      }
+
+      function classifyImportedElement(element) {
+        const tag = element.tagName.toLowerCase();
+        const isCustom = tag.includes("-");
+        const isComplexDescendant = Boolean(element.parentElement?.closest(
+          "a, button, form, fieldset, input, select, option, textarea, canvas, svg, math, audio, video, details, dialog"
+        ));
+        const isEditable = element.hasAttribute("contenteditable")
+          && element.getAttribute("contenteditable") !== "false";
+        if (IMPORT_VIEW_ONLY_TAGS.has(tag) || isCustom || isComplexDescendant || isEditable) {
+          let reason = "複雜或互動結構只提供唯讀辨識。";
+          if (tag === "a" || tag === "area") reason = "連結導向已移除，只提供唯讀辨識。";
+          else if (["button", "form", "fieldset", "input", "select", "option", "textarea"].includes(tag)) {
+            reason = "表單與控制行為已停用，只提供唯讀辨識。";
+          } else if (isCustom) reason = "自訂元素不執行元件程式，只提供唯讀辨識。";
+          else if (isEditable) reason = "contenteditable 已停用，只提供唯讀辨識。";
+          return { status: "view-only", reason };
+        }
+        return { status: "safe", reason: "靜態 DOM 元素，可在隔離預覽中選取查看。" };
+      }
+
+      function sanitizeImportedHtml(sourceCopy) {
+        const parser = new DOMParser();
+        const previewDocument = parser.parseFromString(sourceCopy, "text/html");
+        const blockedReasons = new Map();
+        const noteBlocked = (reason, count = 1) => {
+          blockedReasons.set(reason, (blockedReasons.get(reason) || 0) + count);
+        };
+
+        const sourcePaths = new WeakMap();
+        const recordSourcePaths = (element, path = []) => {
+          sourcePaths.set(element, path);
+          [...element.children].forEach((child, index) => recordSourcePaths(child, [...path, index]));
+        };
+        if (previewDocument.documentElement) recordSourcePaths(previewDocument.documentElement);
+
+        previewDocument.querySelectorAll("*").forEach(element => {
+          [...element.attributes].forEach(attribute => {
+            if (IMPORT_INTERNAL_ATTRIBUTES.has(attribute.name.toLowerCase())) {
+              element.removeAttribute(attribute.name);
+              noteBlocked("reserved Studio marker");
+            }
+          });
+          if (IMPORT_INTERNAL_IDS.has(element.id)) {
+            element.removeAttribute("id");
+            noteBlocked("reserved Studio marker");
+          }
+          const reservedClasses = [...element.classList].filter(name => IMPORT_INTERNAL_CLASSES.has(name));
+          reservedClasses.forEach(name => element.classList.remove(name));
+          if (reservedClasses.length) noteBlocked("reserved Studio marker", reservedClasses.length);
+          if (!element.classList.length) element.removeAttribute("class");
+        });
+
+        previewDocument.querySelectorAll("*").forEach(element => {
+          const tag = element.tagName.toLowerCase();
+          if (IMPORT_BLOCKED_TAGS.has(tag)) {
+            noteBlocked(`removed <${tag}>`);
+            element.remove();
+          }
+        });
+
+        previewDocument.querySelectorAll('meta[http-equiv]').forEach(meta => {
+          noteBlocked("redirect or policy meta");
+          meta.remove();
+        });
+
+        previewDocument.querySelectorAll("*").forEach(element => {
+          [...element.attributes].forEach(attribute => {
+            const name = attribute.name.toLowerCase();
+            const value = attribute.value.trim();
+            if (name.startsWith("on")) {
+              element.removeAttribute(attribute.name);
+              noteBlocked("inline event handler");
+              return;
+            }
+            if (["download", "target", "ping", "autofocus"].includes(name)) {
+              element.removeAttribute(attribute.name);
+              noteBlocked(`disabled ${name} attribute`);
+              return;
+            }
+            if (IMPORT_URL_ATTRIBUTES.has(name)) {
+              const tag = element.tagName.toLowerCase();
+              const resourceMayRemain = name === "src"
+                && ["img", "audio", "video", "source", "track"].includes(tag)
+                && isSafeDataOrBlobUrl(value);
+              const localSvgReference = (name === "href" || name === "xlink:href")
+                && tag === "use"
+                && /^#[A-Za-z][\w:.-]*$/.test(value);
+              if (!resourceMayRemain && !localSvgReference) {
+                element.removeAttribute(attribute.name);
+                noteBlocked(/^javascript\s*:/i.test(value) ? "javascript URL" : "navigation or external resource");
+              }
+            }
+          });
+
+          if (element.hasAttribute("style")) {
+            const cleanedStyle = sanitizeImportedCss(element.getAttribute("style"), noteBlocked);
+            if (cleanedStyle.trim()) element.setAttribute("style", cleanedStyle);
+            else element.removeAttribute("style");
+          }
+          if (element.hasAttribute("contenteditable")) element.setAttribute("contenteditable", "false");
+          if (element.tagName.toLowerCase() === "form") {
+            ["action", "method", "enctype", "accept-charset", "target"].forEach(name => {
+              if (element.hasAttribute(name)) {
+                element.removeAttribute(name);
+                noteBlocked("disabled form configuration");
+              }
+            });
+          }
+          if (["input", "select", "textarea", "option", "fieldset"].includes(element.tagName.toLowerCase())) {
+            element.setAttribute("disabled", "");
+          }
+          if (element.tagName.toLowerCase() === "button") element.setAttribute("type", "button");
+          if (["a", "area", "button", "form"].includes(element.tagName.toLowerCase())) {
+            element.setAttribute("aria-disabled", "true");
+          }
+        });
+
+        previewDocument.querySelectorAll("style").forEach(style => {
+          style.textContent = sanitizeImportedCss(style.textContent, noteBlocked);
+        });
+
+        const registry = new Map();
+        let runtimeIndex = 0;
+        previewDocument.querySelectorAll("*").forEach(element => {
+          const tag = element.tagName.toLowerCase();
+          if (IMPORT_EXCLUDED_TAGS.has(tag)) return;
+          runtimeIndex += 1;
+          const runtimeId = `lts-runtime-${String(runtimeIndex).padStart(4, "0")}`;
+          const classification = classifyImportedElement(element);
+          element.setAttribute("data-lts-runtime-id", runtimeId);
+          registry.set(runtimeId, {
+            runtimeId,
+            tag,
+            label: importElementLabel(element),
+            status: classification.status,
+            reason: classification.reason,
+            sourcePath: sourcePaths.get(element) || null
+          });
+        });
+
+        let head = previewDocument.head;
+        if (!head) {
+          head = previewDocument.createElement("head");
+          previewDocument.documentElement.prepend(head);
+        }
+        const csp = previewDocument.createElement("meta");
+        csp.setAttribute("http-equiv", "Content-Security-Policy");
+        csp.setAttribute("content", IMPORT_CSP);
+        head.prepend(csp);
+        const previewStyle = previewDocument.createElement("style");
+        previewStyle.setAttribute("data-lts-preview-style", "");
+        previewStyle.textContent = IMPORT_PREVIEW_STYLE;
+        csp.after(previewStyle);
+
+        const statusCounts = { safe: 0, "view-only": 0 };
+        registry.forEach(record => { statusCounts[record.status] += 1; });
+        const blockedCount = [...blockedReasons.values()].reduce((sum, count) => sum + count, 0);
+        const sourcePathKeys = [...registry.values()].map(record => JSON.stringify(record.sourcePath));
+        return {
+          sanitizedHtml: `<!doctype html>\n${previewDocument.documentElement.outerHTML}`,
+          registry,
+          statusCounts,
+          blockedReasons,
+          blockedCount,
+          sourceMappingComplete: sourcePathKeys.every(key => key !== "null"),
+          sourceMappingUnique: new Set(sourcePathKeys).size === sourcePathKeys.length
+        };
+      }
+
+      function importSafetySummary(blockedReasons) {
+        if (!blockedReasons.size) return "未偵測到需要移除的危險能力；預覽仍套用隔離 sandbox 與嚴格 CSP。";
+        return [...blockedReasons.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([reason, count]) => `${reason} × ${count}`)
+          .join("；");
+      }
+
+      function importColorToHex(value, fallback = "#000000") {
+        const normalized = String(value || "").trim();
+        if (/^#[0-9a-f]{6}$/i.test(normalized)) return normalized.toUpperCase();
+        const match = normalized.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+        if (!match) return fallback;
+        return `#${match.slice(1, 4).map(part => Number(part).toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+      }
+
+      function importTranslateToPixels(value) {
+        const match = String(value || "").trim().match(/^(-?\d+(?:\.\d+)?)px(?:\s+(-?\d+(?:\.\d+)?)px)?$/i);
+        return match ? [Math.round(Number(match[1])), Math.round(Number(match[2] || 0))] : [0, 0];
+      }
+
+      function getImportElement(runtimeId) {
+        const previewDocument = dom.importPreviewFrame.contentDocument;
+        return previewDocument?.querySelector(`[data-lts-runtime-id="${runtimeId}"]`) || null;
+      }
+
+      function getOrCreateImportEdit(record, element) {
+        const session = state.importSession;
+        if (!session || !record || !element) return null;
+        if (session.edits[record.runtimeId]) return session.edits[record.runtimeId];
+        const computed = element.ownerDocument.defaultView.getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        const hasLeafText = element.childElementCount === 0 && element.textContent.trim().length > 0;
+        const [initialX, initialY] = importTranslateToPixels(element.style.translate || computed.translate);
+        session.edits[record.runtimeId] = {
+          runtimeId: record.runtimeId,
+          label: record.label,
+          hasLeafText,
+          original: {
+            text: element.textContent,
+            fontSize: element.style.fontSize,
+            color: element.style.color,
+            backgroundColor: element.style.backgroundColor,
+            width: element.style.width,
+            height: element.style.height,
+            borderRadius: element.style.borderRadius,
+            translate: element.style.translate,
+            boxSizing: element.style.boxSizing
+          },
+          values: {
+            text: element.textContent,
+            fontSize: Math.round(parseFloat(computed.fontSize) || 16),
+            color: importColorToHex(computed.color),
+            backgroundColor: importColorToHex(computed.backgroundColor, "#FFFFFF"),
+            width: Math.max(12, Math.round(rect.width)),
+            height: Math.max(12, Math.round(rect.height)),
+            radius: Math.max(0, Math.round(parseFloat(computed.borderRadius) || 0)),
+            x: initialX,
+            y: initialY
+          },
+          active: {}
+        };
+        return session.edits[record.runtimeId];
+      }
+
+      function applyImportEdit(edit) {
+        if (!edit || !state.importSession) return;
+        const element = getImportElement(edit.runtimeId);
+        const record = state.importSession.registry.get(edit.runtimeId);
+        if (!element || !record || record.status !== "safe") return;
+        const { active, original, values } = edit;
+        if (edit.hasLeafText) {
+          element.textContent = active.text ? values.text : original.text;
+        }
+        element.style.fontSize = active.fontSize ? `${values.fontSize}px` : original.fontSize;
+        element.style.color = active.color ? values.color : original.color;
+        element.style.backgroundColor = active.backgroundColor ? values.backgroundColor : original.backgroundColor;
+        element.style.width = active.width ? `${values.width}px` : original.width;
+        element.style.height = active.height ? `${values.height}px` : original.height;
+        element.style.borderRadius = active.radius ? `${values.radius}px` : original.borderRadius;
+        element.style.translate = active.x || active.y ? `${values.x}px ${values.y}px` : original.translate;
+        element.style.boxSizing = active.width || active.height ? "border-box" : original.boxSizing;
+        record.label = importElementLabel(element);
+      }
+
+      function updateImportOverlay() {
+        const session = state.importSession;
+        if (!session?.overlay) return;
+        const { overlay, resizeHandle } = session;
+        const element = session.selectedRuntimeId ? getImportElement(session.selectedRuntimeId) : null;
+        const record = session.selectedRuntimeId ? session.registry.get(session.selectedRuntimeId) : null;
+        if (!element || !record) {
+          overlay.style.display = "none";
+          return;
+        }
+        const rect = element.getBoundingClientRect();
+        const view = element.ownerDocument.defaultView;
+        overlay.style.display = "block";
+        overlay.style.left = `${rect.left + view.scrollX}px`;
+        overlay.style.top = `${rect.top + view.scrollY}px`;
+        overlay.style.width = `${rect.width}px`;
+        overlay.style.height = `${rect.height}px`;
+        resizeHandle.hidden = record.status !== "safe";
+      }
+
+      function applyAllImportEdits() {
+        const session = state.importSession;
+        if (!session) return;
+        Object.values(session.edits).forEach(applyImportEdit);
+        const selectedRecord = session.selectedRuntimeId
+          ? session.registry.get(session.selectedRuntimeId)
+          : null;
+        const selectedElement = session.selectedRuntimeId
+          ? getImportElement(session.selectedRuntimeId)
+          : null;
+        if (selectedRecord && selectedElement) renderImportEditor(selectedRecord, selectedElement);
+        requestAnimationFrame(updateImportOverlay);
+      }
+
+      function importEditedRecords() {
+        const session = state.importSession;
+        if (!session) return [];
+        return Object.values(session.edits).filter(edit => Object.keys(edit.active).length > 0);
+      }
+
+      function resolveImportSourcePath(sourceDocument, sourcePath) {
+        if (!sourceDocument.documentElement || !Array.isArray(sourcePath)) return null;
+        let element = sourceDocument.documentElement;
+        for (const childIndex of sourcePath) {
+          element = element.children[childIndex];
+          if (!element) return null;
+        }
+        return element;
+      }
+
+      function sourceHasImportInternalMarkers(sourceDocument) {
+        return [...sourceDocument.querySelectorAll("*")].some(element => {
+          const hasAttribute = [...element.attributes]
+            .some(attribute => IMPORT_INTERNAL_ATTRIBUTES.has(attribute.name.toLowerCase()));
+          const hasClass = [...element.classList].some(name => IMPORT_INTERNAL_CLASSES.has(name));
+          return hasAttribute || hasClass || IMPORT_INTERNAL_IDS.has(element.id);
+        });
+      }
+
+      function importEditValuesAreValid(edit) {
+        const activeKeys = Object.keys(edit.active);
+        if (!activeKeys.length || activeKeys.some(key => !IMPORT_EXPORT_PROPERTIES.has(key))) return false;
+        if (edit.active.text && (!edit.hasLeafText || typeof edit.values.text !== "string")) return false;
+        if (edit.active.color && !/^#[0-9a-f]{6}$/i.test(edit.values.color)) return false;
+        if (edit.active.backgroundColor && !/^#[0-9a-f]{6}$/i.test(edit.values.backgroundColor)) return false;
+        return Object.entries(IMPORT_EXPORT_RANGES).every(([key, [min, max]]) => {
+          if (!edit.active[key]) return true;
+          const value = Number(edit.values[key]);
+          return Number.isFinite(value) && value >= min && value <= max;
+        });
+      }
+
+      function getImportExportGate() {
+        const session = state.importSession;
+        if (!session) return { allowed: false, reason: "請先匯入 HTML 副本。" };
+        if (session.blockedCount !== 0) {
+          return { allowed: false, reason: "來源含有已被安全清理的能力，不能匯出 active HTML 副本。" };
+        }
+        if (!session.sourceMappingComplete || !session.sourceMappingUnique) {
+          return { allowed: false, reason: "來源元素無法完整且唯一對應，不能安全匯出。" };
+        }
+        const edits = importEditedRecords();
+        if (!edits.length) return { allowed: false, reason: "尚未修改 safe 元素。" };
+        const sourceDocument = new DOMParser().parseFromString(session.immutableSource.source, "text/html");
+        if (sourceHasImportInternalMarkers(sourceDocument)) {
+          return { allowed: false, reason: "來源含有 Studio 保留標記，不能安全匯出。" };
+        }
+        const mappedPaths = new Set();
+        for (const edit of edits) {
+          const record = session.registry.get(edit.runtimeId);
+          if (!record || record.status !== "safe" || !importEditValuesAreValid(edit)) {
+            return { allowed: false, reason: "調整包含非 safe 元素或未通過驗證的值。" };
+          }
+          const pathKey = JSON.stringify(record.sourcePath);
+          const sourceElement = resolveImportSourcePath(sourceDocument, record.sourcePath);
+          if (!sourceElement || sourceElement.tagName.toLowerCase() !== record.tag || mappedPaths.has(pathKey)) {
+            return { allowed: false, reason: "調整無法完整且唯一映射回來源元素。" };
+          }
+          mappedPaths.add(pathKey);
+        }
+        return { allowed: true, reason: `可下載 ${edits.length} 個 safe 元素的靜態修改副本。` };
+      }
+
+      function renderImportExportGate() {
+        const gate = getImportExportGate();
+        dom.exportHtmlButton.disabled = !gate.allowed;
+        dom.importExportReason.textContent = gate.reason;
+      }
+
+      function applyImportEditToExport(sourceElement, edit) {
+        const { active, values } = edit;
+        if (active.text) sourceElement.textContent = String(values.text);
+        if (active.fontSize) sourceElement.style.fontSize = `${Number(values.fontSize)}px`;
+        if (active.color) sourceElement.style.color = values.color;
+        if (active.backgroundColor) sourceElement.style.backgroundColor = values.backgroundColor;
+        if (active.width) sourceElement.style.width = `${Number(values.width)}px`;
+        if (active.height) sourceElement.style.height = `${Number(values.height)}px`;
+        if (active.radius) sourceElement.style.borderRadius = `${Number(values.radius)}px`;
+        if (active.x || active.y) sourceElement.style.translate = `${Number(values.x)}px ${Number(values.y)}px`;
+        if (active.width || active.height) sourceElement.style.boxSizing = "border-box";
+      }
+
+      function serializeImportExport(sourceDocument, source) {
+        const doctype = source.match(/^\s*(<!doctype[^>]*>)/i)?.[1] || "";
+        return `${doctype}${doctype ? "\n" : ""}${sourceDocument.documentElement.outerHTML}`;
+      }
+
+      function buildImportStaticExport() {
+        const session = state.importSession;
+        const gate = getImportExportGate();
+        if (!session || !gate.allowed) throw new Error(gate.reason);
+        const sourceDocument = new DOMParser().parseFromString(session.immutableSource.source, "text/html");
+        const viewOnlyBefore = new Map();
+        session.registry.forEach(record => {
+          if (record.status !== "view-only") return;
+          const element = resolveImportSourcePath(sourceDocument, record.sourcePath);
+          if (element) viewOnlyBefore.set(record.runtimeId, element.outerHTML);
+        });
+        importEditedRecords().forEach(edit => {
+          const record = session.registry.get(edit.runtimeId);
+          const sourceElement = resolveImportSourcePath(sourceDocument, record.sourcePath);
+          applyImportEditToExport(sourceElement, edit);
+        });
+        for (const [runtimeId, originalMarkup] of viewOnlyBefore) {
+          const record = session.registry.get(runtimeId);
+          const sourceElement = resolveImportSourcePath(sourceDocument, record.sourcePath);
+          if (!sourceElement || sourceElement.outerHTML !== originalMarkup) {
+            throw new Error("view-only 元素在匯出時發生非預期變更。");
+          }
+        }
+        if (sourceHasImportInternalMarkers(sourceDocument)) {
+          throw new Error("匯出內容含有 Studio internal marker。");
+        }
+        const exportedHtml = serializeImportExport(sourceDocument, session.immutableSource.source);
+        if (/(?:data-lts-runtime-id|data-lts-source-key|lts-import-selected|lts-import-edit-overlay|lts-import-resize-handle)/i.test(exportedHtml)) {
+          throw new Error("匯出內容含有 Studio internal marker。");
+        }
+        const baseName = session.fileName.replace(/\.html?$/i, "") || "edited";
+        return { exportedHtml, downloadName: `${baseName}.lts-edited.html` };
+      }
+
+      function downloadImportStaticExport() {
+        try {
+          const { exportedHtml, downloadName } = buildImportStaticExport();
+          const blob = new Blob([exportedHtml], { type: "text/html;charset=utf-8" });
+          const objectUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = downloadName;
+          link.hidden = true;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+          showToast(`已下載「${downloadName}」；原始檔案沒有被覆寫。`);
+        } catch (error) {
+          showToast(error instanceof Error ? error.message : "無法建立安全的 HTML 副本。");
+        }
+      }
+
+      function renderImportChangeSummary() {
+        const session = state.importSession;
+        if (!session) return;
+        const edits = importEditedRecords();
+        const labels = {
+          text: "文字",
+          fontSize: "字級",
+          color: "文字色",
+          backgroundColor: "背景",
+          width: "寬度",
+          height: "高度",
+          radius: "圓角",
+          x: "X 位移",
+          y: "Y 位移"
+        };
+        dom.importEditCount.textContent = String(edits.length);
+        dom.importEditSummary.textContent = edits.length
+          ? edits.slice(0, 3).map(edit => {
+              const changed = Object.keys(edit.active).map(key => labels[key]).filter(Boolean).join("、");
+              return `${edit.label}：${changed}`;
+            }).join("；")
+          : "尚未修改；所有變更只留在這次的清理後預覽副本。";
+        dom.undoButton.disabled = session.history.length === 0;
+        dom.redoButton.disabled = session.future.length === 0;
+        renderImportExportGate();
+      }
+
+      function commitImportSnapshot(before, description) {
+        const session = state.importSession;
+        if (!session) return;
+        const after = clone(session.edits);
+        if (shallowEqual(before, after)) return;
+        session.history.push({ before, after, description });
+        if (session.history.length > 80) session.history.shift();
+        session.future = [];
+        renderImportChangeSummary();
+      }
+
+      function undoImport() {
+        const session = state.importSession;
+        const entry = session?.history.pop();
+        if (!entry) return;
+        session.future.push(entry);
+        session.edits = clone(entry.before);
+        applyAllImportEdits();
+        renderImportChangeSummary();
+        showToast(`已復原匯入調整：${entry.description}`);
+      }
+
+      function redoImport() {
+        const session = state.importSession;
+        const entry = session?.future.pop();
+        if (!entry) return;
+        session.history.push(entry);
+        session.edits = clone(entry.after);
+        applyAllImportEdits();
+        renderImportChangeSummary();
+        showToast(`已重做匯入調整：${entry.description}`);
+      }
+
+      function renderImportEditor(record, element) {
+        const isSafe = record?.status === "safe";
+        dom.importEditControls.disabled = !isSafe;
+        if (!isSafe || !element) {
+          dom.importEditGate.textContent = record
+            ? `此元素是 ${record.status}：${record.reason}`
+            : "請先選取預覽中的 safe 元素。";
+          dom.importTextControl.disabled = true;
+          return;
+        }
+        const edit = getOrCreateImportEdit(record, element);
+        dom.importEditGate.textContent = edit.hasLeafText
+          ? "可修改文字與外觀；也可在預覽中直接拖曳，或拉右下角控制點 resize。"
+          : "這個 safe 元素含有子結構；為避免刪除內容，只開放外觀、位移、拖曳與 resize。";
+        dom.importTextControl.disabled = !edit.hasLeafText;
+        dom.importTextControl.value = edit.values.text;
+        dom.importFontSizeControl.value = String(edit.values.fontSize);
+        dom.importTextColorControl.value = edit.values.color.toLowerCase();
+        dom.importTextColorOutput.textContent = edit.values.color;
+        dom.importBackgroundColorControl.value = edit.values.backgroundColor.toLowerCase();
+        dom.importBackgroundColorOutput.textContent = edit.values.backgroundColor;
+        dom.importWidthControl.value = String(edit.values.width);
+        dom.importHeightControl.value = String(edit.values.height);
+        dom.importRadiusControl.value = String(edit.values.radius);
+        dom.importXControl.value = String(edit.values.x);
+        dom.importYControl.value = String(edit.values.y);
+      }
+
+      function beginImportControlChange() {
+        const session = state.importSession;
+        if (!session || session.controlStart) return;
+        session.controlStart = clone(session.edits);
+      }
+
+      function handleImportControlInput(event) {
+        const session = state.importSession;
+        const record = session?.selectedRuntimeId ? session.registry.get(session.selectedRuntimeId) : null;
+        const element = session?.selectedRuntimeId ? getImportElement(session.selectedRuntimeId) : null;
+        if (!session || !record || record.status !== "safe" || !element) return;
+        const edit = getOrCreateImportEdit(record, element);
+        const prop = event.currentTarget.dataset.importControl;
+        if (prop === "text" && !edit.hasLeafText) return;
+        beginImportControlChange();
+        let value = event.currentTarget.value;
+        if (["fontSize", "width", "height", "radius", "x", "y"].includes(prop)) {
+          const min = Number(event.currentTarget.min);
+          const max = Number(event.currentTarget.max);
+          value = clamp(Number(value), min, max);
+        }
+        edit.values[prop] = value;
+        edit.active[prop] = true;
+        applyImportEdit(edit);
+        renderImportEditor(record, element);
+        renderImportChangeSummary();
+        requestAnimationFrame(updateImportOverlay);
+      }
+
+      function finishImportControlChange() {
+        const session = state.importSession;
+        if (!session?.controlStart) return;
+        const before = session.controlStart;
+        session.controlStart = null;
+        const record = session.selectedRuntimeId ? session.registry.get(session.selectedRuntimeId) : null;
+        commitImportSnapshot(before, record?.label || "匯入元素調整");
+      }
+
+      function startImportGesture(event, type) {
+        const session = state.importSession;
+        const record = session?.selectedRuntimeId ? session.registry.get(session.selectedRuntimeId) : null;
+        const element = session?.selectedRuntimeId ? getImportElement(session.selectedRuntimeId) : null;
+        if (!session || !record || record.status !== "safe" || !element) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const edit = getOrCreateImportEdit(record, element);
+        session.gesture = {
+          type,
+          pointerId: event.pointerId,
+          startClientX: event.clientX,
+          startClientY: event.clientY,
+          startX: edit.values.x,
+          startY: edit.values.y,
+          startWidth: edit.values.width,
+          startHeight: edit.values.height,
+          before: clone(session.edits),
+          moved: false
+        };
+        const previewDocument = element.ownerDocument;
+        previewDocument.addEventListener("pointermove", moveImportGesture, { passive: false });
+        previewDocument.addEventListener("pointerup", finishImportGesture, { once: true });
+        previewDocument.addEventListener("pointercancel", finishImportGesture, { once: true });
+      }
+
+      function moveImportGesture(event) {
+        const session = state.importSession;
+        const gesture = session?.gesture;
+        if (!gesture || event.pointerId !== gesture.pointerId) return;
+        event.preventDefault();
+        const dx = event.clientX - gesture.startClientX;
+        const dy = event.clientY - gesture.startClientY;
+        if (Math.abs(dx) + Math.abs(dy) > 1) gesture.moved = true;
+        const edit = session.edits[session.selectedRuntimeId];
+        if (gesture.type === "drag") {
+          edit.values.x = clamp(Math.round(gesture.startX + dx), -800, 800);
+          edit.values.y = clamp(Math.round(gesture.startY + dy), -800, 800);
+          edit.active.x = true;
+          edit.active.y = true;
+        } else {
+          edit.values.width = clamp(Math.round(gesture.startWidth + dx), 12, 1600);
+          edit.values.height = clamp(Math.round(gesture.startHeight + dy), 12, 1600);
+          edit.active.width = true;
+          edit.active.height = true;
+        }
+        applyImportEdit(edit);
+        const record = session.registry.get(session.selectedRuntimeId);
+        const element = getImportElement(session.selectedRuntimeId);
+        if (record && element) renderImportEditor(record, element);
+        renderImportChangeSummary();
+        requestAnimationFrame(updateImportOverlay);
+      }
+
+      function finishImportGesture(event) {
+        const session = state.importSession;
+        const gesture = session?.gesture;
+        if (!gesture || (event?.pointerId != null && event.pointerId !== gesture.pointerId)) return;
+        const previewDocument = dom.importPreviewFrame.contentDocument;
+        previewDocument?.removeEventListener("pointermove", moveImportGesture);
+        session.gesture = null;
+        if (gesture.moved) {
+          const record = session.registry.get(session.selectedRuntimeId);
+          commitImportSnapshot(gesture.before, `${record?.label || "匯入元素"}：${gesture.type === "drag" ? "拖曳" : "resize"}`);
+        }
+      }
+
+      function renderImportSelection(record, selectedElement) {
+        const previewDocument = dom.importPreviewFrame.contentDocument;
+        if (previewDocument) {
+          previewDocument.querySelectorAll(".lts-import-selected").forEach(element => {
+            element.classList.remove("lts-import-selected");
+          });
+        }
+        if (selectedElement) selectedElement.classList.add("lts-import-selected");
+        if (state.importSession) state.importSession.selectedRuntimeId = record?.runtimeId || null;
+        dom.selectedName.textContent = record ? record.label : "匯入副本";
+        dom.selectedKind.textContent = record ? record.status : "預覽限定";
+        dom.importSelectedTag.textContent = record ? `<${record.tag}>` : "—";
+        dom.importSelectedLabel.textContent = record ? record.label : "請點選預覽中的元素";
+        dom.importSelectedRuntimeId.textContent = record ? record.runtimeId : "—";
+        dom.importSelectedStatus.textContent = record ? record.status : "—";
+        dom.importSelectedStatus.className = `import-support-chip${record ? ` is-${record.status}` : ""}`;
+        dom.importSelectedReason.textContent = record
+          ? record.reason
+          : "safe 與 view-only 元素都可以選取查看。";
+        renderImportEditor(record, selectedElement);
+        requestAnimationFrame(updateImportOverlay);
+      }
+
+      function blockImportedBehavior(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+
+      function connectImportPreview() {
+        if (state.mode !== "import" || !state.importSession) return;
+        const previewDocument = dom.importPreviewFrame.contentDocument;
+        if (!previewDocument) return;
+        const overlay = previewDocument.createElement("div");
+        overlay.id = "lts-import-edit-overlay";
+        overlay.setAttribute("aria-hidden", "true");
+        const resizeHandle = previewDocument.createElement("button");
+        resizeHandle.id = "lts-import-resize-handle";
+        resizeHandle.type = "button";
+        resizeHandle.setAttribute("aria-label", "Resize selected safe element");
+        overlay.appendChild(resizeHandle);
+        previewDocument.body.appendChild(overlay);
+        state.importSession.overlay = overlay;
+        state.importSession.resizeHandle = resizeHandle;
+        previewDocument.addEventListener("pointerdown", event => {
+          if (event.target === resizeHandle) {
+            startImportGesture(event, "resize");
+            return;
+          }
+          const selectedElement = event.target.closest("[data-lts-runtime-id]");
+          if (!selectedElement) return;
+          const record = state.importSession?.registry.get(selectedElement.dataset.ltsRuntimeId);
+          if (!record) return;
+          renderImportSelection(record, selectedElement);
+          if (record.status === "safe") startImportGesture(event, "drag");
+        }, true);
+        previewDocument.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          const selectedElement = event.target.closest("[data-lts-runtime-id]");
+          if (!selectedElement) return;
+          const record = state.importSession.registry.get(selectedElement.dataset.ltsRuntimeId);
+          if (record) renderImportSelection(record, selectedElement);
+        }, true);
+        previewDocument.addEventListener("submit", blockImportedBehavior, true);
+        previewDocument.addEventListener("auxclick", blockImportedBehavior, true);
+        previewDocument.addEventListener("dragstart", blockImportedBehavior, true);
+        previewDocument.addEventListener("beforeinput", blockImportedBehavior, true);
+        previewDocument.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") blockImportedBehavior(event);
+        }, true);
+        previewDocument.addEventListener("scroll", () => requestAnimationFrame(updateImportOverlay), true);
+        previewDocument.defaultView.addEventListener("resize", () => requestAnimationFrame(updateImportOverlay));
+        renderImportSelection(null, null);
+        renderImportChangeSummary();
+      }
+
+      function setDemoControlsDisabled(disabled) {
+        document.querySelectorAll("[data-device-button]").forEach(button => { button.disabled = disabled; });
+        dom.zoomSelect.disabled = disabled;
+        dom.summaryButton.disabled = disabled;
+        dom.dockSummaryButton.disabled = disabled;
+      }
+
+      function enterImportMode(immutableSource, sanitized) {
+        const fileName = immutableSource.fileName;
+        state.mode = "import";
+        state.importSession = {
+          fileName,
+          immutableSource,
+          registry: sanitized.registry,
+          blockedReasons: sanitized.blockedReasons,
+          statusCounts: sanitized.statusCounts,
+          blockedCount: sanitized.blockedCount,
+          sourceMappingComplete: sanitized.sourceMappingComplete,
+          sourceMappingUnique: sanitized.sourceMappingUnique,
+          edits: {},
+          history: [],
+          future: [],
+          controlStart: null,
+          gesture: null,
+          selectedRuntimeId: null,
+          overlay: null,
+          resizeHandle: null
+        };
+        dom.canvasSizer.hidden = true;
+        dom.canvasTip.hidden = true;
+        dom.changeDock.hidden = true;
+        dom.importPreviewShell.hidden = false;
+        dom.importInspector.hidden = false;
+        [...dom.inspector.querySelectorAll(":scope > .inspector-section")].forEach(section => {
+          section.hidden = true;
+        });
+        dom.returnDemoButton.hidden = false;
+        dom.exportHtmlButton.hidden = false;
+        dom.projectModeLabel.textContent = "匯入預覽";
+        dom.projectNameLabel.textContent = fileName;
+        dom.safeStateLabel.textContent = "安全副本・另存下載";
+        dom.deviceDimensions.textContent = "隔離預覽";
+        dom.importFileName.textContent = fileName;
+        dom.importRecognizedCount.textContent = `可辨認元素 ${sanitized.registry.size}`;
+        dom.importSafeCount.textContent = `safe ${sanitized.statusCounts.safe}`;
+        dom.importViewOnlyCount.textContent = `view-only ${sanitized.statusCounts["view-only"]}`;
+        dom.importBlockedCount.textContent = `blocked ${sanitized.blockedCount}`;
+        dom.importSafetySummary.textContent = importSafetySummary(sanitized.blockedReasons);
+        setDemoControlsDisabled(true);
+        renderImportChangeSummary();
+        dom.importPreviewFrame.srcdoc = sanitized.sanitizedHtml;
+      }
+
+      function returnToDemo() {
+        state.mode = "demo";
+        state.importSession = null;
+        dom.importPreviewFrame.srcdoc = "";
+        dom.importPreviewShell.hidden = true;
+        dom.importInspector.hidden = true;
+        [...dom.inspector.querySelectorAll(":scope > .inspector-section")].forEach(section => {
+          section.hidden = false;
+        });
+        dom.canvasSizer.hidden = false;
+        dom.canvasTip.hidden = false;
+        dom.changeDock.hidden = false;
+        dom.returnDemoButton.hidden = true;
+        dom.exportHtmlButton.hidden = true;
+        dom.exportHtmlButton.disabled = true;
+        dom.importExportReason.textContent = "匯入並修改 safe 元素後，才能下載新的 HTML 副本。";
+        dom.projectModeLabel.textContent = "示範畫面";
+        dom.projectNameLabel.textContent = "Little Things Demo・首頁";
+        dom.safeStateLabel.textContent = "不讀寫檔案";
+        dom.htmlImportInput.value = "";
+        dom.importEditControls.disabled = true;
+        dom.importEditGate.textContent = "請先選取預覽中的 safe 元素。";
+        setDemoControlsDisabled(false);
+        applyAllStyles();
+        renderInspector();
+        renderChangeSummary();
+        fitCanvas();
+        showToast("已返回內建示範，原有調整仍保留。");
+      }
+
+      async function handleHtmlImport(event) {
+        const [file] = event.currentTarget.files;
+        if (!file) return;
+        try {
+          if (!/\.html?$/i.test(file.name)) throw new Error("請選擇 .html 或 .htm 檔案。");
+          if (file.size === 0) throw new Error("這個 HTML 檔案是空的。");
+          if (file.size > MAX_IMPORT_BYTES) throw new Error("HTML 檔案必須小於或等於 5 MiB。");
+          const source = await file.text();
+          if (source.includes("\uFFFD") || source.includes("\u0000")) {
+            throw new Error("檔案不是可安全讀取的 UTF-8 HTML。");
+          }
+          if (!/(?:<!doctype\s+html|<html\b|<body\b|<[a-z][^>]*>)/i.test(source)) {
+            throw new Error("找不到可辨認的 HTML 結構。");
+          }
+          const immutableSource = Object.freeze({ fileName: file.name, source });
+          const sanitized = sanitizeImportedHtml(immutableSource.source);
+          enterImportMode(immutableSource, sanitized);
+          showToast(`已建立「${file.name}」的隔離安全預覽。`);
+        } catch (error) {
+          event.currentTarget.value = "";
+          showToast(error instanceof Error ? error.message : "無法讀取這個 HTML 檔案。");
+        }
+      }
+
+      const shallowEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+      function getSelectedConfig() {
+        return ELEMENTS[state.selected];
+      }
+
+      function getSelectedProps(device = state.device) {
+        return state.edits[state.selected][device];
+      }
+
+      function getTarget(id = state.selected) {
+        return document.getElementById(ELEMENTS[id].nodeId);
+      }
+
+      function getScopedDevices() {
+        return state.scope === "all" ? Object.keys(DEVICE_SIZES) : [state.device];
+      }
+
+      function applyProperty(prop, value) {
+        getScopedDevices().forEach(device => {
+          state.edits[state.selected][device][prop] = value;
+        });
+      }
+
+      function styleTarget(id) {
+        const target = getTarget(id);
+        const props = state.edits[id][state.device];
+        const config = ELEMENTS[id];
+        const baseline = defaults[id][state.device];
+
+        target.style.transform = `translate(${props.x}px, ${props.y}px) scale(${props.scale})`;
+        target.style.fontSize = props.fontSize == null ? "" : `${props.fontSize}px`;
+        target.style.fontFamily = props.fontFamily ? FONT_STACKS[props.fontFamily] : "";
+        target.style.color = props.color || "";
+        target.style.background = props.background && props.background !== baseline.background ? props.background : "";
+        target.style.borderRadius = props.radius == null ? "" : `${props.radius}px`;
+
+        if (config.controls.includes("shadow")) {
+          if (props.shadow) {
+            target.style.boxShadow = config.shadowStyle || "0 13px 30px rgba(65, 71, 91, 0.13)";
+          } else {
+            target.style.boxShadow = "none";
+          }
+        }
+
+        if (config.controls.includes("image")) {
+          const hasImage = Boolean(props.imageSrc);
+          dom.photoImage.hidden = !hasImage;
+          dom.photoPlaceholder.hidden = hasImage;
+          if (hasImage) dom.photoImage.src = props.imageSrc;
+          else dom.photoImage.removeAttribute("src");
+          dom.photoImage.alt = hasImage ? `已上傳的圖片：${props.imageName || "未命名圖片"}` : "";
+          dom.photoImage.style.objectFit = props.imageFit || "cover";
+          dom.photoCaption.textContent = hasImage ? props.imageName : "點右側上傳更換";
+        }
+      }
+
+      function applyAllStyles() {
+        Object.keys(ELEMENTS).forEach(styleTarget);
+        requestAnimationFrame(updateOverlay);
+      }
+
+      function selectElement(id, options = {}) {
+        if (!ELEMENTS[id]) return;
+        state.selected = id;
+        dom.selectionLabel.textContent = `${ELEMENTS[id].label} · 拖曳移動`;
+        dom.canvasTip.classList.add("is-dismissed");
+        renderInspector();
+        applyAllStyles();
+
+        if (options.focusInspector) {
+          dom.selectedName.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }
+      }
+
+      function updateOverlay() {
+        const target = getTarget();
+        if (!target || !state.renderScale) return;
+
+        const targetRect = target.getBoundingClientRect();
+        const pageRect = dom.page.getBoundingClientRect();
+        const scale = state.renderScale;
+        const inset = 3;
+
+        dom.overlay.style.left = `${(targetRect.left - pageRect.left) / scale - inset}px`;
+        dom.overlay.style.top = `${(targetRect.top - pageRect.top) / scale - inset}px`;
+        dom.overlay.style.width = `${targetRect.width / scale + inset * 2}px`;
+        dom.overlay.style.height = `${targetRect.height / scale + inset * 2}px`;
+      }
+
+      let overlaySettleTimer = 0;
+
+      function fitCanvas() {
+        const size = DEVICE_SIZES[state.device];
+        const workbenchStyle = window.getComputedStyle(dom.workbench);
+        const horizontalPadding =
+          parseFloat(workbenchStyle.paddingLeft) + parseFloat(workbenchStyle.paddingRight);
+        const verticalPadding =
+          parseFloat(workbenchStyle.paddingTop) + parseFloat(workbenchStyle.paddingBottom);
+        const availableWidth = Math.max(160, dom.workbench.clientWidth - horizontalPadding - 18);
+        const availableHeight = Math.max(220, dom.workbench.clientHeight - verticalPadding - 18);
+        const shortDockedLayout =
+          window.matchMedia("(min-width: 700px) and (max-height: 759px)").matches;
+        const widthFit = availableWidth / size.width;
+        const heightFit = availableHeight / size.height;
+        const fit = shortDockedLayout
+          ? Math.min(1, widthFit, Math.max(0.62, heightFit))
+          : Math.min(1, widthFit, heightFit);
+
+        state.fitScale = fit;
+        state.renderScale = fit * state.zoom;
+
+        dom.page.style.width = `${size.width}px`;
+        dom.page.style.height = `${size.height}px`;
+        dom.page.style.transform = `scale(${state.renderScale})`;
+        dom.canvasSizer.style.width = `${size.width * state.renderScale}px`;
+        dom.canvasSizer.style.height = `${size.height * state.renderScale}px`;
+        dom.deviceDimensions.textContent = `${size.width} × ${size.height}`;
+        requestAnimationFrame(updateOverlay);
+        window.clearTimeout(overlaySettleTimer);
+        overlaySettleTimer = window.setTimeout(updateOverlay, 240);
+      }
+
+      function deviceLabel() {
+        return DEVICE_NAMES[state.device];
+      }
+
+      function renderInspector() {
+        const config = getSelectedConfig();
+        const props = getSelectedProps();
+        const controls = config.controls;
+
+        dom.selectedName.textContent = config.label;
+        dom.selectedKind.textContent = config.kind;
+        dom.selectedHelp.textContent = config.help;
+        dom.currentDeviceScope.textContent = `目前${deviceLabel()}尺寸`;
+        dom.scopeMessage.textContent = state.scope === "all"
+          ? "接下來的調整會同步套用到手機、平板與電腦預覽。"
+          : `接下來的移動與外觀調整，只會套用到${deviceLabel()}預覽。`;
+
+        dom.xControl.value = props.x;
+        dom.yControl.value = props.y;
+        dom.scaleControl.value = Math.round(props.scale * 100);
+        dom.xOutput.textContent = `${Math.round(props.x)} px`;
+        dom.yOutput.textContent = `${Math.round(props.y)} px`;
+        dom.scaleOutput.textContent = `${Math.round(props.scale * 100)}%`;
+
+        const hasTextControls = controls.some(item => ["fontSize", "fontFamily", "color"].includes(item));
+        const hasSurfaceControls = controls.some(item => ["background", "radius", "shadow"].includes(item));
+        const hasImageControls = controls.includes("image");
+        dom.textSection.hidden = !hasTextControls;
+        dom.textSectionTitle.textContent = controls.some(item => ["fontSize", "fontFamily"].includes(item)) ? "文字" : "顏色";
+        dom.surfaceSection.hidden = !hasSurfaceControls;
+        dom.imageSection.hidden = !hasImageControls;
+
+        dom.fontSizeControlRow.hidden = !controls.includes("fontSize");
+        dom.fontFamilyControlRow.hidden = !controls.includes("fontFamily");
+        dom.textColorControlRow.hidden = !controls.includes("color");
+        dom.backgroundControlRow.hidden = !controls.includes("background");
+        dom.radiusControlRow.hidden = !controls.includes("radius");
+        dom.shadowControlRow.hidden = !controls.includes("shadow");
+
+        if (controls.includes("fontSize")) {
+          dom.fontSizeControl.value = props.fontSize;
+          dom.fontSizeOutput.textContent = `${props.fontSize} px`;
+        }
+        if (controls.includes("fontFamily")) {
+          dom.fontFamilyControl.value = props.fontFamily;
+        }
+        if (controls.includes("color")) {
+          dom.colorControl.value = props.color;
+          dom.colorValue.textContent = props.color.toUpperCase();
+        }
+        if (controls.includes("background")) {
+          dom.backgroundControl.value = props.background;
+          dom.backgroundValue.textContent = props.background.toUpperCase();
+        }
+        if (controls.includes("radius")) {
+          dom.radiusControl.value = props.radius;
+          dom.radiusOutput.textContent = `${props.radius} px`;
+        }
+        if (controls.includes("shadow")) {
+          dom.shadowControl.checked = props.shadow;
+        }
+        if (hasImageControls) {
+          dom.imageFitControl.value = props.imageFit || "cover";
+          dom.imageFileName.textContent = props.imageName || "尚未選擇圖片";
+          dom.removeImageButton.disabled = !props.imageSrc;
+        }
+      }
+
+      function changedProps(id, device) {
+        const now = state.edits[id][device];
+        const base = defaults[id][device];
+        return Object.keys(now).filter(prop => now[prop] !== base[prop]);
+      }
+
+      function movementParts(now, base) {
+        const parts = [];
+        const dx = Math.round(now.x - base.x);
+        const dy = Math.round(now.y - base.y);
+        if (dx < 0) parts.push(`向左 ${Math.abs(dx)}px`);
+        if (dx > 0) parts.push(`向右 ${dx}px`);
+        if (dy < 0) parts.push(`向上 ${Math.abs(dy)}px`);
+        if (dy > 0) parts.push(`向下 ${dy}px`);
+        return parts;
+      }
+
+      function buildSummaries() {
+        const rows = [];
+        Object.entries(ELEMENTS).forEach(([id, config]) => {
+          Object.keys(DEVICE_SIZES).forEach(device => {
+            const now = state.edits[id][device];
+            const base = defaults[id][device];
+            const changed = changedProps(id, device);
+            if (!changed.length) return;
+
+            const parts = movementParts(now, base);
+            if (changed.includes("scale")) parts.push(`${now.scale >= 1 ? "放大" : "縮小"}至 ${Math.round(now.scale * 100)}%`);
+            if (changed.includes("fontSize")) parts.push(`字級改為 ${now.fontSize}px`);
+            if (changed.includes("fontFamily")) {
+              const fontName = { clear: "清楚俐落", round: "柔和圓潤", serif: "安靜典雅" }[now.fontFamily];
+              parts.push(`字體改為「${fontName}」`);
+            }
+            if (changed.includes("color")) parts.push(`文字／圖形顏色改為 ${now.color.toUpperCase()}`);
+            if (changed.includes("background")) parts.push(`底色改為 ${now.background.toUpperCase()}`);
+            if (changed.includes("radius")) parts.push(`圓角改為 ${now.radius}px`);
+            if (changed.includes("shadow")) parts.push(now.shadow ? "開啟柔和陰影" : "移除柔和陰影");
+            if (changed.includes("imageSrc")) {
+              parts.push(now.imageSrc ? `圖片更換為「${now.imageName || "未命名圖片"}」` : "移除圖片");
+            }
+            if (changed.includes("imageFit")) {
+              parts.push(now.imageFit === "contain" ? "圖片改為完整顯示" : "圖片改為填滿框格");
+            }
+
+            rows.push({
+              id,
+              device,
+              label: config.label,
+              text: parts.join("、")
+            });
+          });
+        });
+        return rows;
+      }
+
+      function renderChangeSummary() {
+        const summaries = buildSummaries();
+        dom.headerChangeCount.textContent = summaries.length;
+        dom.dockChangeCount.textContent = summaries.length;
+        dom.undoButton.disabled = state.history.length === 0;
+        dom.redoButton.disabled = state.future.length === 0;
+
+        if (!summaries.length) {
+          dom.dockChangeText.textContent = "還沒有修改；畫面現在只是安全的示範草稿。";
+        } else {
+          dom.dockChangeText.textContent = `${DEVICE_NAMES[summaries[0].device]}・${summaries[0].label}：${summaries[0].text}`;
+        }
+      }
+
+      function describeLatestChange(id, before, after) {
+        const config = ELEMENTS[id];
+        const devices = getScopedDevices();
+        const deviceText = devices.length === 3 ? "所有尺寸" : DEVICE_NAMES[devices[0]];
+        const changedLabels = [];
+        const labelMap = {
+          x: "左右位置",
+          y: "上下位置",
+          scale: "大小",
+          fontSize: "字級",
+          fontFamily: "字體",
+          color: "顏色",
+          background: "底色",
+          radius: "圓角",
+          shadow: "陰影",
+          imageSrc: "圖片",
+          imageFit: "圖片顯示方式"
+        };
+
+        Object.keys(after[id][devices[0]]).forEach(prop => {
+          const didChange = devices.some(device => before[id][device][prop] !== after[id][device][prop]);
+          if (didChange && labelMap[prop]) changedLabels.push(labelMap[prop]);
+        });
+        return `${deviceText}・${config.label}：調整${changedLabels.join("、") || "外觀"}`;
+      }
+
+      function commitSnapshot(before, description) {
+        const after = clone(state.edits);
+        if (shallowEqual(before, after)) return;
+        state.history.push({ before, after, description });
+        if (state.history.length > 80) state.history.shift();
+        state.future = [];
+        renderChangeSummary();
+      }
+
+      function undo() {
+        if (state.mode === "import") {
+          undoImport();
+          return;
+        }
+        const entry = state.history.pop();
+        if (!entry) return;
+        state.future.push(entry);
+        state.edits = clone(entry.before);
+        applyAllStyles();
+        renderInspector();
+        renderChangeSummary();
+        showToast(`已復原：${entry.description}`);
+      }
+
+      function redo() {
+        if (state.mode === "import") {
+          redoImport();
+          return;
+        }
+        const entry = state.future.pop();
+        if (!entry) return;
+        state.history.push(entry);
+        state.edits = clone(entry.after);
+        applyAllStyles();
+        renderInspector();
+        renderChangeSummary();
+        showToast(`已重做：${entry.description}`);
+      }
+
+      function beginControlChange() {
+        if (!state.controlStart) state.controlStart = clone(state.edits);
+      }
+
+      function handleControlInput(event) {
+        const control = event.currentTarget;
+        const prop = control.dataset.control;
+        beginControlChange();
+
+        let value;
+        if (control.type === "checkbox") value = control.checked;
+        else if (prop === "scale") value = Number(control.value) / 100;
+        else if (["x", "y", "fontSize", "radius"].includes(prop)) value = Number(control.value);
+        else value = control.value;
+
+        applyProperty(prop, value);
+        applyAllStyles();
+        renderInspector();
+        renderChangeSummary();
+      }
+
+      function finishControlChange() {
+        if (!state.controlStart) return;
+        const before = state.controlStart;
+        state.controlStart = null;
+        commitSnapshot(before, describeLatestChange(state.selected, before, state.edits));
+      }
+
+      function nudge(prop, amount) {
+        const before = clone(state.edits);
+        getScopedDevices().forEach(device => {
+          const current = state.edits[state.selected][device][prop];
+          state.edits[state.selected][device][prop] = clamp(current + amount, -100, 100);
+        });
+        commitSnapshot(before, `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・${getSelectedConfig().label}：微調位置`);
+        applyAllStyles();
+        renderInspector();
+      }
+
+      function startGesture(event, type) {
+        if (event.button != null && event.button !== 0) return;
+        event.preventDefault();
+        event.stopPropagation();
+
+        const devices = getScopedDevices();
+        const startValues = {};
+        devices.forEach(device => {
+          startValues[device] = clone(state.edits[state.selected][device]);
+        });
+
+        state.gesture = {
+          type,
+          pointerId: event.pointerId,
+          startClientX: event.clientX,
+          startClientY: event.clientY,
+          devices,
+          startValues,
+          before: clone(state.edits),
+          moved: false
+        };
+
+        dom.page.classList.add("is-manipulating");
+        window.addEventListener("pointermove", moveGesture, { passive: false });
+        window.addEventListener("pointerup", finishGesture, { once: true });
+        window.addEventListener("pointercancel", finishGesture, { once: true });
+      }
+
+      function moveGesture(event) {
+        const gesture = state.gesture;
+        if (!gesture || event.pointerId !== gesture.pointerId) return;
+        event.preventDefault();
+
+        const dx = (event.clientX - gesture.startClientX) / state.renderScale;
+        const dy = (event.clientY - gesture.startClientY) / state.renderScale;
+        if (Math.abs(dx) + Math.abs(dy) > 1) gesture.moved = true;
+
+        gesture.devices.forEach(device => {
+          const start = gesture.startValues[device];
+          const props = state.edits[state.selected][device];
+          if (gesture.type === "drag") {
+            props.x = clamp(Math.round(start.x + dx), -100, 100);
+            props.y = clamp(Math.round(start.y + dy), -100, 100);
+          } else {
+            const delta = (dx + dy) / 210;
+            props.scale = clamp(Math.round((start.scale + delta) * 100) / 100, 0.6, 1.7);
+          }
+        });
+
+        applyAllStyles();
+        renderInspector();
+        renderChangeSummary();
+      }
+
+      function finishGesture(event) {
+        const gesture = state.gesture;
+        if (!gesture) return;
+        if (event && event.pointerId != null && event.pointerId !== gesture.pointerId) return;
+
+        window.removeEventListener("pointermove", moveGesture);
+        dom.page.classList.remove("is-manipulating");
+        state.gesture = null;
+
+        if (gesture.moved) {
+          const action = gesture.type === "drag" ? "拖動位置" : "調整大小";
+          commitSnapshot(
+            gesture.before,
+            `${gesture.devices.length === 3 ? "所有尺寸" : deviceLabel()}・${getSelectedConfig().label}：${action}`
+          );
+        }
+      }
+
+      function resetSelected() {
+        const before = clone(state.edits);
+        getScopedDevices().forEach(device => {
+          state.edits[state.selected][device] = clone(defaults[state.selected][device]);
+        });
+        commitSnapshot(
+          before,
+          `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・${getSelectedConfig().label}：恢復原樣`
+        );
+        applyAllStyles();
+        renderInspector();
+        showToast(`${getSelectedConfig().label}已恢復原樣。`);
+      }
+
+      function resetAll() {
+        if (shallowEqual(state.edits, defaults)) {
+          showToast("這一輪目前沒有需要清除的調整。");
+          return;
+        }
+        const before = clone(state.edits);
+        state.edits = clone(defaults);
+        commitSnapshot(before, "清除這一輪全部調整");
+        applyAllStyles();
+        renderInspector();
+        showToast("全部示範調整已清除。");
+      }
+
+      function handleImageUpload(event) {
+        const file = event.currentTarget.files && event.currentTarget.files[0];
+        event.currentTarget.value = "";
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+          showToast("這個檔案不是可顯示的圖片。");
+          return;
+        }
+        if (file.size > 20 * 1024 * 1024) {
+          showToast("圖片超過 20 MB，請先選一張小一點的圖片。");
+          return;
+        }
+
+        const before = clone(state.edits);
+        const objectUrl = URL.createObjectURL(file);
+        objectUrls.add(objectUrl);
+        getScopedDevices().forEach(device => {
+          state.edits.photo[device].imageSrc = objectUrl;
+          state.edits.photo[device].imageName = file.name;
+        });
+
+        commitSnapshot(
+          before,
+          `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・最近片段卡：更換圖片`
+        );
+        applyAllStyles();
+        renderInspector();
+        showToast(`已在預覽中換成「${file.name}」。`);
+      }
+
+      function removeImage() {
+        const before = clone(state.edits);
+        getScopedDevices().forEach(device => {
+          state.edits.photo[device].imageSrc = "";
+          state.edits.photo[device].imageName = "";
+        });
+        commitSnapshot(
+          before,
+          `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・最近片段卡：移除圖片`
+        );
+        applyAllStyles();
+        renderInspector();
+        showToast("已從目前預覽移除圖片。");
+      }
+
+      function switchDevice(device) {
+        if (state.mode !== "demo") return;
+        if (!DEVICE_SIZES[device]) return;
+        state.device = device;
+        dom.page.dataset.device = device;
+        document.querySelectorAll("[data-device-button]").forEach(button => {
+          button.setAttribute("aria-pressed", String(button.dataset.deviceButton === device));
+        });
+        applyAllStyles();
+        renderInspector();
+        fitCanvas();
+      }
+
+      function renderSummaryModal() {
+        const summaries = buildSummaries();
+        dom.summaryContent.replaceChildren();
+
+        if (!summaries.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty-summary";
+          empty.textContent = "還沒有任何調整。關閉這裡，試著把雙星光往左拖一點，或點選卡片改圓角。";
+          dom.summaryContent.appendChild(empty);
+          return;
+        }
+
+        const list = document.createElement("ul");
+        list.className = "summary-list";
+        summaries.forEach(summary => {
+          const item = document.createElement("li");
+          item.className = "summary-item";
+          const device = document.createElement("span");
+          device.className = "summary-device";
+          device.textContent = DEVICE_NAMES[summary.device];
+          const text = document.createElement("span");
+          text.textContent = `${summary.label}：${summary.text}`;
+          item.append(device, text);
+          list.appendChild(item);
+        });
+        dom.summaryContent.appendChild(list);
+      }
+
+      function openModal(modal, trigger) {
+        if (modal === dom.summaryModal) renderSummaryModal();
+        state.lastModalTrigger = trigger || document.activeElement;
+        modal.hidden = false;
+        document.body.style.overflow = "hidden";
+        const focusTarget = modal.querySelector("button");
+        requestAnimationFrame(() => focusTarget && focusTarget.focus());
+      }
+
+      function closeModal(modal) {
+        modal.hidden = true;
+        document.body.style.overflow = "";
+        if (state.lastModalTrigger && typeof state.lastModalTrigger.focus === "function") {
+          state.lastModalTrigger.focus();
+        }
+        state.lastModalTrigger = null;
+      }
+
+      let toastTimer = null;
+      function showToast(message) {
+        clearTimeout(toastTimer);
+        dom.toast.textContent = message;
+        dom.toast.classList.add("is-visible");
+        toastTimer = setTimeout(() => dom.toast.classList.remove("is-visible"), 2200);
+      }
+
+      function handleEditablePointerDown(event) {
+        const editable = event.target.closest("[data-editable]");
+        if (!editable || !dom.page.contains(editable)) return;
+        const id = editable.dataset.editable;
+        selectElement(id);
+        startGesture(event, "drag");
+      }
+
+      function handleEditableKeyDown(event) {
+        const editable = event.target.closest("[data-editable]");
+        if (!editable) return;
+        const keyMap = {
+          ArrowLeft: ["x", -1],
+          ArrowRight: ["x", 1],
+          ArrowUp: ["y", -1],
+          ArrowDown: ["y", 1]
+        };
+        if (!keyMap[event.key]) return;
+        event.preventDefault();
+        selectElement(editable.dataset.editable);
+        const [prop, baseAmount] = keyMap[event.key];
+        nudge(prop, baseAmount * (event.shiftKey ? 8 : 1));
+      }
+
+      const controlElements = [
+        dom.xControl,
+        dom.yControl,
+        dom.scaleControl,
+        dom.fontSizeControl,
+        dom.fontFamilyControl,
+        dom.colorControl,
+        dom.backgroundControl,
+        dom.radiusControl,
+        dom.shadowControl,
+        dom.imageFitControl
+      ];
+
+      controlElements.forEach(control => {
+        control.addEventListener("focus", beginControlChange);
+        control.addEventListener("pointerdown", beginControlChange);
+        control.addEventListener("input", handleControlInput);
+        control.addEventListener("change", finishControlChange);
+        control.addEventListener("blur", finishControlChange);
+      });
+
+      const importControlElements = [
+        dom.importTextControl,
+        dom.importFontSizeControl,
+        dom.importTextColorControl,
+        dom.importBackgroundColorControl,
+        dom.importWidthControl,
+        dom.importHeightControl,
+        dom.importRadiusControl,
+        dom.importXControl,
+        dom.importYControl
+      ];
+
+      importControlElements.forEach(control => {
+        control.addEventListener("focus", beginImportControlChange);
+        control.addEventListener("pointerdown", beginImportControlChange);
+        control.addEventListener("input", handleImportControlInput);
+        control.addEventListener("change", finishImportControlChange);
+        control.addEventListener("blur", finishImportControlChange);
+      });
+
+      document.querySelectorAll("[data-nudge]").forEach(button => {
+        button.addEventListener("click", () => {
+          nudge(button.dataset.nudge, Number(button.dataset.amount));
+        });
+      });
+
+      document.querySelectorAll("[data-device-button]").forEach(button => {
+        button.addEventListener("click", () => switchDevice(button.dataset.deviceButton));
+      });
+
+      document.querySelectorAll('input[name="scope"]').forEach(input => {
+        input.addEventListener("change", () => {
+          state.scope = input.value;
+          renderInspector();
+        });
+      });
+
+      dom.zoomSelect.addEventListener("change", () => {
+        state.zoom = Number(dom.zoomSelect.value);
+        fitCanvas();
+      });
+
+      dom.page.addEventListener("pointerdown", handleEditablePointerDown);
+      dom.page.addEventListener("keydown", handleEditableKeyDown);
+      dom.page.addEventListener("click", event => {
+        if (event.target.closest("button, nav")) event.preventDefault();
+      });
+
+      dom.resizeHandle.addEventListener("pointerdown", event => startGesture(event, "resize"));
+      dom.imageUpload.addEventListener("change", handleImageUpload);
+      dom.removeImageButton.addEventListener("click", removeImage);
+      dom.photoImage.addEventListener("load", () => requestAnimationFrame(updateOverlay));
+      dom.htmlImportInput.addEventListener("change", handleHtmlImport);
+      dom.exportHtmlButton.addEventListener("click", downloadImportStaticExport);
+      dom.returnDemoButton.addEventListener("click", returnToDemo);
+      dom.importPreviewFrame.addEventListener("load", connectImportPreview);
+      dom.undoButton.addEventListener("click", undo);
+      dom.redoButton.addEventListener("click", redo);
+      dom.resetElementButton.addEventListener("click", resetSelected);
+      dom.resetAllButton.addEventListener("click", resetAll);
+      dom.summaryButton.addEventListener("click", event => openModal(dom.summaryModal, event.currentTarget));
+      dom.dockSummaryButton.addEventListener("click", event => openModal(dom.summaryModal, event.currentTarget));
+      dom.helpButton.addEventListener("click", event => openModal(dom.helpModal, event.currentTarget));
+
+      document.querySelectorAll("[data-close-modal]").forEach(button => {
+        button.addEventListener("click", () => {
+          const modal = document.getElementById(button.dataset.closeModal);
+          if (modal) closeModal(modal);
+        });
+      });
+
+      [dom.summaryModal, dom.helpModal].forEach(modal => {
+        modal.addEventListener("pointerdown", event => {
+          if (event.target === modal) closeModal(modal);
+        });
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          const openModalElement = [dom.summaryModal, dom.helpModal].find(modal => !modal.hidden);
+          if (openModalElement) closeModal(openModalElement);
+        }
+        if ((event.ctrlKey || event.metaKey) && !event.shiftKey && event.key.toLowerCase() === "z") {
+          event.preventDefault();
+          undo();
+        }
+        if ((event.ctrlKey || event.metaKey) && (event.key.toLowerCase() === "y" || (event.shiftKey && event.key.toLowerCase() === "z"))) {
+          event.preventDefault();
+          redo();
+        }
+      });
+
+      let resizeFrame = 0;
+      let lastWorkbenchBorderBox = { width: 0, height: 0 };
+      const resizeObserver = new ResizeObserver(entries => {
+        const entry = entries[0];
+        const borderBox = Array.isArray(entry.borderBoxSize)
+          ? entry.borderBoxSize[0]
+          : entry.borderBoxSize;
+        const rect = borderBox
+          ? { width: borderBox.inlineSize, height: borderBox.blockSize }
+          : entry.target.getBoundingClientRect();
+
+        if (
+          Math.abs(rect.width - lastWorkbenchBorderBox.width) < 0.5 &&
+          Math.abs(rect.height - lastWorkbenchBorderBox.height) < 0.5
+        ) {
+          return;
+        }
+
+        lastWorkbenchBorderBox = { width: rect.width, height: rect.height };
+        window.cancelAnimationFrame(resizeFrame);
+        resizeFrame = window.requestAnimationFrame(fitCanvas);
+      });
+      resizeObserver.observe(dom.workbench);
+      window.addEventListener("resize", () => {
+        window.cancelAnimationFrame(resizeFrame);
+        resizeFrame = window.requestAnimationFrame(() => {
+          fitCanvas();
+          updateOverlay();
+        });
+      });
+      window.addEventListener("beforeunload", () => {
+        objectUrls.forEach(url => URL.revokeObjectURL(url));
+      });
+
+      setTimeout(() => dom.canvasTip.classList.add("is-dismissed"), 7000);
+
+      switchDevice("phone");
+      selectElement("stars");
+      renderChangeSummary();
+      fitCanvas();
+    })();
+  </script>
+</body>
+</html>

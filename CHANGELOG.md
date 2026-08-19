@@ -1,0 +1,15 @@
+# Changelog
+
+All notable public changes will be documented in this file.
+
+## [0.1.0-beta.1] - 2026-08-19
+
+First public beta prerelease:
+
+- Standalone local-first visual editor demo.
+- Reissued before external adoption with a fictional, generic built-in sample and a clean single-root public history.
+- Safe, view-only, and blocked classification for local single-file HTML preview.
+- Session-only editing of approved safe elements with undo/redo, drag, and resize.
+- Gated export of an edited HTML copy and local reopen flow.
+- Restrictive preview sandbox, CSP, sanitizer, and external-network defenses.
+- English and Traditional Chinese project documentation, MIT license, community templates, and dependency-free CI checks.

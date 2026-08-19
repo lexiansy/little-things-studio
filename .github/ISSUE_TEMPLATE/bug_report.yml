@@ -1,0 +1,65 @@
+name: Bug report
+description: Report a reproducible problem in the supported bounded workflow.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Little Things Studio. Do not include private files, secrets, or vulnerability details here; use SECURITY.md for security reports.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: The visible version badge or commit you tested.
+      placeholder: v0.1.0-beta.1
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Built-in demo
+        - HTML import preview
+        - Imported safe editing
+        - Safe-copy export and reopen
+        - Documentation or checks
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Use a minimal self-contained example with no private content.
+      placeholder: |
+        1. Open...
+        2. Import...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Browser and operating system
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed private files, local paths, credentials, and personal data from this report.
+          required: true

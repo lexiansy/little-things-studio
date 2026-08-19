@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="30; url=https://example.invalid/redirect">
+  <title>Unsafe constructs blocked fixture</title>
+  <link rel="stylesheet" href="https://example.invalid/external.css">
+  <style>
+    @import url("https://example.invalid/import.css");
+    body { font-family: system-ui, sans-serif; background-image: url("https://example.invalid/background.png"); }
+    .image-set-sentinel { background-image: image-set("https://example.invalid/image-set.png" 1x); }
+    .local-style { padding: 24px; color: #492f24; background: #f8eadc; }
+  </style>
+  <script>
+    window.__LTS_UNSAFE_SENTINEL__ = "SCRIPT_RAN";
+    document.documentElement.dataset.sentinel = "SCRIPT_RAN";
+  </script>
+</head>
+<body onload="document.body.dataset.handler='HANDLER_RAN'">
+  <main class="local-style">
+    <h1>Harmless blocked-capability fixture</h1>
+    <p class="image-set-sentinel" id="sentinel-status">SENTINEL_NOT_RUN</p>
+    <button type="button" onclick="document.body.dataset.handler='HANDLER_RAN'">Inline handler sentinel</button>
+    <a href="javascript:document.body.dataset.navigation='NAV_RAN'" download target="_top">Unsafe link sentinel</a>
+    <form action="https://example.invalid/submit" method="post" onsubmit="document.body.dataset.submit='SUBMIT_RAN'">
+      <label>Fixture field <input name="fixture" value="safe test value"></label>
+      <button type="submit">Submit sentinel</button>
+    </form>
+    <img src="https://example.invalid/external.png" onerror="document.body.dataset.handler='HANDLER_RAN'" alt="External image sentinel">
+    <iframe title="Nested frame sentinel" srcdoc="<p>FRAME_LOADED</p>"></iframe>
+    <object data="https://example.invalid/object.bin" type="application/octet-stream">Object sentinel</object>
+  </main>
+</body>
+</html>

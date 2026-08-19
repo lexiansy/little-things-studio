@@ -1,0 +1,17 @@
+# Local agent handoff output
+docs/reports/
+
+# OS and editor metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# Local preview and temporary output
+*.log
+*.tmp
+.tmp/
+tmp/
+coverage/

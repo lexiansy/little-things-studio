@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple static import fixture</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 48px 24px;
+      color: #3e342f;
+      background: #f7f0e6;
+      font-family: system-ui, sans-serif;
+    }
+    main { width: min(680px, 100%); margin: 0 auto; }
+    h1 { margin: 0 0 12px; font-size: clamp(2rem, 7vw, 4rem); }
+    p { line-height: 1.7; }
+    .card {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid #dfcdb9;
+      border-radius: 20px;
+      background: #fffaf3;
+      box-shadow: 0 16px 40px rgba(75, 55, 42, 0.1);
+    }
+    img { width: 88px; height: 88px; border-radius: 18px; image-rendering: pixelated; }
+    button {
+      margin-top: 26px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      color: white;
+      background: #9a5b42;
+      font: inherit;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p>STATIC HTML PREVIEW</p>
+    <h1>一個簡單的靜態頁面</h1>
+    <p>這份公開 fixture 只包含一般標題、段落、卡片、按鈕、inline CSS 與 data URI 圖片。</p>
+    <section class="card" aria-label="範例卡片">
+      <img alt="data URI 範例圖片" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
+      <div>
+        <h2>可辨認的卡片</h2>
+        <p>點選標題、文字、圖片或按鈕，右側會顯示 runtime ID 與支援狀態。</p>
+      </div>
+    </section>
+    <button type="button">唯讀範例按鈕</button>
+  </main>
+</body>
+</html>
