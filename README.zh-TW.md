@@ -57,7 +57,7 @@ Repository 沒有 runtime dependencies，也不會安裝 packages。檢查涵蓋
 
 ## 目前狀態
 
-`v0.1.0-beta.1` 是公開 beta prerelease，已於 2026-08-19 在外部採用前，以虛構、通用的內建示範重新發行。功能 baseline 已由 owner 接受；重新發行後 live sample 的 owner 最終目視驗收仍待完成。可從 [GitHub repository](https://github.com/lexiansy/little-things-studio)、[release 頁面](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1)與上述線上示範取得。這不代表支援未列出的 HTML 結構。請見[目前狀態](docs/CURRENT_STATUS.md)、[下一步](docs/NEXT_STEPS.md)與[roadmap](docs/ROADMAP.md)。
+`v0.1.0-beta.1` 是公開 beta prerelease，已於 2026-08-19 在外部採用前，以虛構、通用的內建示範重新發行。功能 baseline 與重新發行的通用 live sample 均已由 owner 接受，release 與未登入 public readback 也已完成。可從 [GitHub repository](https://github.com/lexiansy/little-things-studio)、[release 頁面](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1)與上述線上示範取得。這不代表支援未列出的 HTML 結構。請見[目前狀態](docs/CURRENT_STATUS.md)、[下一步](docs/NEXT_STEPS.md)與[roadmap](docs/ROADMAP.md)。
 
 ## 貢獻、安全與授權
 

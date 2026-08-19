@@ -5,7 +5,7 @@ Last verified: 2026-08-19
 ## Public beta prerelease
 
 - Phase: `v0.1.0-beta.1` public beta prerelease
-- Status: functional baseline owner accepted and formally reissued; owner visual acceptance of the generic live sample is pending
+- Status: functional baseline and reissued generic live sample owner accepted; release/public readback complete
 - Canonical executable: `/index.html`
 - Canonical repository: `https://github.com/lexiansy/little-things-studio`
 - Live demo: `https://lexiansy.github.io/little-things-studio/`
@@ -28,10 +28,10 @@ The release is based on the owner-accepted pre-public product baseline and a cle
 
 - Automated checks cover the standalone baseline, import security, imported editing, safe export, syntax, public documentation, and repository hygiene.
 - Browser smoke covers the built-in demo, simple and unsafe fixtures, safe edits, drag/resize, undo/redo, safe export/reopen, disabled unsafe controls, console state, and horizontal-overflow regression.
-- Owner-observed acceptance from pre-public product checkpoints established the functional baseline, credits, and footer collaboration mark.
-- Final owner visual acceptance of the reissued generic GitHub Pages sample remains pending after publication.
+- Owner-observed evidence: Yao inspected the reissued generic live sample and accepted `LITTLE THINGS DEMO` / `一頁小日常`, the selectable `雙星光`, the LTS header mark, the fox footer mark, and the full `Created together by Lexian & Yao` credit; no horizontal overflow or bottom black-line regression was observed.
+- Release/public readback evidence: Lexian independently read back the unauthenticated public repository and profile, prerelease page, standalone asset, and cache-busted GitHub Pages deployment; generic markers were present and retired/private-demo markers were absent.
 
-Automated checks, browser observations, and owner observations are distinct evidence. Publication and live-site browser checks do not claim owner acceptance of the live GitHub Pages deployment, an unperformed network/HAR capture, or a third-party security audit.
+Automated checks, browser observations, owner observations, and release/public readback are distinct evidence. This record does not claim an unperformed physical-device matrix, network/HAR capture, broad external adoption, or third-party security audit.
 
 ## Known limits
 

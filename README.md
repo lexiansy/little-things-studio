@@ -57,7 +57,7 @@ The repository has no runtime dependencies and installs no packages. The checks 
 
 ## Project status
 
-`v0.1.0-beta.1` is the public beta prerelease, reissued on 2026-08-19 with a generic fictional built-in sample before external adoption. The functional baseline is owner accepted; final owner visual acceptance of the reissued live sample remains pending. It is available from the [GitHub repository](https://github.com/lexiansy/little-things-studio), [release page](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1), and live demo above. It is not a promise of support for unsupported HTML structures. See [Current status](docs/CURRENT_STATUS.md), [Next steps](docs/NEXT_STEPS.md), and the [roadmap](docs/ROADMAP.md).
+`v0.1.0-beta.1` is the public beta prerelease, reissued on 2026-08-19 with a generic fictional built-in sample before external adoption. The functional baseline and reissued generic live sample are owner accepted, and release/public readback is complete. It is available from the [GitHub repository](https://github.com/lexiansy/little-things-studio), [release page](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1), and live demo above. It is not a promise of support for unsupported HTML structures. See [Current status](docs/CURRENT_STATUS.md), [Next steps](docs/NEXT_STEPS.md), and the [roadmap](docs/ROADMAP.md).
 
 ## Contributing and security
 

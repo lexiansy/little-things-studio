@@ -11,7 +11,7 @@
 
 ## Current implementation
 
-The repository contains the `v0.1.0-beta.1` public beta prerelease with an owner-accepted functional baseline and a fictional, generic built-in sample. The application is a standalone `index.html` with local fixtures and dependency-free Node.js checks. The canonical repository is `https://github.com/lexiansy/little-things-studio`, and the live demo is `https://lexiansy.github.io/little-things-studio/`. Final owner visual acceptance of the reissued generic live sample remains pending.
+The repository contains the accepted `v0.1.0-beta.1` public beta checkpoint with an owner-accepted functional baseline and reissued fictional, generic live sample. Release/public readback is complete. The application is a standalone `index.html` with local fixtures and dependency-free Node.js checks. The canonical repository is `https://github.com/lexiansy/little-things-studio`, and the live demo is `https://lexiansy.github.io/little-things-studio/`.
 
 The pre-public baseline includes the built-in visual editor, safe single-file import preview, session-only editing of `safe` imported elements, and gated safe-copy export/reopen. The original source is never overwritten. The workbench vignette is a `.workbench` background layer; there is no active `.workbench::before` vignette layer.
 
@@ -36,4 +36,4 @@ The pre-public baseline includes the built-in visual editor, safe single-file im
 
 ## Next bounded direction
 
-The immediate checkpoint is owner and release-steward inspection of the reissued public repository, generic screenshot, prerelease asset, and live GitHub Pages demo. Any product work after that requires a fresh branch from current `main` and explicit scope. PWA, project mode, arbitrary website import, direct writeback, npm publication, additional deployment targets, and the next product version remain out of scope.
+Preserve the accepted public-beta baseline and record any concrete, reproducible issue without widening scope. Any product work requires fresh `main`, a new branch, and explicit scope. PWA, project mode, arbitrary website import, direct writeback, npm publication, additional deployment targets, and the next product version remain out of scope.

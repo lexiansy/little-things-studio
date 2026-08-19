@@ -1,17 +1,17 @@
 # Next steps
 
-Current phase: `v0.1.0-beta.1` public beta prerelease with an owner-accepted functional baseline and a fictional, generic built-in sample.
+Current phase: accepted `v0.1.0-beta.1` public beta baseline with an owner-accepted functional baseline and reissued fictional, generic live sample; release/public readback is complete.
 
-## Immediate checkpoint
+## Accepted-baseline checkpoint
 
-1. Let the owner and release steward inspect the reissued public repository, prerelease asset, generic screenshot, and live GitHub Pages demo.
-2. Record owner visual acceptance only after the generic live sample is actually inspected.
-3. Record any concrete, reproducible public-release issue without expanding the product scope.
-4. Keep this beta as the accepted functional baseline until a separately authorized construction session begins.
+1. Preserve this beta as the accepted public-release baseline.
+2. Record any concrete, reproducible public-release issue without expanding the product scope.
+3. Keep automated, browser-observed, owner-observed, and public-readback evidence distinct.
+4. Require a separately authorized construction session for any future product work.
 
 Publishing an npm package, starting a new product version, changing the import security model, and deploying anywhere beyond the documented GitHub Pages site remain separate actions and are not authorized by this release.
 
-## Product direction after acceptance
+## Future product direction
 
 The next bounded product direction must start from fresh `main` in a new branch and a separately authorized work session. Reasonable candidates include accessibility refinement, clearer unsupported-structure diagnostics, and broader deterministic test coverage. No next version has started.
 

@@ -9,10 +9,11 @@
 - Session-only safe editing
 - Gated edited-copy export and reopen
 - Public documentation, contribution guidance, security policy, and CI
+- Owner acceptance of the functional baseline and reissued generic live sample
+- Completed unauthenticated release and public deployment readback
 
-## Public-beta follow-ups
+## Possible future directions
 
-- Owner and release-steward visual acceptance of the reissued generic screenshot, release asset, and live demo
 - Accessibility and keyboard-flow review
 - Clearer diagnostics for unsupported structures
 - Additional deterministic fixtures and browser regression coverage
