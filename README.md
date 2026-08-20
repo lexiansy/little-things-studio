@@ -8,6 +8,8 @@ Little Things Studio was created together by Lexian & Yao, with implementation a
 
 ![Little Things Studio v0.1.0-beta.1 built-in demo](docs/assets/little-things-studio-v0.1.0-beta.1.png)
 
+Want to use it now? Open the [Little Things Studio live app](https://lexiansy.github.io/little-things-studio/). There is nothing to install and no account is required; the `?` button in the upper-right corner opens the complete guide.
+
 ## What this beta can do
 
 - Open the built-in visual editing demo.
@@ -28,11 +30,18 @@ See [Import security model](docs/IMPORT_SECURITY_MODEL.md) for the detailed boun
 
 This beta is not a general-purpose website importer. It does not support arbitrary live websites, framework applications, multi-file projects, PWA or project source, imported JavaScript execution, direct writeback, or editing `view-only` and `blocked` elements. Export is unavailable whenever the candidate cannot prove the bounded safe-edit and source-mapping rules. Unsupported structures are reported instead of being guessed at.
 
-## Quick start
+## Start without coding
 
-Try the [live demo](https://lexiansy.github.io/little-things-studio/) on GitHub Pages.
+1. Open the GitHub Pages [live app](https://lexiansy.github.io/little-things-studio/). There is nothing to install and no account is required.
+2. On your first visit, open the `?` guide in the upper-right corner or begin with the built-in demo.
+3. To edit your own page, prepare one self-contained `.html` or `.htm` file no larger than 5 MiB. A live URL, ZIP, folder, or framework project such as React or Vue cannot be imported directly.
+4. Choose **修改 HTML (Edit HTML)** above the workbench and select the file. Studio reads a temporary copy in your browser; it does not upload or overwrite the original.
+5. Select elements labelled **editable safe** to change text or appearance. **view-only** elements can only be inspected, and **blocked** means an unsafe or unsupported capability was disabled.
+6. When the safety checks pass, choose **下載修改後 HTML (Download edited HTML)** to receive a new `.lts-edited.html` file. Studio does not publish the site for you.
 
-No package installation is required.
+## Run locally (contributors)
+
+The repository has no runtime dependencies and requires no package installation.
 
 ```powershell
 node scripts/serve.mjs

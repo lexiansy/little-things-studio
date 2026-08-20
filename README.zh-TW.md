@@ -8,6 +8,8 @@ Little Things Studio 由 Lexian 與 Yao 共同創作，OpenAI Codex 協助實作
 
 ![Little Things Studio v0.1.0-beta.1 內建示範](docs/assets/little-things-studio-v0.1.0-beta.1.png)
 
+想直接使用：開啟 [Little Things Studio 線上版](https://lexiansy.github.io/little-things-studio/)，不需要安裝或登入；右上角「？」有完整使用指南。
+
 ## 這個 beta 能做什麼
 
 - 操作內建視覺編輯示範。
@@ -28,11 +30,18 @@ Little Things Studio 由 Lexian 與 Yao 共同創作，OpenAI Codex 協助實作
 
 這不是通用網站匯入器。目前不支援任意線上網站、framework app、多檔案 project、PWA／project source、執行匯入 JavaScript、直接寫回原檔，或編輯 `view-only`／`blocked` 元素。無法證明安全編輯與 source mapping 時，匯出會停用；不支援的結構會明示，不會猜測處理。
 
-## 快速開始
+## 不懂程式也能開始
 
-可直接開啟 GitHub Pages [線上示範](https://lexiansy.github.io/little-things-studio/)。
+1. 開啟 GitHub Pages [線上版](https://lexiansy.github.io/little-things-studio/)。不需要安裝軟體，也不需要登入。
+2. 第一次使用時，先按右上角的「？」查看使用指南，或直接操作內建示範。
+3. 要修改自己的頁面，請準備一個不超過 5 MiB、內容都放在同一個檔案裡的 `.html` 或 `.htm`。網址、ZIP、資料夾、React／Vue 等框架專案不能直接匯入。
+4. 按工作臺上方的「修改 HTML」選擇檔案。Studio 只會在瀏覽器裡讀取暫時副本，不會上傳，也不會覆寫原始檔。
+5. 選取「可修改 safe」元素後調整文字與外觀。「僅查看 view-only」只能查看；「已封鎖 blocked」代表危險或不支援的能力已停用。
+6. 通過安全檢查後，按「下載修改後 HTML」取得新的 `.lts-edited.html` 檔案。Studio 不會自動替你發布網站。
 
-不需要安裝任何 package。
+## 在本機執行（貢獻者）
+
+Repository 沒有 runtime dependencies，也不需要安裝 package。
 
 ```powershell
 node scripts/serve.mjs

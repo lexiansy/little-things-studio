@@ -2018,6 +2018,42 @@
       font-weight: 780;
     }
 
+    .help-section + .help-section {
+      margin-top: 24px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(143, 218, 255, 0.12);
+    }
+
+    .help-section h3 {
+      margin: 0 0 7px;
+      color: #e6f5ff;
+      font-size: 13px;
+    }
+
+    .help-section > p {
+      margin: 0 0 14px;
+      color: #91a9bb;
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .help-status-key {
+      margin-top: 14px;
+      padding: 12px;
+      display: grid;
+      gap: 7px;
+      color: #a9c0d0;
+      background: rgba(9, 19, 32, 0.52);
+      border: 1px solid rgba(143, 218, 255, 0.12);
+      border-radius: 11px;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .help-status-key strong {
+      color: #dff3ff;
+    }
+
     .toast {
       position: fixed;
       z-index: 1200;
@@ -2500,7 +2536,7 @@
         <button class="icon-button" id="redoButton" type="button" title="重做" aria-label="重做" disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5"/><path d="M19 12h-8.5A5.5 5.5 0 0 0 5 17.5"/></svg>
         </button>
-        <button class="icon-button" id="helpButton" type="button" title="操作說明" aria-label="操作說明">
+        <button class="icon-button" id="helpButton" type="button" title="使用指南" aria-label="使用指南">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.47 2.07c-.9.49-1.27.92-1.27 1.93M12 17h.01"/></svg>
         </button>
         <button class="primary-button" id="summaryButton" type="button">
@@ -2523,7 +2559,7 @@
           <div class="canvas-status">
             <span id="deviceDimensions">390 × 780</span>
             <span class="safe-state" id="safeStateLabel">不讀寫檔案</span>
-            <label class="quiet-button import-file-button" for="htmlImportInput">匯入 HTML</label>
+            <label class="quiet-button import-file-button" for="htmlImportInput" title="選擇一個單檔 HTML 副本">修改 HTML</label>
             <input class="sr-only" id="htmlImportInput" type="file" accept=".html,.htm,text/html">
             <button class="quiet-button" id="exportHtmlButton" type="button" hidden disabled>下載修改後 HTML</button>
             <button class="quiet-button return-demo-button" id="returnDemoButton" type="button" hidden>返回內建示範</button>
@@ -2541,9 +2577,9 @@
                 <span class="safe-state">腳本停用・外部連線封鎖</span>
               </div>
               <div class="import-counts" aria-label="元素支援狀態摘要">
-                <span class="import-count-chip is-safe" id="importSafeCount">safe 0</span>
-                <span class="import-count-chip is-view-only" id="importViewOnlyCount">view-only 0</span>
-                <span class="import-count-chip is-blocked" id="importBlockedCount">blocked 0</span>
+                <span class="import-count-chip is-safe" id="importSafeCount">可修改 safe 0</span>
+                <span class="import-count-chip is-view-only" id="importViewOnlyCount">僅查看 view-only 0</span>
+                <span class="import-count-chip is-blocked" id="importBlockedCount">已封鎖 blocked 0</span>
               </div>
               <p class="import-safety-summary" id="importSafetySummary">選取本機 HTML 副本後，這裡會列出被停用或移除的能力。</p>
               <div class="import-edit-summary" aria-live="polite">
@@ -2552,7 +2588,7 @@
               </div>
               <div class="import-edit-summary" aria-live="polite">
                 <strong>安全靜態下載</strong>
-                <span id="importExportReason">匯入並修改 safe 元素後，才能下載新的 HTML 副本。</span>
+                <span id="importExportReason">匯入並修改「可修改 safe」元素後，才能下載新的 HTML 副本。</span>
               </div>
             </header>
             <iframe
@@ -2650,7 +2686,7 @@
 
         <div class="import-inspector" id="importInspector" hidden>
           <section class="inspector-section">
-            <p class="import-mode-notice"><strong>v0.1.0-beta.1 可另存安全的靜態副本。</strong>safe 元素可調文字與外觀；只有通過 export gate 才能下載，view-only 與原檔都不會被修改。</p>
+            <p class="import-mode-notice"><strong>可另存一份修改後的 HTML。</strong>「可修改 safe」元素能調整文字與外觀；通過安全檢查後才會開放下載。「僅查看 view-only」元素與原始檔都不會被修改。</p>
           </section>
           <section class="inspector-section">
             <dl class="import-detail-list">
@@ -2909,21 +2945,39 @@
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
       <header class="modal-head">
         <div>
-          <h2 id="helpTitle">先直接碰畫面</h2>
-          <p>這版是用來確認 Studio 的操作手感，不需要妳懂 CSS。</p>
+          <h2 id="helpTitle">兩種開始方式</h2>
+          <p>先玩內建示範，或修改自己的單檔 HTML；不需要懂 CSS。</p>
         </div>
       </header>
       <div class="modal-body">
-        <ol class="help-steps">
-          <li>點畫面上的文字、區塊、雙星光、摘要卡、按鈕或導覽項目。</li>
-          <li>直接拖動選中的元素；拉選取框右下角，可以等比例放大或縮小。</li>
-          <li>右側可以微調位置、大小、顏色、圓角與陰影；不同元素只顯示適合它的項目。</li>
-          <li>選中「最近片段卡」後，可以在右側上傳自己的圖片並切換填滿或完整顯示。</li>
-          <li>切換手機、平板與電腦，確認這次調整要只留在目前尺寸，還是套到所有尺寸。</li>
-          <li>用復原／重做回頭；「查看調整摘要」會把 CSS 數字翻成妳看得懂的變更。</li>
-        </ol>
+        <section class="help-section">
+          <h3>先玩內建示範</h3>
+          <p>適合第一次打開 Studio，先熟悉點選、拖曳與右側調整面板。</p>
+          <ol class="help-steps">
+            <li>點畫面上的文字、區塊、雙星光、摘要卡、按鈕或導覽項目。</li>
+            <li>直接拖動選中的元素；拉選取框右下角，可以等比例放大或縮小。</li>
+            <li>右側可以微調位置、大小、顏色、圓角與陰影；不同元素只顯示適合它的項目。</li>
+            <li>用復原／重做回頭；「查看調整摘要」會把 CSS 數字翻成容易理解的變更。</li>
+          </ol>
+        </section>
+        <section class="help-section">
+          <h3>修改自己的頁面</h3>
+          <p>需要一個不超過 5 MiB、內容都放在同一個檔案裡的 <code>.html</code> 或 <code>.htm</code>。網址、ZIP、資料夾與框架專案不能直接匯入。</p>
+          <ol class="help-steps">
+            <li>按工作臺上方的「修改 HTML」，選擇電腦裡的 HTML 副本。</li>
+            <li>Studio 只會在瀏覽器裡讀取暫時副本，不會上傳，也不會覆寫原始檔。</li>
+            <li>在預覽裡點選「可修改 safe」元素，再從右側調整文字、外觀、位置或大小。</li>
+            <li>完成後按「下載修改後 HTML」。若按鈕沒有開放，畫面會說明尚未通過哪一項安全檢查。</li>
+            <li>下載的是新的 <code>.lts-edited.html</code> 檔案；Studio 不會自動替你發布網站。</li>
+          </ol>
+          <div class="help-status-key">
+            <span><strong>可修改 safe：</strong>可以選取並調整。</span>
+            <span><strong>僅查看 view-only：</strong>可以查看，但不會被改動。</span>
+            <span><strong>已封鎖 blocked：</strong>危險或不支援的能力已停用，並且不能下載修改後的 HTML。</span>
+          </div>
+        </section>
         <div class="modal-actions">
-          <button class="primary-button" type="button" data-close-modal="helpModal">開始玩</button>
+          <button class="primary-button" type="button" data-close-modal="helpModal">回到工作臺</button>
         </div>
       </div>
     </section>
@@ -4163,9 +4217,9 @@
         dom.deviceDimensions.textContent = "隔離預覽";
         dom.importFileName.textContent = fileName;
         dom.importRecognizedCount.textContent = `可辨認元素 ${sanitized.registry.size}`;
-        dom.importSafeCount.textContent = `safe ${sanitized.statusCounts.safe}`;
-        dom.importViewOnlyCount.textContent = `view-only ${sanitized.statusCounts["view-only"]}`;
-        dom.importBlockedCount.textContent = `blocked ${sanitized.blockedCount}`;
+        dom.importSafeCount.textContent = `可修改 safe ${sanitized.statusCounts.safe}`;
+        dom.importViewOnlyCount.textContent = `僅查看 view-only ${sanitized.statusCounts["view-only"]}`;
+        dom.importBlockedCount.textContent = `已封鎖 blocked ${sanitized.blockedCount}`;
         dom.importSafetySummary.textContent = importSafetySummary(sanitized.blockedReasons);
         setDemoControlsDisabled(true);
         renderImportChangeSummary();
@@ -4187,7 +4241,7 @@
         dom.returnDemoButton.hidden = true;
         dom.exportHtmlButton.hidden = true;
         dom.exportHtmlButton.disabled = true;
-        dom.importExportReason.textContent = "匯入並修改 safe 元素後，才能下載新的 HTML 副本。";
+        dom.importExportReason.textContent = "匯入並修改「可修改 safe」元素後，才能下載新的 HTML 副本。";
         dom.projectModeLabel.textContent = "示範畫面";
         dom.projectNameLabel.textContent = "Little Things Demo・首頁";
         dom.safeStateLabel.textContent = "不讀寫檔案";
