@@ -2054,6 +2054,26 @@
       color: #dff3ff;
     }
 
+    .help-support {
+      margin: 16px 0 0;
+      color: #7892a5;
+      font-size: 9px;
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    .help-support a {
+      color: #9dcbe5;
+      text-decoration-color: rgba(157, 203, 229, 0.45);
+      text-underline-offset: 2px;
+    }
+
+    .help-support a:hover,
+    .help-support a:focus-visible {
+      color: #dff3ff;
+      text-decoration-color: currentColor;
+    }
+
     .toast {
       position: fixed;
       z-index: 1200;
@@ -2964,7 +2984,7 @@
           <h3>修改自己的頁面</h3>
           <p>需要一個不超過 5 MiB、內容都放在同一個檔案裡的 <code>.html</code> 或 <code>.htm</code>。網址、ZIP、資料夾與框架專案不能直接匯入。</p>
           <ol class="help-steps">
-            <li>按工作臺上方的「修改 HTML」，選擇電腦裡的 HTML 副本。</li>
+            <li>按工作臺上方的「修改 HTML」，選擇手機或電腦裡的 HTML 副本。</li>
             <li>Studio 只會在瀏覽器裡讀取暫時副本，不會上傳，也不會覆寫原始檔。</li>
             <li>在預覽裡點選「可修改 safe」元素，再從右側調整文字、外觀、位置或大小。</li>
             <li>完成後按「下載修改後 HTML」。若按鈕沒有開放，畫面會說明尚未通過哪一項安全檢查。</li>
@@ -2975,6 +2995,7 @@
             <span><strong>僅查看 view-only：</strong>可以查看，但不會被改動。</span>
             <span><strong>已封鎖 blocked：</strong>危險或不支援的能力已停用，並且不能下載修改後的 HTML。</span>
           </div>
+          <p class="help-support">遇到問題？請到 <a href="https://github.com/lexiansy/little-things-studio/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a> 回報。</p>
         </section>
         <div class="modal-actions">
           <button class="primary-button" type="button" data-close-modal="helpModal">回到工作臺</button>

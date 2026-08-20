@@ -32,12 +32,14 @@ This beta is not a general-purpose website importer. It does not support arbitra
 
 ## Start without coding
 
-1. Open the GitHub Pages [live app](https://lexiansy.github.io/little-things-studio/). There is nothing to install and no account is required.
+1. Open the GitHub Pages [live app](https://lexiansy.github.io/little-things-studio/) in a phone or computer browser. There is nothing to install and no account is required.
 2. On your first visit, open the `?` guide in the upper-right corner or begin with the built-in demo.
 3. To edit your own page, prepare one self-contained `.html` or `.htm` file no larger than 5 MiB. A live URL, ZIP, folder, or framework project such as React or Vue cannot be imported directly.
 4. Choose **修改 HTML (Edit HTML)** above the workbench and select the file. Studio reads a temporary copy in your browser; it does not upload or overwrite the original.
 5. Select elements labelled **editable safe** to change text or appearance. **view-only** elements can only be inspected, and **blocked** means an unsafe or unsupported capability was disabled.
 6. When the safety checks pass, choose **下載修改後 HTML (Download edited HTML)** to receive a new `.lts-edited.html` file. Studio does not publish the site for you.
+
+If you run into a reproducible problem, report it in [GitHub Issues](https://github.com/lexiansy/little-things-studio/issues). For a suspected security vulnerability, follow [SECURITY.md](SECURITY.md) instead of posting details publicly.
 
 ## Run locally (contributors)
 
