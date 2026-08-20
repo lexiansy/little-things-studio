@@ -2921,7 +2921,7 @@
   </div>
 
   <div class="modal-backdrop" id="summaryModal" hidden>
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle" tabindex="-1">
       <header class="modal-head">
         <div>
           <h2 id="summaryTitle">本次調整摘要</h2>
@@ -2942,7 +2942,7 @@
   </div>
 
   <div class="modal-backdrop" id="helpModal" hidden>
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
       <header class="modal-head">
         <div>
           <h2 id="helpTitle">兩種開始方式</h2>
@@ -4835,8 +4835,12 @@
         state.lastModalTrigger = trigger || document.activeElement;
         modal.hidden = false;
         document.body.style.overflow = "hidden";
-        const focusTarget = modal.querySelector("button");
-        requestAnimationFrame(() => focusTarget && focusTarget.focus());
+        const dialog = modal.querySelector('[role="dialog"]');
+        requestAnimationFrame(() => {
+          if (!dialog) return;
+          dialog.focus({ preventScroll: true });
+          dialog.scrollTop = 0;
+        });
       }
 
       function closeModal(modal) {
