@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "evidenceDate": "2026-08-24",
+  "ownerEvidence": false,
+  "baselineArtifact": {
+    "commit": "487d8719fd5453d3cdf30cc9f9fee35f01b0d111",
+    "indexSha256": "f243ce2f6a24931b44a895884c55092a5318c631b5a7258232fcc383972acf8c",
+    "bytes": 238618
+  },
+  "candidateArtifact": {
+    "branch": "experiment/compatibility-architecture-v0.2",
+    "indexSha256": "dd591bd3a290987cb1ac08216df72cf27e0f904fff2d294ab35569b913df870b",
+    "bytes": 290844
+  },
+  "method": "The checkpoint artifact and experimental artifact each imported the same public compatibility corpus through the browser file-input change path. The checkpoint comparison used its immutable index.html with the final public corpus copied into an isolated temporary server root. Counts came from rendered application state, not source inference.",
+  "observations": [
+    {
+      "fixture": "static-inline.html",
+      "checkpoint": { "recognized": 8, "editable": 8, "limitedOrViewOnly": 0, "blocked": 0, "viewNavigator": false },
+      "candidate": { "recognized": 8, "editable": 8, "limitedOrUnsupported": 0, "blocked": 0, "detectedViews": 1, "inert": 0 },
+      "result": "Static baseline remains editable; author-owned data-lts-* attributes and lts-import-* classes survive safe export while exact runtime markers do not."
+    },
+    {
+      "fixture": "nested-interactive.html",
+      "checkpoint": { "recognized": 26, "editable": 15, "limitedOrViewOnly": 11, "blocked": 1, "viewNavigator": false },
+      "candidate": { "recognized": 26, "editable": 21, "limitedOrUnsupported": 5, "blocked": 1, "detectedViews": 1, "inert": 11 },
+      "result": "Button and link appearance is editable while interaction stays inert; direct text units preserve sibling markup; visible input value editing is bounded and exportable."
+    },
+    {
+      "fixture": "multi-view.html",
+      "checkpoint": { "recognized": 13, "editable": 10, "limitedOrViewOnly": 3, "blocked": 1, "viewNavigator": false },
+      "candidate": { "recognized": 13, "editable": 13, "limitedOrUnsupported": 0, "blocked": 1, "detectedViews": 3, "inert": 3 },
+      "result": "Three existing DOM views are reachable without source JavaScript; grid and flex display semantics are preserved and switching adds no history entry."
+    },
+    {
+      "fixture": "css-cascade.html",
+      "checkpoint": { "recognized": 7, "editable": 7, "limitedOrViewOnly": 0, "blocked": 0, "viewNavigator": false },
+      "candidate": { "recognized": 7, "editable": 7, "limitedOrUnsupported": 0, "blocked": 0, "detectedViews": 1, "inert": 0 },
+      "result": "The checkpoint recorded a color control change without changing computed style; the candidate applies an important override and preserves it through export and re-import."
+    },
+    {
+      "fixture": "dependencies.html",
+      "checkpoint": { "recognized": 6, "editable": 6, "limitedOrViewOnly": 0, "blocked": 7, "viewNavigator": false },
+      "candidate": { "recognized": 6, "editable": 6, "limitedOrUnsupported": 0, "blocked": 7, "detectedViews": 1, "inert": 0 },
+      "result": "Static text remains visible; external and relative resources stay blocked and receive explicit diagnostics."
+    },
+    {
+      "fixture": "dynamic-dom.html",
+      "checkpoint": { "recognized": 5, "editable": 4, "limitedOrViewOnly": 1, "blocked": 1, "viewNavigator": false },
+      "candidate": { "recognized": 5, "editable": 5, "limitedOrUnsupported": 0, "blocked": 1, "detectedViews": 1, "inert": 1 },
+      "result": "Generated DOM remains absent because imported scripts never run; the candidate explains that boundary instead of presenting an unexplained empty area."
+    },
+    {
+      "fixture": "graphics-layout.html",
+      "checkpoint": { "recognized": 10, "editable": 5, "limitedOrViewOnly": 5, "blocked": 1, "viewNavigator": false },
+      "candidate": { "recognized": 10, "editable": 7, "limitedOrUnsupported": 3, "blocked": 1, "detectedViews": 1, "inert": 0 },
+      "result": "SVG, canvas, pseudo-element, custom-element, and Shadow DOM limits are reported with distinct reasons; script-created graphics stay absent."
+    },
+    {
+      "fixture": "unsafe-capabilities.html",
+      "checkpoint": { "recognized": 14, "editable": 2, "limitedOrViewOnly": 12, "blocked": 12, "viewNavigator": false },
+      "candidate": { "recognized": 12, "editable": 10, "limitedOrUnsupported": 2, "blocked": 14, "detectedViews": 1, "inert": 9 },
+      "result": "Scripts, handlers, iframe, form/navigation behavior, and SVG declarative animation are removed; export remains blocked."
+    },
+    {
+      "fixture": "media-inert.html",
+      "checkpoint": { "recognized": 7, "editable": 3, "limitedOrViewOnly": 4, "blocked": 1, "viewNavigator": false },
+      "candidate": { "recognized": 7, "editable": 5, "limitedOrUnsupported": 2, "blocked": 5, "detectedViews": 1, "inert": 2 },
+      "result": "Audio and video are explicitly limited and inert; autoplay and native controls are removed and playback remains paused."
+    }
+  ],
+  "browserProbes": {
+    "cascadeExport": { "bytes": 1153, "sha256": "d3286226b189fd5d2b5e830b36a23fcf5e0a9a3de663a92ab3533107486906d0", "runtimeMarkers": false, "importantOverride": true },
+    "authorMarkerExport": { "bytes": 1233, "sha256": "649963fff3b062ba384c4e26df578981f32d2ad5d6cd1387625c016551f4d724", "authorMarkersPreserved": true, "runtimeMarkers": false },
+    "resetHistory": "edit -> reset -> undo reset -> redo reset passed",
+    "realOwnerFiles": "not tested; owner acceptance remains required"
+  }
+}

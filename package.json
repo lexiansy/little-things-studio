@@ -5,12 +5,18 @@
   "description": "A local-first visual studio for safely previewing, editing, and exporting self-contained static HTML.",
   "type": "module",
   "scripts": {
+    "build": "node scripts/build.mjs",
     "check:baseline": "node scripts/check-baseline.mjs",
     "check:import": "node scripts/check-import-safety.mjs && node scripts/check-import-editing.mjs && node scripts/check-static-export.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
+    "check:compatibility": "node scripts/check-compatibility.mjs",
+    "check:architecture": "node scripts/check-compatibility-architecture.mjs",
+    "check:build": "node scripts/check-build-parity.mjs",
+    "check:modules": "node scripts/check-module-graph.mjs",
     "check:public": "node scripts/check-public-readiness.mjs",
-    "check:syntax": "node --check scripts/check-baseline.mjs && node --check scripts/check-import-safety.mjs && node --check scripts/check-import-editing.mjs && node --check scripts/check-static-export.mjs && node --check scripts/check-i18n.mjs && node --check scripts/check-public-readiness.mjs && node --check scripts/serve.mjs",
-    "check": "npm run check:syntax && npm run check:baseline && npm run check:import && npm run check:i18n && npm run check:public",
+    "check:source": "node --check src/app/00-runtime.js && node --check src/app/10-i18n.js && node --check src/app/20-import-analysis.js && node --check src/app/30-sanitization.js && node --check src/app/40-classification.js && node --check src/app/50-view-navigation.js && node --check src/app/60-selection-editing.js && node --check src/app/70-history.js && node --check src/app/80-export.js && node --check src/app/90-ui-rendering.js && node --check src/app/app.js",
+    "check:syntax": "node --check scripts/build.mjs && node --check scripts/check-baseline.mjs && node --check scripts/check-build-parity.mjs && node --check scripts/check-compatibility.mjs && node --check scripts/check-compatibility-architecture.mjs && node --check scripts/check-i18n.mjs && node --check scripts/check-import-editing.mjs && node --check scripts/check-import-safety.mjs && node --check scripts/check-module-graph.mjs && node --check scripts/check-public-readiness.mjs && node --check scripts/check-static-export.mjs && node --check scripts/lib/artifact-plan.mjs && node --check scripts/lib/render-artifact.mjs && node --check scripts/serve.mjs",
+    "check": "npm run check:syntax && npm run check:source && npm run check:build && npm run check:modules && npm run check:baseline && npm run check:import && npm run check:i18n && npm run check:compatibility && npm run check:architecture && npm run check:public",
     "serve": "node scripts/serve.mjs"
   },
   "repository": {

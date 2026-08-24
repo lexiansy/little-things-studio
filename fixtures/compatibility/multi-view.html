@@ -8,7 +8,8 @@
     [role="tablist"] { display: flex; gap: 8px; margin-bottom: 16px; }
     [role="tab"] { padding: 9px 14px; border: 1px solid #7782a8; border-radius: 999px; background: white; }
     [role="tabpanel"], .page-panel { min-height: 180px; padding: 22px; border-radius: 18px; background: white; box-shadow: 0 8px 24px #2232; }
-    .page-panel { display: none; }
+    #panel-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    #panel-three { display: flex; flex-direction: column; gap: 12px; }
   </style>
 </head>
 <body>
@@ -19,6 +20,6 @@
   </nav>
   <section id="panel-one" role="tabpanel"><h1>Overview screen</h1><p>First panel is initially visible.</p></section>
   <section id="panel-two" role="tabpanel" hidden aria-hidden="true"><h1>Details screen</h1><p>Second panel starts with the hidden attribute.</p></section>
-  <section id="panel-three" class="page-panel" aria-hidden="true"><h1>Notes screen</h1><p>Third panel starts with display none and an anchor target.</p></section>
+  <section id="panel-three" class="page-panel" style="display: none" aria-hidden="true"><h1>Notes screen</h1><p>Third panel starts with display none and an anchor target.</p></section>
 </body>
 </html>

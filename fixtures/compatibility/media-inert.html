@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inert media compatibility</title>
+  <style>
+    body { padding: 28px; color: #25324a; background: #f3f7ff; font: 16px/1.5 system-ui, sans-serif; }
+    audio, video { display: block; width: min(480px, 100%); margin-top: 18px; border-radius: 14px; background: #dbe6f7; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Native media remains inert</h1>
+    <p>The safe preview keeps the outer media box visible while disabling native playback controls and autoplay.</p>
+    <audio controls autoplay loop muted src="data:audio/wav;base64,UklGRgAAAAA="><span>Audio fallback text</span></audio>
+    <video controls autoplay poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="><span>Video fallback text</span></video>
+  </main>
+</body>
+</html>

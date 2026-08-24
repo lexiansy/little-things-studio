@@ -50,10 +50,10 @@
     {
       "id": "static-inline",
       "file": "static-inline.html",
-      "sha256": "dc70743faeeb16656fc270104302298d00bcaa9bfa8b10387af3f24a31d206dd",
+      "sha256": "50ef08dcc75945683213ac84fcdc7dc3bdfafd61e5e944d73fab4ac91f31b5b6",
       "categories": ["static-dom", "inline-css", "flexbox", "grid", "data-uri-image"],
       "requiredMarkers": {
-        "selectors": ["main.layout", "section.card", "h1", "img.pixel"],
+        "selectors": ["main.layout", "section.card", "h1", "img.pixel", "[data-lts-author-note]", ".lts-import-authored-card"],
         "texts": ["Static baseline", "Editable single-file page", "Data URI image"]
       },
       "expected": {
@@ -61,7 +61,9 @@
         "elementStates": [
           { "selector": "main.layout", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
           { "selector": "h1", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
-          { "selector": "img.pixel", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "none" }
+          { "selector": "img.pixel", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "none" },
+          { "selector": "[data-lts-author-note]", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": ".lts-import-authored-card", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" }
         ],
         "diagnosticCodes": [],
         "blockedCapabilities": [],
@@ -92,9 +94,9 @@
           { "selector": "span.icon", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
           { "selector": "button.action", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "nested" },
           { "selector": "a", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "nested" },
-          { "selector": "input", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" },
-          { "selector": "select", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" },
-          { "selector": "textarea", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" }
+          { "selector": "input", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "value" },
+          { "selector": "select", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "none" },
+          { "selector": "textarea", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "value" }
         ],
         "diagnosticCodes": [
           "INTERACTION_INERT_VISUAL_EDITABLE",
@@ -116,7 +118,7 @@
     {
       "id": "multi-view",
       "file": "multi-view.html",
-      "sha256": "a59204d517df3644dc12b03f19283f95c0c8ee8ca0c867e7007263abdee74f0d",
+      "sha256": "afa667d47986d48e7e60860f602bf0c1d186c93c4e652ddd4edc6c7df86080ea",
       "categories": ["tabs", "tabpanel", "hidden-panel", "aria-hidden", "anchor-target", "display-none", "button", "link"],
       "requiredMarkers": {
         "selectors": ["nav[role=\"tablist\"]", "button[role=\"tab\"]", "a", "section#panel-one", "section#panel-two", "section#panel-three"],
@@ -269,10 +271,10 @@
     {
       "id": "unsafe-capabilities",
       "file": "unsafe-capabilities.html",
-      "sha256": "a8d9c2f1c37c30f3f3cfa01deeb98cb1068759aa7e89b5ad03f5575b0cb927ef",
-      "categories": ["unsafe-script", "event-handler", "form-submit", "navigation", "popup", "download", "iframe", "button", "link", "input"],
+      "sha256": "dee6e06c1156455b878ef3be60192765326b79994365269f36624cfcc1a55ca8",
+      "categories": ["unsafe-script", "event-handler", "form-submit", "navigation", "popup", "download", "iframe", "button", "link", "input", "svg"],
       "requiredMarkers": {
-        "selectors": ["meta[http-equiv=\"refresh\"]", "a", "button", "form", "input", "iframe", "script"],
+        "selectors": ["meta[http-equiv=\"refresh\"]", "a", "button", "form", "input", "iframe", "script", "svg", "set", "animate"],
         "texts": ["Unsafe capability fixture", "Unsafe navigation", "Unsafe download", "Unsafe popup", "Submit"]
       },
       "expected": {
@@ -284,7 +286,10 @@
           { "selector": "form", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "nested" },
           { "selector": "input", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" },
           { "selector": "iframe", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" },
-          { "selector": "script", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" }
+          { "selector": "script", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" },
+          { "selector": "svg", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "none" },
+          { "selector": "set", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" },
+          { "selector": "animate", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" }
         ],
         "diagnosticCodes": ["UNSAFE_CAPABILITY_REMOVED", "SCRIPT_REMOVED", "INLINE_HANDLER_REMOVED", "META_REFRESH_REMOVED", "IFRAME_REMOVED", "INTERACTION_INERT_VISUAL_EDITABLE"],
         "blockedCapabilities": ["script-execution", "inline-handler", "meta-refresh", "form-submission", "navigation", "popup", "download", "embedded-frame"],
@@ -292,6 +297,35 @@
         "export": {
           "gate": "blocked",
           "reimport": "not-applicable",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "media-inert",
+      "file": "media-inert.html",
+      "sha256": "371431acb45736ed8e5c3828b8421a767f2cd166d9015f5e7e49f63b81deb119",
+      "categories": ["static-dom", "inline-css"],
+      "requiredMarkers": {
+        "selectors": ["main", "h1", "audio", "video"],
+        "texts": ["Native media remains inert", "Audio fallback text", "Video fallback text"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "main", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "h1", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "audio", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "none" },
+          { "selector": "video", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "none" }
+        ],
+        "diagnosticCodes": ["INTERACTION_INERT_VISUAL_LIMITED"],
+        "blockedCapabilities": [],
+        "networkRequests": 0,
+        "export": {
+          "gate": "allowed-after-validated-edit",
+          "reimport": "allowed-edits-preserved",
           "previewOnlyStateSerialized": false,
           "runtimeMarkersSerialized": false,
           "blockedCapabilitiesRestored": false

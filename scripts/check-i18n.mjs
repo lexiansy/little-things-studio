@@ -6,7 +6,7 @@ import vm from "node:vm";
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const html = await readFile(path.join(root, "index.html"), "utf8");
-const localeSource = html.match(/const LOCALES = (\{[\s\S]*?\n      \});\n\n      function interpolate/)?.[1];
+const localeSource = html.match(/const LOCALES = (\{[\s\S]*?\n      \});\n\n      const i18nCore/)?.[1];
 assert.ok(localeSource, "centralized LOCALES dictionary is missing");
 
 const locales = vm.runInNewContext(`(${localeSource})`);

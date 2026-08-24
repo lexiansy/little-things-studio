@@ -30,9 +30,12 @@ requireMatch(/class="prototype-badge">v0\.1\.0-beta\.1</, "prototype badge is no
   "importYControl"
 ].forEach(id => requireMatch(new RegExp(`id="${id}"`), `missing imported edit control: ${id}`));
 
-requireMatch(/record\.status !== "safe"/, "safe/view-only editing gate is missing");
-requireMatch(/element\.childElementCount === 0/, "leaf-text gate is missing");
-requireMatch(/if \(edit\.hasLeafText\)[\s\S]*?element\.textContent = active\.text \? values\.text : original\.text/, "text writes are not leaf-gated");
+requireMatch(/record\.visual\.state === "unsupported"/, "visual editing support gate is missing");
+requireMatch(/interaction[\s\S]*?visual[\s\S]*?status/, "independent interaction/visual classification is missing");
+requireMatch(/element\.childElementCount === 0/, "leaf-text fallback gate is missing");
+requireMatch(/target\.nodeKind === "text"[\s\S]*?node\.data/, "nested direct-text target is missing");
+requireMatch(/textTarget\.data = active\.text \? values\.text : original\.text/, "text-node writes are not sibling-preserving");
+requireMatch(/setProperty\([^)]*,[^)]*, "important"\)/, "priority-aware visual override is missing");
 requireMatch(/edits: \{\},[\s\S]*?history: \[\],[\s\S]*?future: \[\]/, "session-only edit history is missing");
 requireMatch(/function undoImport\(\)/, "imported undo is missing");
 requireMatch(/function redoImport\(\)/, "imported redo is missing");
@@ -76,8 +79,8 @@ if (failures.length) {
     ok: true,
     checked: [path.relative(root, indexPath)],
     guarantees: {
-      editableStatus: "safe-only",
-      leafTextOnly: true,
+      interactionAndVisualStatus: "independent",
+      nestedTextUnits: true,
       previewCopyOnly: true,
       importedUndoRedo: true,
       visibleResizeHandle: true,

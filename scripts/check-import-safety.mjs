@@ -26,6 +26,8 @@ requireMatch(index, /const MAX_IMPORT_BYTES = 5 \* 1024 \* 1024;/, "5 MiB limit 
 requireMatch(index, /await file\.text\(\)/, "File.text() UTF-8 read path is missing");
 requireMatch(index, /Object\.freeze\(\{ fileName: file\.name, source \}\)/, "immutable source-copy boundary is missing");
 requireMatch(index, /const IMPORT_BLOCKED_TAGS = new Set\(\[[\s\S]*?"script"[\s\S]*?"iframe"[\s\S]*?"object"[\s\S]*?"embed"/, "blocked element allowlist is incomplete");
+requireMatch(index, /IMPORT_BLOCKED_TAGS[\s\S]*?"animate"[\s\S]*?"animatetransform"[\s\S]*?"set"[\s\S]*?"discard"/, "SVG declarative animation blocklist is incomplete");
+requireMatch(index, /\["download", "target", "ping", "autofocus", "autoplay", "controls"\]/, "native autoplay/control stripping is missing");
 requireMatch(index, /default-src 'none'/, "CSP default-src block is missing");
 requireMatch(index, /script-src 'none'/, "CSP script-src block is missing");
 requireMatch(index, /connect-src 'none'/, "CSP connect-src block is missing");
@@ -37,6 +39,7 @@ requireMatch(index, /data-lts-runtime-id/, "runtime registry marker is missing")
 requireMatch(index, /CSS external resource/, "CSS external-resource neutralization is missing");
 requireMatch(index, /function returnToStart\(\)/, "return-to-start cleanup path is missing");
 requireAbsent(index, /\b(?:fetch|XMLHttpRequest|WebSocket)\s*\(/, "network API was added to the prototype");
+requireMatch(index, /sanitizationCore\.sanitizeCss/, "runtime import path is not using the sanitization source module");
 
 requireMatch(simple, /data:image\/png;base64,/, "simple fixture needs a data URI image");
 requireMatch(simple, /<h1>[\s\S]*?<\/h1>/, "simple fixture needs a heading");

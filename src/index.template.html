@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c1320">
+  <meta name="color-scheme" content="dark">
+  <title>Little Things Studio v0.1.0-beta.1｜Local-first visual editor</title>
+  <style>
+/*__LTS_STYLE__*/
+  </style>
+</head>
+<body>
+  <div class="studio-app">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="project-mark" aria-hidden="true">LTS</span>
+        </div>
+        <div class="brand-copy">
+          <h1>Little Things Studio</h1>
+          <p id="brandSubtitle" hidden>可試玩內建範例，也能匯入自己的 HTML</p>
+        </div>
+        <span class="prototype-badge">v0.1.0-beta.1</span>
+      </div>
+
+      <div class="header-center" id="editorHeaderCenter" aria-label="預覽裝置與縮放" hidden>
+        <div class="device-switch" role="group" aria-label="預覽裝置">
+          <button class="device-button" type="button" data-device-button="phone" aria-pressed="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.4"/><path d="M10 5h4M11 18.5h2"/></svg>
+            <span>手機</span>
+          </button>
+          <button class="device-button" type="button" data-device-button="tablet" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.3"/><path d="M10.5 18.5h3"/></svg>
+            <span>平板</span>
+          </button>
+          <button class="device-button" type="button" data-device-button="desktop" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="13" rx="1.8"/><path d="M8 20.5h8M12 16.5v4"/></svg>
+            <span>電腦</span>
+          </button>
+        </div>
+        <label>
+          <span class="sr-only">畫布縮放</span>
+          <select class="zoom-select" id="zoomSelect">
+            <option value="0.75">75%</option>
+            <option value="1" selected>適合畫布</option>
+            <option value="1.25">125%</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-button" id="undoButton" type="button" title="復原" aria-label="復原" hidden disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5"/><path d="M5 12h8.5a5.5 5.5 0 0 1 5.5 5.5"/></svg>
+        </button>
+        <button class="icon-button" id="redoButton" type="button" title="重做" aria-label="重做" hidden disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5"/><path d="M19 12h-8.5A5.5 5.5 0 0 0 5 17.5"/></svg>
+        </button>
+        <button class="quiet-button language-button" id="languageButton" type="button" title="Switch to English" aria-label="Switch interface language to English">EN</button>
+        <button class="icon-button" id="helpButton" type="button" title="使用指南" aria-label="使用指南">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.47 2.07c-.9.49-1.27.92-1.27 1.93M12 17h.01"/></svg>
+        </button>
+        <button class="primary-button" id="summaryButton" type="button" title="開啟調整紀錄，目前 0 項" aria-label="開啟調整紀錄，目前 0 項" hidden>
+          <span class="action-label">調整紀錄</span>
+          <span aria-hidden="true">≡</span>
+          <span class="count" id="headerChangeCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <input class="sr-only" id="htmlImportInput" type="file" accept=".html,.htm,text/html" aria-label="匯入 HTML 檔">
+
+    <main class="start-screen" id="startScreen">
+      <section class="start-card" aria-labelledby="startTitle">
+        <h2 id="startTitle">想從哪裡開始？</h2>
+        <p>匯入自己的 HTML 檔，或先用內建範例試玩。</p>
+        <div class="start-options">
+          <button class="start-choice is-primary" id="startImportButton" type="button">
+            <strong>匯入 HTML 檔</strong>
+            <span>從手機或電腦選擇單一 .html 檔案</span>
+          </button>
+          <button class="start-choice is-secondary" id="startDemoButton" type="button">
+            <strong>試玩內建範例</strong>
+            <span>看看可以調整哪些畫面元素</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <main class="workspace" id="workspace" hidden>
+      <section class="stage" aria-label="預覽工作臺">
+        <div class="stage-toolbar">
+          <div class="project-context">
+            <div class="project-crumb">
+              <span class="demo-dot" aria-hidden="true"></span>
+              <span id="projectModeLabel">試玩範例</span>
+              <span aria-hidden="true">/</span>
+              <strong id="projectNameLabel">Little Things Demo・首頁</strong>
+            </div>
+            <div class="canvas-status">
+              <span id="deviceDimensions">390 × 780</span>
+            </div>
+          </div>
+          <div class="editor-actions" id="editorActions" aria-label="編輯器檔案操作">
+            <label class="quiet-button import-file-button" id="editorImportButton" for="htmlImportInput" title="選擇手機或電腦裡的單檔 HTML 副本；檔案只會在瀏覽器中開啟，不會上傳。">匯入 HTML 檔</label>
+            <button class="primary-button editor-download-button" id="exportHtmlButton" type="button" hidden disabled>下載修改後 HTML</button>
+            <button class="quiet-button return-start-button" id="returnStartButton" type="button">回到開始</button>
+          </div>
+        </div>
+
+        <div class="workbench" id="workbench">
+          <section class="import-preview-shell" id="importPreviewShell" aria-label="隔離的匯入 HTML 預覽" hidden>
+            <header class="import-preview-summary">
+              <div class="import-summary-top">
+                <div>
+                  <strong id="importFileName">尚未匯入 HTML</strong>
+                  <span id="importRecognizedCount">可辨認元素 0</span>
+                </div>
+                <span class="safe-state">腳本停用・外部連線封鎖</span>
+              </div>
+              <div class="import-counts" aria-label="元素支援狀態摘要">
+                <span class="import-count-chip is-safe" id="importSafeCount">外觀可修改 0</span>
+                <span class="import-count-chip is-view-only" id="importViewOnlyCount">有限／不支援 0</span>
+                <span class="import-count-chip is-blocked" id="importBlockedCount">已封鎖 blocked 0</span>
+              </div>
+              <p class="import-safety-summary" id="importSafetySummary">選取本機 HTML 副本後，這裡會列出被停用或移除的能力。</p>
+              <details class="compatibility-summary" id="compatibilitySummary">
+                <summary><span>相容性摘要</span><strong id="compatibilitySummaryHeadline">匯入後顯示頁面、編輯與安全限制</strong></summary>
+                <div class="compatibility-summary-body">
+                  <dl class="compatibility-stats">
+                    <div><dt>畫面</dt><dd id="compatibilityViewCount">0</dd></div>
+                    <div><dt>外觀可修改</dt><dd id="compatibilityEditableCount">0</dd></div>
+                    <div><dt>有限／不支援</dt><dd id="compatibilityLimitedCount">0</dd></div>
+                    <div><dt>互動已停用</dt><dd id="compatibilityInertCount">0</dd></div>
+                  </dl>
+                  <ul class="compatibility-diagnostics" id="compatibilityDiagnostics"></ul>
+                </div>
+              </details>
+              <nav class="view-navigator" id="viewNavigator" aria-label="匯入畫面導覽" hidden>
+                <strong>畫面導覽</strong>
+                <div class="view-navigator-actions" id="viewNavigatorActions"></div>
+              </nav>
+              <div class="import-edit-summary" aria-live="polite">
+                <strong id="importEditCountLabel">0 個匯入元素有調整</strong>
+                <span id="importEditSummary">尚未修改；所有變更只留在這次的清理後預覽副本。</span>
+              </div>
+              <div class="import-edit-summary" aria-live="polite">
+                <strong>安全靜態下載</strong>
+                <span id="importExportReason">匯入並完成一項允許的外觀調整後，才能下載新的安全 HTML 副本。</span>
+              </div>
+            </header>
+            <iframe
+              class="import-preview-frame"
+              id="importPreviewFrame"
+              title="隔離的匯入 HTML 預覽"
+              sandbox="allow-same-origin"
+              referrerpolicy="no-referrer"
+            ></iframe>
+          </section>
+          <div class="canvas-sizer" id="canvasSizer">
+            <article class="demo-page" id="demoPage" data-device="phone" aria-label="Little Things 通用示範頁">
+              <div class="demo-ambient" aria-hidden="true"></div>
+
+              <header class="demo-header" id="demo-header" data-editable="header" data-label="頁首區塊" tabindex="0">
+                <p class="demo-kicker" id="demo-kicker" data-editable="kicker" data-label="英文眉題" tabindex="0">LITTLE THINGS DEMO</p>
+                <h1 class="demo-title" id="demo-title" data-editable="title" data-label="標題" tabindex="0">一頁小日常</h1>
+                <p class="demo-subtitle" id="demo-subtitle" data-editable="subtitle" data-label="副標文字" tabindex="0">把今天的一件小事，留成可以慢慢看的頁面。</p>
+
+                <div class="star-pair" id="demo-stars" data-editable="stars" data-label="雙星光" tabindex="0" aria-label="雙星光裝飾">
+                  <span class="star" aria-hidden="true"></span>
+                  <span class="star" aria-hidden="true"></span>
+                </div>
+              </header>
+
+              <div class="demo-main">
+                <div class="hello-row">
+                  <h2 id="demo-hello-title" data-editable="helloTitle" data-label="今日標題" tabindex="0">今天的小事</h2>
+                  <span id="demo-update-time" data-editable="updateTime" data-label="更新時間" tabindex="0">示範時間 15:20</span>
+                </div>
+
+                <section class="observation-note" id="demo-note" data-editable="note" data-label="最新紀錄卡" tabindex="0">
+                  <span class="note-label" id="demo-note-label" data-editable="noteLabel" data-label="紀錄標籤" tabindex="0">範例卡片</span>
+                  <p class="note-main" id="demo-note-main" data-editable="noteMain" data-label="紀錄標題" tabindex="0">午後的光落在桌角</p>
+                  <p class="note-meta" id="demo-note-meta" data-editable="noteMeta" data-label="紀錄內容" tabindex="0">窗邊角落 · 示範紀錄<br>翻過一頁書，杯子裡的茶還有一點溫度。</p>
+                </section>
+
+                <div class="quick-grid" aria-label="今日摘要">
+                  <div class="quick-card" id="demo-water-card" data-editable="waterCard" data-label="閱讀摘要卡" tabindex="0"><strong>閱讀</strong><span>20 分鐘</span></div>
+                  <div class="quick-card" id="demo-activity-card" data-editable="activityCard" data-label="散步摘要卡" tabindex="0"><strong>散步</strong><span>天氣很好</span></div>
+                  <figure class="quick-card photo-card" id="demo-photo-card" data-editable="photo" data-label="最近片段卡" tabindex="0">
+                    <span class="photo-frame">
+                      <img id="demo-photo-image" alt="" hidden>
+                      <span class="photo-placeholder" id="photoPlaceholder" aria-hidden="true">♢</span>
+                    </span>
+                    <figcaption class="photo-copy">
+                      <strong>最近片段</strong>
+                      <span id="photoCaption">點右側上傳更換</span>
+                    </figcaption>
+                  </figure>
+                </div>
+
+                <button class="record-button" id="demo-record" data-editable="record" data-label="新增紀錄按鈕" tabindex="0" type="button">新增一筆小事</button>
+              </div>
+
+              <nav class="demo-nav" id="demo-nav" data-editable="nav" data-label="底部導覽列" tabindex="0" aria-label="示範底部導覽">
+                <span class="demo-nav-item is-active" id="demo-nav-home" data-editable="navHome" data-label="首頁導覽項目" tabindex="0"><span class="demo-nav-icon">⌂</span><span>首頁</span></span>
+                <span class="demo-nav-item" id="demo-nav-wiki" data-editable="navWiki" data-label="靈感導覽項目" tabindex="0"><span class="demo-nav-icon">◇</span><span>靈感</span></span>
+                <span class="demo-nav-item" id="demo-nav-records" data-editable="navRecords" data-label="記錄導覽項目" tabindex="0"><span class="demo-nav-icon">≡</span><span>記錄</span></span>
+              </nav>
+
+              <div class="selection-overlay" id="selectionOverlay" aria-hidden="true">
+                <span class="selection-label" id="selectionLabel">雙星光 · 拖曳移動</span>
+                <button class="resize-handle" id="resizeHandle" type="button" tabindex="-1" aria-label="拖曳縮放選取元素"></button>
+              </div>
+            </article>
+          </div>
+
+          <div class="canvas-tip" id="canvasTip" aria-hidden="true">
+            <span class="tip-dot"></span>
+            <span>已選中雙星光：直接拖動，或拉右下角縮放。也可以點其他元素。</span>
+          </div>
+        </div>
+
+      </section>
+
+      <aside class="inspector" id="inspector" aria-label="元素調整面板">
+        <div class="inspector-head">
+          <div>
+            <p class="eyebrow">目前選取</p>
+            <h2 class="selected-name" id="selectedName">雙星光</h2>
+          </div>
+          <span class="kind-chip" id="selectedKind">裝飾</span>
+        </div>
+
+        <div class="import-inspector" id="importInspector" hidden>
+          <section class="inspector-section">
+            <p class="import-mode-notice"><strong>可另存一份修改後的 HTML。</strong>外觀能否修改，和原始互動是否停用，會分開顯示；原始檔永遠不會被覆寫。</p>
+          </section>
+          <section class="inspector-section">
+            <dl class="import-detail-list">
+              <div class="import-detail-row"><dt>Tag</dt><dd id="importSelectedTag">—</dd></div>
+              <div class="import-detail-row"><dt>名稱／文字</dt><dd id="importSelectedLabel">請點選預覽中的元素</dd></div>
+              <div class="import-detail-row"><dt>Runtime ID</dt><dd id="importSelectedRuntimeId">—</dd></div>
+              <div class="import-detail-row"><dt>選取層級</dt><dd><select class="import-edit-input import-target-select" id="importTargetControl" aria-label="選取文字、內層元素或容器"></select></dd></div>
+              <div class="import-detail-row"><dt>位置</dt><dd id="importSelectionBreadcrumb">—</dd></div>
+              <div class="import-detail-row"><dt>外觀編輯</dt><dd><span class="import-support-chip" id="importSelectedStatus">—</span></dd></div>
+              <div class="import-detail-row"><dt>原始互動</dt><dd><span class="import-support-chip" id="importSelectedInteraction">—</span></dd></div>
+              <div class="import-detail-row"><dt>說明</dt><dd id="importSelectedReason">選取元素後，這裡會分開說明外觀與互動限制。</dd></div>
+            </dl>
+          </section>
+          <section class="inspector-section">
+            <div class="section-row">
+              <h3 class="section-title">安全外觀調整</h3>
+            </div>
+            <p class="import-edit-gate" id="importEditGate">請先選取預覽中的元素。</p>
+            <fieldset class="import-edit-fieldset" id="importEditControls" disabled>
+              <div class="import-edit-grid">
+                <label class="import-edit-control is-wide">
+                  文字內容
+                  <input class="import-edit-input" id="importTextControl" data-import-control="text" type="text" autocomplete="off">
+                </label>
+                <label class="import-edit-control">
+                  字體大小（px）
+                  <input class="import-edit-input" id="importFontSizeControl" data-import-control="fontSize" type="number" min="6" max="240" step="1">
+                </label>
+                <label class="import-edit-control">
+                  字重
+                  <input class="import-edit-input" data-import-control="fontWeight" type="number" min="100" max="900" step="100">
+                </label>
+                <label class="import-edit-control">
+                  行高
+                  <input class="import-edit-input" data-import-control="lineHeight" type="number" min="0.5" max="4" step="0.1">
+                </label>
+                <label class="import-edit-control">
+                  文字對齊
+                  <select class="import-edit-input" data-import-control="textAlign"><option value="left">靠左</option><option value="center">置中</option><option value="right">靠右</option><option value="justify">左右對齊</option></select>
+                </label>
+                <label class="import-edit-control">
+                  圓角（px）
+                  <input class="import-edit-input" id="importRadiusControl" data-import-control="radius" type="number" min="0" max="400" step="1">
+                </label>
+                <label class="import-edit-control">
+                  邊框寬度（px）
+                  <input class="import-edit-input" data-import-control="borderWidth" type="number" min="0" max="40" step="1">
+                </label>
+                <label class="import-edit-control">
+                  邊框樣式
+                  <select class="import-edit-input" data-import-control="borderStyle"><option value="none">無</option><option value="solid">實線</option><option value="dashed">虛線</option><option value="dotted">點線</option><option value="double">雙線</option></select>
+                </label>
+                <label class="import-edit-control">
+                  邊框顏色
+                  <input data-import-control="borderColor" type="color" value="#000000">
+                </label>
+                <label class="import-edit-control is-wide">
+                  陰影
+                  <input class="import-edit-input" data-import-control="shadow" type="text" maxlength="160" placeholder="0 8px 24px rgba(0,0,0,.15)">
+                </label>
+                <label class="import-edit-control">
+                  透明度
+                  <input class="import-edit-input" data-import-control="opacity" type="number" min="0" max="1" step="0.05">
+                </label>
+                <label class="import-edit-control">
+                  內距（px）
+                  <input class="import-edit-input" data-import-control="padding" type="number" min="0" max="400" step="1">
+                </label>
+                <label class="import-edit-control">
+                  外距（px）
+                  <input class="import-edit-input" data-import-control="margin" type="number" min="-400" max="400" step="1">
+                </label>
+                <label class="import-edit-control">
+                  最小寬度（px）
+                  <input class="import-edit-input" data-import-control="minWidth" type="number" min="0" max="2000" step="1">
+                </label>
+                <label class="import-edit-control">
+                  最大寬度（px）
+                  <input class="import-edit-input" data-import-control="maxWidth" type="number" min="0" max="4000" step="1">
+                </label>
+                <label class="import-edit-control">
+                  最小高度（px）
+                  <input class="import-edit-input" data-import-control="minHeight" type="number" min="0" max="2000" step="1">
+                </label>
+                <label class="import-edit-control">
+                  最大高度（px）
+                  <input class="import-edit-input" data-import-control="maxHeight" type="number" min="0" max="4000" step="1">
+                </label>
+                <label class="import-edit-control">
+                  Flex／Grid 水平
+                  <select class="import-edit-input" data-import-control="justifyContent"><option value="start">起點</option><option value="center">置中</option><option value="end">終點</option><option value="space-between">平均分散</option><option value="space-around">環繞間距</option></select>
+                </label>
+                <label class="import-edit-control">
+                  Flex／Grid 垂直
+                  <select class="import-edit-input" data-import-control="alignItems"><option value="stretch">延展</option><option value="start">起點</option><option value="center">置中</option><option value="end">終點</option><option value="baseline">基線</option></select>
+                </label>
+                <label class="import-edit-control">
+                  間距（px）
+                  <input class="import-edit-input" data-import-control="gap" type="number" min="0" max="400" step="1">
+                </label>
+                <label class="import-edit-control">
+                  寬度（px）
+                  <input class="import-edit-input" id="importWidthControl" data-import-control="width" type="number" min="12" max="1600" step="1">
+                </label>
+                <label class="import-edit-control">
+                  高度（px）
+                  <input class="import-edit-input" id="importHeightControl" data-import-control="height" type="number" min="12" max="1600" step="1">
+                </label>
+                <label class="import-edit-control">
+                  X 位移（px）
+                  <input class="import-edit-input" id="importXControl" data-import-control="x" type="number" min="-800" max="800" step="1">
+                </label>
+                <label class="import-edit-control">
+                  Y 位移（px）
+                  <input class="import-edit-input" id="importYControl" data-import-control="y" type="number" min="-800" max="800" step="1">
+                </label>
+                <label class="import-edit-control">
+                  文字顏色
+                  <span class="import-edit-color-row">
+                    <output id="importTextColorOutput">#000000</output>
+                    <input id="importTextColorControl" data-import-control="color" type="color" value="#000000">
+                  </span>
+                </label>
+                <label class="import-edit-control">
+                  背景色
+                  <span class="import-edit-color-row">
+                    <output id="importBackgroundColorOutput">#FFFFFF</output>
+                    <input id="importBackgroundColorControl" data-import-control="backgroundColor" type="color" value="#ffffff">
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+            <div class="import-reset-row">
+              <button class="quiet-button" id="importResetTargetButton" type="button" disabled>重設目前匯入調整</button>
+            </div>
+          </section>
+        </div>
+
+        <section class="inspector-section">
+          <div class="section-row">
+            <h3 class="section-title">套用到</h3>
+          </div>
+          <div class="scope-switch" role="radiogroup" aria-label="調整套用範圍">
+            <label class="scope-option">
+              <input type="radio" name="scope" value="current" checked>
+              <span id="currentDeviceScope">目前手機尺寸</span>
+            </label>
+            <label class="scope-option">
+              <input type="radio" name="scope" value="all">
+              <span>所有尺寸</span>
+            </label>
+          </div>
+          <p class="scope-message" id="scopeMessage">接下來的移動與外觀調整，只會套用到手機預覽。</p>
+        </section>
+
+        <section class="inspector-section">
+          <div class="section-row">
+            <h3 class="section-title">位置與大小</h3>
+            <button class="quiet-button" id="resetElementButton" type="button">重設此元素</button>
+          </div>
+          <div class="control-stack">
+            <label class="control">
+              <span class="control-label-row">
+                <span class="control-label">左右位置</span>
+                <output class="value-readout" id="xOutput" for="xControl">0 px</output>
+              </span>
+              <span class="range-row">
+                <button class="nudge-button" type="button" data-nudge="x" data-amount="-1" aria-label="向左移動 1 像素">−</button>
+                <input id="xControl" data-control="x" type="range" min="-100" max="100" step="1" value="0">
+                <button class="nudge-button" type="button" data-nudge="x" data-amount="1" aria-label="向右移動 1 像素">+</button>
+              </span>
+            </label>
+
+            <label class="control">
+              <span class="control-label-row">
+                <span class="control-label">上下位置</span>
+                <output class="value-readout" id="yOutput" for="yControl">0 px</output>
+              </span>
+              <span class="range-row">
+                <button class="nudge-button" type="button" data-nudge="y" data-amount="-1" aria-label="向上移動 1 像素">−</button>
+                <input id="yControl" data-control="y" type="range" min="-100" max="100" step="1" value="0">
+                <button class="nudge-button" type="button" data-nudge="y" data-amount="1" aria-label="向下移動 1 像素">+</button>
+              </span>
+            </label>
+
+            <label class="control">
+              <span class="control-label-row">
+                <span class="control-label">整體大小</span>
+                <output class="value-readout" id="scaleOutput" for="scaleControl">100%</output>
+              </span>
+              <input id="scaleControl" data-control="scale" type="range" min="60" max="170" step="1" value="100">
+            </label>
+          </div>
+        </section>
+
+        <section class="inspector-section" id="textSection">
+          <div class="section-row">
+            <h3 class="section-title" id="textSectionTitle">顏色</h3>
+          </div>
+          <div class="control-stack">
+            <label class="control" id="fontSizeControlRow">
+              <span class="control-label-row">
+                <span class="control-label">字級</span>
+                <output class="value-readout" id="fontSizeOutput" for="fontSizeControl">31 px</output>
+              </span>
+              <input id="fontSizeControl" data-control="fontSize" type="range" min="9" max="56" step="1" value="31">
+            </label>
+
+            <label class="control" id="fontFamilyControlRow">
+              <span class="control-label">字體氣質</span>
+              <select class="select-control" id="fontFamilyControl" data-control="fontFamily">
+                <option value="clear">清楚俐落</option>
+                <option value="round">柔和圓潤</option>
+                <option value="serif">安靜典雅</option>
+              </select>
+            </label>
+
+            <label class="control" id="textColorControlRow">
+              <span class="control-label">文字／圖形顏色</span>
+              <span class="color-row">
+                <span class="color-value" id="colorValue">#59453B</span>
+                <input id="colorControl" data-control="color" type="color" value="#59453b" aria-label="文字或圖形顏色">
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="inspector-section" id="surfaceSection">
+          <div class="section-row">
+            <h3 class="section-title">外觀</h3>
+          </div>
+          <div class="control-stack">
+            <label class="control" id="backgroundControlRow">
+              <span class="control-label">底色</span>
+              <span class="color-row">
+                <span class="color-value" id="backgroundValue">#FFF0B8</span>
+                <input id="backgroundControl" data-control="background" type="color" value="#fff0b8" aria-label="元素底色">
+              </span>
+            </label>
+
+            <label class="control" id="radiusControlRow">
+              <span class="control-label-row">
+                <span class="control-label">圓角</span>
+                <output class="value-readout" id="radiusOutput" for="radiusControl">22 px</output>
+              </span>
+              <input id="radiusControl" data-control="radius" type="range" min="0" max="42" step="1" value="22">
+            </label>
+
+            <label class="toggle-row" id="shadowControlRow">
+              <span class="toggle-copy">
+                <strong>柔和陰影</strong>
+                <span>讓元素與背景稍微分開</span>
+              </span>
+              <span class="switch">
+                <input id="shadowControl" data-control="shadow" type="checkbox">
+                <span class="switch-track" aria-hidden="true"></span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="inspector-section" id="imageSection" hidden>
+          <div class="section-row">
+            <h3 class="section-title">圖片</h3>
+          </div>
+          <div class="image-control-box">
+            <div class="image-file-status">
+              <strong>目前圖片</strong>
+              <span id="imageFileName">尚未選擇圖片</span>
+            </div>
+            <div class="image-actions">
+              <label class="upload-button" for="imageUpload">
+                <span aria-hidden="true">＋</span>
+                <span>上傳／更換圖片</span>
+              </label>
+              <input class="sr-only" id="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+              <button class="quiet-button remove-image-button" id="removeImageButton" type="button" disabled>移除</button>
+            </div>
+            <label class="control">
+              <span class="control-label">圖片顯示方式</span>
+              <select class="select-control" id="imageFitControl" data-control="imageFit">
+                <option value="cover">填滿框格</option>
+                <option value="contain">完整顯示</option>
+              </select>
+            </label>
+            <p class="section-note">圖片只留在這次預覽裡；重新開啟檔案就會消失。</p>
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <div class="selected-help" id="selectedHelp">
+            妳現在選的是一組裝飾。拖動畫面會改位置，拉右下角會等比例縮放；鍵盤方向鍵也能微調。
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <button class="quiet-button is-danger" id="resetAllButton" type="button">清除這一輪全部調整</button>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="signature">
+      <img class="collaboration-mark" alt="" aria-hidden="true" src="data:image/png;base64,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">
+      <span>✦ Created together by Lexian &amp; Yao ✦</span>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="summaryModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle" tabindex="-1">
+      <header class="modal-head">
+        <div>
+          <h2 id="summaryTitle">本次調整紀錄</h2>
+          <p>整理目前這次編輯中做過的調整。</p>
+        </div>
+      </header>
+      <div class="modal-body">
+        <div class="prototype-notice">
+          <span aria-hidden="true">◇</span>
+          <span><strong>這是暫時工作階段。</strong>回到開始後，這次的調整紀錄會一起清除。</span>
+        </div>
+        <div id="summaryContent"></div>
+        <div class="modal-actions">
+          <button class="primary-button" type="button" data-close-modal="summaryModal">繼續調整</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="returnConfirmModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="returnConfirmTitle" tabindex="-1">
+      <header class="modal-head">
+        <div>
+          <h2 id="returnConfirmTitle">要回到開始嗎？</h2>
+          <p>目前這次調整還沒有保留下來。</p>
+        </div>
+      </header>
+      <div class="modal-body">
+        <p class="return-confirm-copy">回到開始會清除目前的暫時文件與這次調整；原始 HTML 檔案不受影響。</p>
+        <div class="modal-actions">
+          <button class="quiet-button" type="button" data-close-modal="returnConfirmModal">繼續編輯</button>
+          <button class="primary-button" id="confirmReturnStartButton" type="button">回到開始</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="helpModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
+      <header class="modal-head">
+        <div>
+          <h2 id="helpTitle">從開始畫面選擇</h2>
+          <p>匯入自己的單檔 HTML，或先用內建範例熟悉調整方式。</p>
+        </div>
+      </header>
+      <div class="modal-body">
+        <section class="help-section">
+          <h3>試玩內建範例</h3>
+          <p>在開始畫面選「試玩內建範例」，熟悉點選、拖曳與右側調整面板。</p>
+          <ol class="help-steps">
+            <li>點畫面上的文字、區塊、雙星光、摘要卡、按鈕或導覽項目。</li>
+            <li>直接拖動選中的元素；拉選取框右下角，可以等比例放大或縮小。</li>
+            <li>右側可以微調位置、大小、顏色、圓角與陰影；不同元素只顯示適合它的項目。</li>
+            <li>用復原／重做回頭；右上角「調整紀錄」會把 CSS 數字翻成容易理解的變更。</li>
+          </ol>
+        </section>
+        <section class="help-section">
+          <h3>匯入 HTML 檔</h3>
+          <p>需要一個不超過 5 MiB、內容都放在同一個檔案裡的 <code>.html</code> 或 <code>.htm</code>。網址、ZIP、資料夾與框架專案不能直接匯入。</p>
+          <ol class="help-steps">
+            <li>在開始畫面按「匯入 HTML 檔」，或在工作臺使用同名按鈕，選擇手機或電腦裡的單檔 HTML 副本。</li>
+            <li>檔案只會在瀏覽器中開啟，不會上傳，也不會覆寫原始檔。</li>
+            <li>在預覽裡點選元素；右側會分開顯示外觀能否修改，以及原始互動是否停用。</li>
+            <li>完成後按「下載修改後 HTML」。若按鈕沒有開放，畫面會說明尚未通過哪一項安全檢查。</li>
+            <li>下載的是新的 <code>.lts-edited.html</code> 檔案；Studio 不會自動替你發布網站。</li>
+          </ol>
+          <div class="help-status-key">
+            <span><strong>外觀可修改：</strong>可安全調整文字或允許的 CSS 外觀。</span>
+            <span><strong>互動已停用：</strong>按鈕、連結與表單不會執行原始行為，但支援的外觀仍可修改。</span>
+            <span><strong>已封鎖 blocked：</strong>危險或不支援的能力已停用，並且不能下載修改後的 HTML。</span>
+          </div>
+          <p class="help-support">遇到問題？請到 <a href="https://github.com/lexiansy/little-things-studio/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a> 回報。</p>
+        </section>
+        <div class="modal-actions">
+          <button class="primary-button" type="button" data-close-modal="helpModal">回到畫面</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+/*__LTS_APP__*/
+  </script>
+</body>
+</html>

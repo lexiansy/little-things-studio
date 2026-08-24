@@ -22,15 +22,53 @@ const requiredPaths = [
   "README.zh-TW.md",
   "SECURITY.md",
   "docs/ASSET_PROVENANCE.md",
+  "docs/COMPATIBILITY.md",
   "docs/CURRENT_STATUS.md",
   "docs/HANDOFF.md",
   "docs/IMPORT_SECURITY_MODEL.md",
   "docs/NEXT_STEPS.md",
   "docs/ROADMAP.md",
   "docs/assets/little-things-studio-v0.1.0-beta.1.png",
+  "fixtures/compatibility/checkpoint-baseline.json",
+  "fixtures/compatibility/css-cascade.html",
+  "fixtures/compatibility/dependencies.html",
+  "fixtures/compatibility/dynamic-dom.html",
+  "fixtures/compatibility/graphics-layout.html",
+  "fixtures/compatibility/manifest.json",
+  "fixtures/compatibility/matrix-v0.2-experiment.json",
+  "fixtures/compatibility/media-inert.html",
+  "fixtures/compatibility/multi-view.html",
+  "fixtures/compatibility/nested-interactive.html",
+  "fixtures/compatibility/static-inline.html",
+  "fixtures/compatibility/unsafe-capabilities.html",
   "index.html",
   "package.json",
-  "scripts/check-i18n.mjs"
+  "scripts/build.mjs",
+  "scripts/check-build-parity.mjs",
+  "scripts/check-compatibility.mjs",
+  "scripts/check-compatibility-architecture.mjs",
+  "scripts/check-i18n.mjs",
+  "scripts/check-import-editing.mjs",
+  "scripts/check-import-safety.mjs",
+  "scripts/check-module-graph.mjs",
+  "scripts/check-public-readiness.mjs",
+  "scripts/check-static-export.mjs",
+  "scripts/lib/artifact-plan.mjs",
+  "scripts/lib/render-artifact.mjs",
+  "scripts/serve.mjs",
+  "src/app/00-runtime.js",
+  "src/app/10-i18n.js",
+  "src/app/20-import-analysis.js",
+  "src/app/30-sanitization.js",
+  "src/app/40-classification.js",
+  "src/app/50-view-navigation.js",
+  "src/app/60-selection-editing.js",
+  "src/app/70-history.js",
+  "src/app/80-export.js",
+  "src/app/90-ui-rendering.js",
+  "src/app/app.js",
+  "src/index.template.html",
+  "src/styles/app.css"
 ];
 
 async function walk(directory, relative = "") {
@@ -39,6 +77,7 @@ async function walk(directory, relative = "") {
   for (const entry of entries) {
     if (!relative && entry.name === ".git") continue;
     const childRelative = path.posix.join(relative, entry.name);
+    if (childRelative === "docs/reports") continue;
     const child = path.join(directory, entry.name);
     const stat = await lstat(child);
     assert.equal(stat.isSymbolicLink(), false, `symlink is not allowed: ${childRelative}`);
@@ -48,9 +87,12 @@ async function walk(directory, relative = "") {
   return files;
 }
 
-const files = await walk(root);
+const files = (await walk(root)).sort();
 for (const required of requiredPaths) assert.ok(files.includes(required), `missing public file: ${required}`);
 assert.equal(files.some(file => file === "docs/reports" || file.startsWith("docs/reports/")), false, "local reports entered the candidate");
+
+const gitignore = await readFile(path.join(root, ".gitignore"), "utf8");
+assert.match(gitignore, /(?:^|\n)docs\/reports\/(?:\r?\n|$)/, "local reports must remain ignored");
 
 const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
 assert.equal(packageJson.version, "0.1.0-beta.1");
@@ -122,7 +164,7 @@ assert.match(workflow, /actions\/setup-node@[0-9a-f]{40} # v\d+\.\d+\.\d+/);
 assert.match(workflow, /permissions:\s*\n  contents: read/);
 assert.doesNotMatch(workflow, /npm (?:ci|install)|permissions:\s*write|deploy/i);
 
-const textExtensions = new Set([".html", ".json", ".md", ".mjs", ".yml", ".yaml", ""]);
+const textExtensions = new Set([".css", ".html", ".js", ".json", ".md", ".mjs", ".yml", ".yaml", ""]);
 const sensitivePatterns = [
   { name: "Windows absolute path", pattern: /\b[A-Za-z]:[\\/]/ },
   { name: "home absolute path", pattern: /\/(?:Users|home)\// },

@@ -359,6 +359,25 @@ for (const file of corpusFiles.filter(file => file.endsWith(".json"))) {
   assertPublicSafeText(text, `fixtures/compatibility/${file}`);
 }
 
+const matrix = JSON.parse(await readFile(path.join(corpusRoot, "matrix-v0.2-experiment.json"), "utf8"));
+const checkpointBaseline = JSON.parse(await readFile(path.join(corpusRoot, "checkpoint-baseline.json"), "utf8"));
+assert.equal(matrix.schemaVersion, 1, "unsupported compatibility matrix schema");
+assert.equal(matrix.ownerEvidence, false, "engineering matrix must not claim owner evidence");
+assert.deepEqual(
+  matrix.baselineArtifact,
+  checkpointBaseline.measuredArtifact,
+  "matrix baseline artifact differs from the preserved checkpoint evidence"
+);
+const candidateBytes = await readFile(path.join(root, "index.html"));
+assert.equal(matrix.candidateArtifact.indexSha256, sha256(candidateBytes), "matrix candidate hash does not match generated index.html");
+assert.equal(matrix.candidateArtifact.bytes, candidateBytes.byteLength, "matrix candidate byte size does not match generated index.html");
+assert.deepEqual(
+  matrix.observations.map(entry => entry.fixture).sort(),
+  [...fixtureFiles].sort(),
+  "before/after matrix must cover every compatibility fixture exactly once"
+);
+assert.equal(matrix.browserProbes.realOwnerFiles, "not tested; owner acceptance remains required", "matrix must preserve the owner-sample acceptance boundary");
+
 console.log(JSON.stringify({
   ok: true,
   schemaVersion: manifest.schemaVersion,
@@ -367,5 +386,6 @@ console.log(JSON.stringify({
   categoryCount: actualCategoryUnion.size,
   expectedNetworkRequestsPerFixture: 0,
   symlinks: 0,
-  unlistedHtmlFixtures: 0
+  unlistedHtmlFixtures: 0,
+  matrixRows: matrix.observations.length
 }, null, 2));
