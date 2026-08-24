@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Multi-view compatibility</title>
+  <style>
+    body { margin: 0; padding: 24px; background: #f6f7fb; color: #252a3a; font: 16px/1.5 system-ui, sans-serif; }
+    [role="tablist"] { display: flex; gap: 8px; margin-bottom: 16px; }
+    [role="tab"] { padding: 9px 14px; border: 1px solid #7782a8; border-radius: 999px; background: white; }
+    [role="tabpanel"], .page-panel { min-height: 180px; padding: 22px; border-radius: 18px; background: white; box-shadow: 0 8px 24px #2232; }
+    .page-panel { display: none; }
+  </style>
+</head>
+<body>
+  <nav role="tablist" aria-label="Sample views">
+    <button role="tab" aria-controls="panel-one" aria-selected="true">Overview</button>
+    <button role="tab" aria-controls="panel-two" aria-selected="false">Details</button>
+    <a href="#panel-three">Notes</a>
+  </nav>
+  <section id="panel-one" role="tabpanel"><h1>Overview screen</h1><p>First panel is initially visible.</p></section>
+  <section id="panel-two" role="tabpanel" hidden aria-hidden="true"><h1>Details screen</h1><p>Second panel starts with the hidden attribute.</p></section>
+  <section id="panel-three" class="page-panel" aria-hidden="true"><h1>Notes screen</h1><p>Third panel starts with display none and an anchor target.</p></section>
+</body>
+</html>

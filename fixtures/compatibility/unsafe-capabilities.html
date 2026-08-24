@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" onload="window.__COMPAT_UNSAFE__ = true">
+<head>
+  <meta charset="utf-8">
+  <title>Unsafe capability diagnostics</title>
+  <meta http-equiv="refresh" content="10;url=https://example.invalid/redirect">
+  <style>body { padding: 28px; font: 16px/1.5 system-ui, sans-serif; } form { display: grid; gap: 10px; max-width: 420px; }</style>
+</head>
+<body>
+  <main>
+    <h1>Unsafe capability fixture</h1>
+    <a href="javascript:window.__NAV_UNSAFE__=true" target="_blank">Unsafe navigation</a>
+    <a href="https://example.invalid/download" download>Unsafe download</a>
+    <button type="button" onclick="window.open('https://example.invalid/popup')">Unsafe popup</button>
+    <form action="https://example.invalid/submit" method="post" onsubmit="window.__FORM_UNSAFE__=true">
+      <label>Message <input name="message" value="sample"></label>
+      <button type="submit">Submit</button>
+    </form>
+    <iframe src="https://example.invalid/frame"></iframe>
+  </main>
+  <script>window.__SCRIPT_UNSAFE__ = true;</script>
+</body>
+</html>

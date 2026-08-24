@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CSS cascade compatibility</title>
+  <style>
+    :root { --card-bg: #253858; --card-fg: #ffffff; --space: 18px; }
+    body { padding: 30px; background: #edf1f7; font-family: system-ui, sans-serif; }
+    body main#specificity-lab section.card.important-card {
+      color: var(--card-fg) !important;
+      background-color: var(--card-bg) !important;
+      border-radius: 8px !important;
+      padding: var(--space);
+    }
+    .card::before { content: "Generated label"; display: block; margin-bottom: 8px; opacity: .7; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space); }
+    .flex { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  </style>
+</head>
+<body>
+  <main id="specificity-lab" class="grid">
+    <section class="card important-card"><h1>Important card</h1><p>High specificity and important declarations.</p></section>
+    <section class="card flex"><strong>Flexible row</strong><span>Aligned end</span></section>
+  </main>
+</body>
+</html>

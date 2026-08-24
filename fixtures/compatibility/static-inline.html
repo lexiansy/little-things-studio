@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Static inline compatibility</title>
+  <style>
+    :root { --accent: #315d64; --surface: #f4fbf8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 32px; color: #203234; background: #eef4f2; font: 16px/1.5 system-ui, sans-serif; }
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 760px; margin: auto; }
+    .card { padding: 20px; border-radius: 18px; background: var(--surface); box-shadow: 0 10px 28px #2443; }
+    .row { display: flex; align-items: center; gap: 12px; }
+    .pixel { width: 28px; height: 28px; image-rendering: pixelated; }
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <section class="card">
+      <p>Static baseline</p>
+      <h1>Editable single-file page</h1>
+      <p>Inline CSS, Grid, and Flexbox stay local.</p>
+    </section>
+    <section class="card row">
+      <img class="pixel" alt="Technical pixel" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+X9uL9QAAAABJRU5ErkJggg==">
+      <span>Data URI image</span>
+    </section>
+  </main>
+</body>
+</html>

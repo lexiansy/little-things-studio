@@ -12,6 +12,7 @@ This file applies to the whole repository.
 
 - Keep orientation, construction, validation, commit, push, merge, release, and deployment as separate operations.
 - A continuous instruction may authorize several of those operations; execute only the explicitly authorized sequence and stop at its stated checkpoint.
+- Within one authorized scope, carry orientation, construction, bounded corrections, checks, allowed checkpoints, and the requested report through in the same session. Do not hand back an ordinary finding, a first check failure, or partial progress when it can be resolved safely inside that scope.
 - Without explicit authorization for the current session, do not commit, push, merge, create a pull request, tag, release, publish, or deploy.
 - Never describe an unperformed check, browser observation, owner review, or release action as passed.
 - Stop when the source is uncertain, the worktree contains unexplained changes, remotes differ from the stated gate, evidence is insufficient, or safe completion requires wider scope.
@@ -34,5 +35,6 @@ This file applies to the whole repository.
 ## Handoff format
 
 - A Coding Agent's final chat report must begin with `## For Yao` and use plain language to state: what is done, whether Yao must act, the one next step, the stop condition, and the complete report filename when a report was requested.
+- The same plain-language `For Yao` requirement applies to both normal completion and hard-stop handoffs; Yao must not be asked to infer status from logs or raw diffs.
 - A saved Markdown handoff must contain both `## For Yao` and `## For Lex`.
 - `For Lex` must list sources read, changed files and diff summary, checks/tests, Git status, limitations/risks, and the next safe construction point.

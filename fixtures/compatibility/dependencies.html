@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dependency diagnostics</title>
+  <link rel="stylesheet" href="https://example.invalid/theme.css">
+  <style>
+    @import url("https://example.invalid/imported.css");
+    @font-face { font-family: RemoteFixture; src: url("https://example.invalid/font.woff2"); }
+    body { padding: 28px; font-family: RemoteFixture, system-ui, sans-serif; background-image: url("./assets/background.png"); }
+    .remote-background { min-height: 120px; background: url("https://example.invalid/pattern.png") center/cover; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Dependency-bound page</h1>
+    <img src="https://example.invalid/hero.png" alt="External hero placeholder">
+    <img src="./assets/local-card.png" alt="Relative local placeholder">
+    <section class="remote-background"><p>Text remains when resources are unavailable.</p></section>
+  </main>
+</body>
+</html>

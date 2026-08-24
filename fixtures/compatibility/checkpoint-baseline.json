@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "measuredArtifact": {
+    "commit": "487d8719fd5453d3cdf30cc9f9fee35f01b0d111",
+    "indexSha256": "f243ce2f6a24931b44a895884c55092a5318c631b5a7258232fcc383972acf8c",
+    "bytes": 238618
+  },
+  "method": "Each fixture was imported through the browser file chooser into the isolated checkpoint artifact. Counts and visible state were read from the rendered application and sandboxed preview.",
+  "observations": [
+    {
+      "fixture": "static-inline.html",
+      "recognized": 8,
+      "safe": 8,
+      "viewOnly": 0,
+      "blocked": 0,
+      "registry": 8,
+      "visibleRegistry": 8,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false
+    },
+    {
+      "fixture": "nested-interactive.html",
+      "recognized": 26,
+      "safe": 15,
+      "viewOnly": 11,
+      "blocked": 1,
+      "registry": 26,
+      "visibleRegistry": 24,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false
+    },
+    {
+      "fixture": "multi-view.html",
+      "recognized": 13,
+      "safe": 10,
+      "viewOnly": 3,
+      "blocked": 1,
+      "registry": 13,
+      "visibleRegistry": 7,
+      "detectedPanels": 3,
+      "visiblePanels": 1,
+      "exportInitiallyEnabled": false
+    },
+    {
+      "fixture": "css-cascade.html",
+      "recognized": 7,
+      "safe": 7,
+      "viewOnly": 0,
+      "blocked": 0,
+      "registry": 7,
+      "visibleRegistry": 7,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false,
+      "importantOverrideProbe": {
+        "controlRecordedBackground": "#FF0000",
+        "computedBefore": "rgb(37, 56, 88)",
+        "computedAfter": "rgb(37, 56, 88)",
+        "visibleChangeApplied": false,
+        "exportEnabledAfterEdit": true
+      }
+    },
+    {
+      "fixture": "dependencies.html",
+      "recognized": 6,
+      "safe": 6,
+      "viewOnly": 0,
+      "blocked": 7,
+      "registry": 6,
+      "visibleRegistry": 6,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false
+    },
+    {
+      "fixture": "dynamic-dom.html",
+      "recognized": 5,
+      "safe": 4,
+      "viewOnly": 1,
+      "blocked": 1,
+      "registry": 5,
+      "visibleRegistry": 4,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false,
+      "generatedScreenPresent": false
+    },
+    {
+      "fixture": "graphics-layout.html",
+      "recognized": 10,
+      "safe": 5,
+      "viewOnly": 5,
+      "blocked": 1,
+      "registry": 10,
+      "visibleRegistry": 10,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false
+    },
+    {
+      "fixture": "unsafe-capabilities.html",
+      "recognized": 9,
+      "safe": 2,
+      "viewOnly": 7,
+      "blocked": 12,
+      "registry": 9,
+      "visibleRegistry": 9,
+      "detectedPanels": 0,
+      "visiblePanels": 0,
+      "exportInitiallyEnabled": false,
+      "scriptsRemaining": 0,
+      "unsafeSentinelsObserved": 0
+    }
+  ],
+  "baselineFindings": [
+    "Buttons, links, controls, SVG, canvas, custom elements, and many descendants share one view-only state and cannot enter visual editing.",
+    "Only one of three existing multi-view panels is reachable because the checkpoint has no preview-only navigator.",
+    "A recorded background edit does not beat an authored important declaration, so the control changes while the rendered card does not.",
+    "Script-created DOM is absent, but the checkpoint only reports a removed script rather than explaining that runtime-created content cannot exist.",
+    "Any blocked finding disables export, even when the finding is an already-neutralized navigation or unavailable resource."
+  ]
+}

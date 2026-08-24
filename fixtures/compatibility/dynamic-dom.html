@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dynamic DOM diagnostics</title>
+  <style>body { padding: 28px; font: 16px/1.5 system-ui, sans-serif; } .panel { padding: 20px; background: #eef7ff; }</style>
+</head>
+<body>
+  <main>
+    <h1>Static shell</h1>
+    <p id="dynamic-status">A script would add the content below.</p>
+    <div id="dynamic-root"></div>
+    <button type="button" id="dynamic-tab">Open generated panel</button>
+  </main>
+  <script>
+    document.querySelector("#dynamic-root").innerHTML = '<section class="panel"><h2>Generated screen</h2><p>This exists only after script execution.</p></section>';
+    document.querySelector("#dynamic-tab").addEventListener("click", () => {
+      document.querySelector("#dynamic-root").hidden = false;
+    });
+  </script>
+</body>
+</html>

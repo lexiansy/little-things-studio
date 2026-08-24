@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Graphics and layout diagnostics</title>
+  <style>
+    body { min-height: 680px; margin: 0; padding: 30px; background: #f8f5ff; font: 16px/1.5 system-ui, sans-serif; }
+    .scene { position: relative; min-height: 360px; overflow: hidden; border-radius: 20px; background: white; }
+    .fixed-note { position: fixed; right: 18px; bottom: 18px; z-index: 5; padding: 10px; background: #4c3d72; color: white; }
+    .overlap-a, .overlap-b { position: absolute; width: 150px; height: 100px; padding: 16px; }
+    .overlap-a { left: 20px; top: 70px; background: #d8d0ff; transform: rotate(-4deg); }
+    .overlap-b { left: 110px; top: 120px; background: #ffd9e5; transform: translateX(8px); }
+    .scene::after { content: "Pseudo decoration"; position: absolute; right: 18px; top: 18px; color: #6b5f8c; }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <h1>Graphics surface</h1>
+    <svg width="180" height="80" role="img" aria-label="Inline geometric mark"><rect width="180" height="80" rx="16" fill="#315d64"/><circle cx="44" cy="40" r="20" fill="#f7c873"/></svg>
+    <canvas width="180" height="80" aria-label="Canvas surface">Canvas fallback text</canvas>
+    <div class="overlap-a">Transformed layer one</div>
+    <div class="overlap-b">Overlapping layer two</div>
+    <sample-card>Custom element light-DOM fallback</sample-card>
+    <div class="fixed-note">Fixed note</div>
+  </main>
+  <script>
+    customElements.define("sample-card", class extends HTMLElement {
+      connectedCallback() { this.attachShadow({mode:"open"}).innerHTML = "<strong>Shadow-only content</strong>"; }
+    });
+    const context = document.querySelector("canvas").getContext("2d");
+    context.fillStyle = "#d87052";
+    context.fillRect(10, 10, 160, 60);
+  </script>
+</body>
+</html>

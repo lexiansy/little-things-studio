@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nested and interactive compatibility</title>
+  <style>
+    body { padding: 28px; background: #fffaf3; color: #352e2a; font: 16px/1.5 system-ui, sans-serif; }
+    .stack { display: grid; gap: 14px; max-width: 620px; }
+    .action, a, input, select, textarea { border: 1px solid #9b7e6a; border-radius: 12px; padding: 10px 14px; font: inherit; }
+    .action { background: #6c4c3a; color: white; }
+    .icon { display: inline-grid; place-items: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: #f1c680; }
+  </style>
+</head>
+<body>
+  <main class="stack">
+    <h1><span class="icon" aria-hidden="true">✦</span> <span>Nested</span> <strong>headline</strong> <span class="badge">beta</span></h1>
+    <p>Prefix <span>editable inner phrase</span> <strong>with emphasis</strong> suffix.</p>
+    <button class="action" type="button"><span aria-hidden="true">＋</span> <span>Add a sample item</span></button>
+    <a href="#details"><span>Jump to</span> <strong>details</strong></a>
+    <label>Short label <input value="Visible value"></label>
+    <label>Choose view <select><option>Overview</option><option>Details</option></select></label>
+    <label>Notes <textarea>Visible note</textarea></label>
+    <section id="details"><h2>Details target</h2><p>Anchor destination content.</p></section>
+  </main>
+</body>
+</html>

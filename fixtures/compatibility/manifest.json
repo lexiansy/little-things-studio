@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 2,
+  "description": "Generic deterministic compatibility corpus for the Little Things Studio single-file static HTML boundary.",
+  "requiredCategoryUnion": [
+    "static-dom",
+    "inline-css",
+    "nested-text",
+    "mixed-inline-content",
+    "button",
+    "link",
+    "input",
+    "select",
+    "textarea",
+    "tabs",
+    "tabpanel",
+    "hidden-panel",
+    "aria-hidden",
+    "anchor-target",
+    "display-none",
+    "css-variables",
+    "specificity",
+    "important",
+    "flexbox",
+    "grid",
+    "data-uri-image",
+    "external-stylesheet",
+    "external-font",
+    "external-image",
+    "relative-resource",
+    "css-url",
+    "javascript-created-dom",
+    "javascript-tabs",
+    "svg",
+    "pseudo-element",
+    "canvas",
+    "overlap",
+    "fixed",
+    "transform",
+    "custom-element",
+    "shadow-dom",
+    "unsafe-script",
+    "event-handler",
+    "form-submit",
+    "navigation",
+    "popup",
+    "download",
+    "iframe"
+  ],
+  "fixtures": [
+    {
+      "id": "static-inline",
+      "file": "static-inline.html",
+      "sha256": "dc70743faeeb16656fc270104302298d00bcaa9bfa8b10387af3f24a31d206dd",
+      "categories": ["static-dom", "inline-css", "flexbox", "grid", "data-uri-image"],
+      "requiredMarkers": {
+        "selectors": ["main.layout", "section.card", "h1", "img.pixel"],
+        "texts": ["Static baseline", "Editable single-file page", "Data URI image"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "main.layout", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "h1", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "img.pixel", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "none" }
+        ],
+        "diagnosticCodes": [],
+        "blockedCapabilities": [],
+        "networkRequests": 0,
+        "export": {
+          "gate": "allowed-after-validated-edit",
+          "reimport": "allowed-edits-preserved",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "nested-interactive",
+      "file": "nested-interactive.html",
+      "sha256": "d858d604942e8eccb6476d4b0bb48451f660bd98236eb7cb1e5a355cc6373b30",
+      "categories": ["nested-text", "mixed-inline-content", "button", "link", "input", "select", "textarea", "anchor-target"],
+      "requiredMarkers": {
+        "selectors": ["h1", "p", "span.icon", "button.action", "a", "input", "select", "textarea", "section#details"],
+        "texts": ["Nested headline beta", "editable inner phrase", "Add a sample item", "Details target"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "h1", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "p", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "span.icon", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "button.action", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "nested" },
+          { "selector": "a", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "nested" },
+          { "selector": "input", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" },
+          { "selector": "select", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" },
+          { "selector": "textarea", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" }
+        ],
+        "diagnosticCodes": [
+          "INTERACTION_INERT_VISUAL_EDITABLE",
+          "NAVIGATION_DISABLED",
+          "FORM_SIDE_EFFECTS_DISABLED",
+          "NESTED_TEXT_STRUCTURE_PRESERVED"
+        ],
+        "blockedCapabilities": ["navigation", "form-submission"],
+        "networkRequests": 0,
+        "export": {
+          "gate": "allowed-after-validated-edit",
+          "reimport": "allowed-edits-preserved",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "multi-view",
+      "file": "multi-view.html",
+      "sha256": "a59204d517df3644dc12b03f19283f95c0c8ee8ca0c867e7007263abdee74f0d",
+      "categories": ["tabs", "tabpanel", "hidden-panel", "aria-hidden", "anchor-target", "display-none", "button", "link"],
+      "requiredMarkers": {
+        "selectors": ["nav[role=\"tablist\"]", "button[role=\"tab\"]", "a", "section#panel-one", "section#panel-two", "section#panel-three"],
+        "texts": ["Overview screen", "Details screen", "Notes screen"]
+      },
+      "expected": {
+        "viewCount": 3,
+        "elementStates": [
+          { "selector": "button[role=\"tab\"]", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "leaf" },
+          { "selector": "a", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "leaf" },
+          { "selector": "section#panel-one", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "section#panel-two", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "section#panel-three", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" }
+        ],
+        "diagnosticCodes": [
+          "MULTI_VIEW_DETECTED",
+          "PREVIEW_ONLY_NAVIGATOR_AVAILABLE",
+          "INTERACTION_INERT_VISUAL_EDITABLE"
+        ],
+        "blockedCapabilities": ["navigation"],
+        "networkRequests": 0,
+        "export": {
+          "gate": "allowed-after-validated-edit",
+          "reimport": "allowed-edits-preserved",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "css-cascade",
+      "file": "css-cascade.html",
+      "sha256": "75e28a2cd36683526f1aba78bc274d0b4408621661fdbdf93feae4ddb660b5b8",
+      "categories": ["css-variables", "specificity", "important", "pseudo-element", "flexbox", "grid"],
+      "requiredMarkers": {
+        "selectors": ["main#specificity-lab", "section.important-card", "section.flex"],
+        "texts": ["Important card", "High specificity and important declarations.", "Flexible row"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "section.important-card", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "section.flex", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" }
+        ],
+        "diagnosticCodes": ["CASCADE_OVERRIDE_REQUIRED", "PSEUDO_ELEMENT_LIMITED"],
+        "blockedCapabilities": [],
+        "networkRequests": 0,
+        "export": {
+          "gate": "allowed-after-validated-edit",
+          "reimport": "allowed-edits-preserved",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "dependencies",
+      "file": "dependencies.html",
+      "sha256": "95f226c306d5662dd0e5ba0d7cfd8ed4317f94ac375a933d4149f428402471b5",
+      "categories": ["external-stylesheet", "external-font", "external-image", "relative-resource", "css-url"],
+      "requiredMarkers": {
+        "selectors": ["link[rel=\"stylesheet\"]", "h1", "img", "section.remote-background"],
+        "texts": ["Dependency-bound page", "Text remains when resources are unavailable."]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "link[rel=\"stylesheet\"]", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" },
+          { "selector": "h1", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "img", "previewPresence": "present", "interaction": "blocked", "visual": "limited", "textMode": "none" },
+          { "selector": "section.remote-background", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" }
+        ],
+        "diagnosticCodes": ["EXTERNAL_RESOURCE_BLOCKED", "RELATIVE_RESOURCE_BLOCKED", "RESOURCE_DEPENDENCY_INCOMPLETE"],
+        "blockedCapabilities": ["external-resource", "relative-resource"],
+        "networkRequests": 0,
+        "export": {
+          "gate": "blocked",
+          "reimport": "not-applicable",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "dynamic-dom",
+      "file": "dynamic-dom.html",
+      "sha256": "c7da3344f098d07bb29e778faa23562d5047a82f9042d4037df93437a830d7a4",
+      "categories": ["javascript-created-dom", "javascript-tabs", "button", "unsafe-script"],
+      "requiredMarkers": {
+        "selectors": ["main", "p#dynamic-status", "div#dynamic-root", "button#dynamic-tab", "script"],
+        "texts": ["Static shell", "A script would add the content below.", "Generated screen"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "main", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "p#dynamic-status", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "div#dynamic-root", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "none" },
+          { "selector": "button#dynamic-tab", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "leaf" },
+          { "selector": "script", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" }
+        ],
+        "diagnosticCodes": ["SCRIPT_REMOVED", "JAVASCRIPT_DOM_NOT_EXECUTED", "SCRIPT_CONTROLLED_VIEW_UNAVAILABLE", "INTERACTION_INERT_VISUAL_EDITABLE"],
+        "blockedCapabilities": ["script-execution", "script-created-dom", "script-controlled-view"],
+        "networkRequests": 0,
+        "export": {
+          "gate": "blocked",
+          "reimport": "not-applicable",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "graphics-layout",
+      "file": "graphics-layout.html",
+      "sha256": "420acc8b91fc34edb1e91e50fd689a61c1b47f67edd3a48af9477cd5f8e1d0ea",
+      "categories": ["svg", "canvas", "pseudo-element", "fixed", "overlap", "transform", "custom-element", "shadow-dom", "unsafe-script"],
+      "requiredMarkers": {
+        "selectors": ["main.scene", "svg", "canvas", "sample-card", "div.overlap-a", "div.overlap-b", "div.fixed-note", "script"],
+        "texts": ["Graphics surface", "Canvas fallback text", "Custom element light-DOM fallback", "Fixed note"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "main.scene", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "nested" },
+          { "selector": "svg", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "none" },
+          { "selector": "canvas", "previewPresence": "present", "interaction": "safe", "visual": "unsupported", "textMode": "none" },
+          { "selector": "sample-card", "previewPresence": "present", "interaction": "safe", "visual": "limited", "textMode": "nested" },
+          { "selector": "div.overlap-a", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "div.overlap-b", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "div.fixed-note", "previewPresence": "present", "interaction": "safe", "visual": "editable", "textMode": "leaf" },
+          { "selector": "script", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" }
+        ],
+        "diagnosticCodes": ["SVG_LIMITED", "PSEUDO_ELEMENT_LIMITED", "CANVAS_SCRIPT_CONTENT_UNAVAILABLE", "SHADOW_DOM_CONTENT_UNAVAILABLE", "SCRIPT_REMOVED"],
+        "blockedCapabilities": ["script-execution", "canvas-script-rendering", "shadow-dom-script"],
+        "networkRequests": 0,
+        "export": {
+          "gate": "blocked",
+          "reimport": "not-applicable",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    },
+    {
+      "id": "unsafe-capabilities",
+      "file": "unsafe-capabilities.html",
+      "sha256": "a8d9c2f1c37c30f3f3cfa01deeb98cb1068759aa7e89b5ad03f5575b0cb927ef",
+      "categories": ["unsafe-script", "event-handler", "form-submit", "navigation", "popup", "download", "iframe", "button", "link", "input"],
+      "requiredMarkers": {
+        "selectors": ["meta[http-equiv=\"refresh\"]", "a", "button", "form", "input", "iframe", "script"],
+        "texts": ["Unsafe capability fixture", "Unsafe navigation", "Unsafe download", "Unsafe popup", "Submit"]
+      },
+      "expected": {
+        "viewCount": 1,
+        "elementStates": [
+          { "selector": "meta[http-equiv=\"refresh\"]", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" },
+          { "selector": "a", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "leaf" },
+          { "selector": "button", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "leaf" },
+          { "selector": "form", "previewPresence": "present", "interaction": "inert", "visual": "limited", "textMode": "nested" },
+          { "selector": "input", "previewPresence": "present", "interaction": "inert", "visual": "editable", "textMode": "value" },
+          { "selector": "iframe", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" },
+          { "selector": "script", "previewPresence": "removed", "interaction": "blocked", "visual": "unsupported", "textMode": "none" }
+        ],
+        "diagnosticCodes": ["UNSAFE_CAPABILITY_REMOVED", "SCRIPT_REMOVED", "INLINE_HANDLER_REMOVED", "META_REFRESH_REMOVED", "IFRAME_REMOVED", "INTERACTION_INERT_VISUAL_EDITABLE"],
+        "blockedCapabilities": ["script-execution", "inline-handler", "meta-refresh", "form-submission", "navigation", "popup", "download", "embedded-frame"],
+        "networkRequests": 0,
+        "export": {
+          "gate": "blocked",
+          "reimport": "not-applicable",
+          "previewOnlyStateSerialized": false,
+          "runtimeMarkersSerialized": false,
+          "blockedCapabilitiesRestored": false
+        }
+      }
+    }
+  ]
+}
