@@ -2,6 +2,11 @@
 
 All notable public changes will be documented in this file.
 
+## [Unreleased]
+
+- Improved first-visit clarity with a prominent live-app link, a two-choice start screen, clearer own-HTML import wording, and one consolidated adjustment log.
+- Added an in-app Traditional Chinese / English interface switch and a responsive editor action bar that keeps import, safe download, and return actions readable at narrow widths.
+
 ## [0.1.0-beta.1] - 2026-08-19
 
 First public beta prerelease:

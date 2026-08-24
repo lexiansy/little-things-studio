@@ -7,9 +7,10 @@
   "scripts": {
     "check:baseline": "node scripts/check-baseline.mjs",
     "check:import": "node scripts/check-import-safety.mjs && node scripts/check-import-editing.mjs && node scripts/check-static-export.mjs",
+    "check:i18n": "node scripts/check-i18n.mjs",
     "check:public": "node scripts/check-public-readiness.mjs",
-    "check:syntax": "node --check scripts/check-baseline.mjs && node --check scripts/check-import-safety.mjs && node --check scripts/check-import-editing.mjs && node --check scripts/check-static-export.mjs && node --check scripts/check-public-readiness.mjs && node --check scripts/serve.mjs",
-    "check": "npm run check:syntax && npm run check:baseline && npm run check:import && npm run check:public",
+    "check:syntax": "node --check scripts/check-baseline.mjs && node --check scripts/check-import-safety.mjs && node --check scripts/check-import-editing.mjs && node --check scripts/check-static-export.mjs && node --check scripts/check-i18n.mjs && node --check scripts/check-public-readiness.mjs && node --check scripts/serve.mjs",
+    "check": "npm run check:syntax && npm run check:baseline && npm run check:import && npm run check:i18n && npm run check:public",
     "serve": "node scripts/serve.mjs"
   },
   "repository": {

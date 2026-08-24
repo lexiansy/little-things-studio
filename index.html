@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -292,6 +292,18 @@
       border: 1px solid var(--line);
     }
 
+    .language-button {
+      min-width: 44px;
+      padding: 0 11px;
+      color: var(--ice-soft);
+      border: 1px solid rgba(143, 218, 255, 0.24);
+      background: rgba(143, 218, 255, 0.07);
+      font-size: 13px;
+      font-weight: 780;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
     .icon-button:hover:not(:disabled),
     .quiet-button:hover:not(:disabled) {
       color: var(--ice-soft);
@@ -343,9 +355,120 @@
       align-items: stretch;
     }
 
+    .start-screen {
+      flex: 1;
+      min-height: 0;
+      padding: clamp(28px, 7vw, 76px) 20px;
+      display: grid;
+      place-items: center;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(76, 188, 255, 0.15), transparent 24rem),
+        radial-gradient(circle at 78% 82%, rgba(137, 105, 224, 0.10), transparent 22rem),
+        linear-gradient(180deg, #0c1727, #09121f 72%);
+    }
+
+    .start-card {
+      width: min(520px, 100%);
+      padding: clamp(28px, 5vw, 44px);
+      color: var(--text);
+      background:
+        linear-gradient(145deg, rgba(56, 104, 140, 0.22), rgba(44, 34, 85, 0.18)),
+        rgba(13, 24, 39, 0.92);
+      border: 1px solid rgba(143, 218, 255, 0.20);
+      border-radius: 26px;
+      box-shadow: 0 34px 90px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      text-align: center;
+    }
+
+    .start-card h2 {
+      margin: 0;
+      color: #f4fbff;
+      font-size: clamp(25px, 5vw, 34px);
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+    }
+
+    .start-card > p {
+      margin: 12px 0 0;
+      color: #a9c2d4;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .start-options {
+      margin-top: 28px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .start-choice {
+      width: 100%;
+      min-width: 0;
+      padding: 16px 18px;
+      display: grid;
+      gap: 5px;
+      border-radius: 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+    }
+
+    .start-choice strong {
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .start-choice span {
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .start-choice.is-primary {
+      min-height: 82px;
+      color: #07131f;
+      background: linear-gradient(135deg, #c7f4ff, #74d9ed 58%, #8be4cb);
+      border: 1px solid rgba(222, 248, 255, 0.88);
+      box-shadow: 0 18px 42px rgba(65, 178, 240, 0.18);
+    }
+
+    .start-choice.is-primary span {
+      color: rgba(7, 19, 31, 0.70);
+    }
+
+    .start-choice.is-secondary {
+      min-height: 68px;
+      color: #d8ebf8;
+      background: rgba(143, 218, 255, 0.055);
+      border: 1px solid rgba(143, 218, 255, 0.16);
+    }
+
+    .start-choice.is-secondary span {
+      color: #8faabe;
+    }
+
+    .start-choice:hover,
+    .start-choice:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .start-choice.is-primary:hover,
+    .start-choice.is-primary:focus-visible {
+      background: linear-gradient(135deg, #e0f9ff, #8be4f2 58%, #9debd8);
+      box-shadow: 0 22px 52px rgba(65, 178, 240, 0.25);
+    }
+
+    .start-choice.is-secondary:hover,
+    .start-choice.is-secondary:focus-visible {
+      color: #eff9ff;
+      background: rgba(143, 218, 255, 0.10);
+      border-color: rgba(143, 218, 255, 0.28);
+    }
+
     .stage {
       min-width: 0;
       min-height: 720px;
+      container-type: inline-size;
       display: flex;
       flex-direction: column;
       background:
@@ -357,9 +480,9 @@
     .stage-toolbar {
       min-height: 48px;
       padding: 8px 18px;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      justify-content: space-between;
       gap: 14px;
       border-bottom: 1px solid rgba(150, 197, 235, 0.10);
       background: linear-gradient(90deg, rgba(18, 35, 56, 0.88), rgba(17, 26, 48, 0.82));
@@ -391,6 +514,12 @@
       box-shadow: 0 0 10px rgba(255, 210, 138, 0.52);
     }
 
+    .project-context {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+
     .canvas-status {
       display: flex;
       align-items: center;
@@ -408,12 +537,67 @@
       background: rgba(139, 224, 192, 0.06);
     }
 
-    .import-file-button,
-    .return-demo-button {
-      min-height: 30px;
-      height: 30px;
-      padding: 0 10px;
+    .editor-actions {
+      min-width: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .editor-actions .quiet-button,
+    .editor-actions .primary-button {
+      min-width: max-content;
+      min-height: 44px;
+      height: auto;
+      padding: 10px 14px;
+      font-size: 16px;
+      line-height: 1.2;
       white-space: nowrap;
+    }
+
+    .editor-actions .primary-button:disabled {
+      color: rgba(10, 35, 50, 0.72);
+      cursor: not-allowed;
+      opacity: 0.58;
+      transform: none;
+      box-shadow: none;
+    }
+
+    @container (max-width: 760px) {
+      .stage-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .editor-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .editor-actions .editor-download-button {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      .editor-actions .import-file-button,
+      .editor-actions .return-start-button {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+
+    @container (max-width: 330px) {
+      .editor-actions {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .editor-actions .editor-download-button {
+        grid-column: auto;
+      }
+
+      .editor-actions > * {
+        width: 100%;
+      }
     }
 
     .import-preview-shell {
@@ -1278,84 +1462,6 @@
       box-shadow: 0 0 12px rgba(143, 218, 255, 0.72);
     }
 
-    .change-dock {
-      position: relative;
-      z-index: 20;
-      flex: 0 0 auto;
-      margin: 10px 14px 12px;
-      min-height: 50px;
-      padding: 7px 9px 7px 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      color: var(--text-soft);
-      background:
-        linear-gradient(105deg, rgba(20, 42, 65, 0.95), rgba(28, 27, 58, 0.94)),
-        rgba(14, 24, 39, 0.94);
-      border: 1px solid rgba(142, 213, 255, 0.18);
-      border-radius: 15px;
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.30);
-      backdrop-filter: blur(16px);
-    }
-
-    .change-summary {
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .change-icon {
-      width: 28px;
-      height: 28px;
-      flex: 0 0 28px;
-      display: grid;
-      place-items: center;
-      color: var(--ice);
-      border: 1px solid rgba(143, 218, 255, 0.18);
-      border-radius: 9px;
-      background: rgba(143, 218, 255, 0.07);
-    }
-
-    .change-copy {
-      min-width: 0;
-    }
-
-    .change-copy strong {
-      display: block;
-      color: #dcecf8;
-      font-size: 11px;
-      font-weight: 760;
-    }
-
-    .change-copy span {
-      display: block;
-      max-width: 620px;
-      margin-top: 2px;
-      overflow: hidden;
-      color: var(--text-faint);
-      font-size: 10px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .dock-button {
-      height: 34px;
-      padding: 0 12px;
-      flex: 0 0 auto;
-      color: var(--ice-soft);
-      background: rgba(143, 218, 255, 0.08);
-      border: 1px solid rgba(143, 218, 255, 0.18);
-      border-radius: 9px;
-      font-size: 11px;
-      font-weight: 720;
-    }
-
-    .dock-button:hover {
-      background: rgba(143, 218, 255, 0.13);
-    }
-
     .inspector {
       position: relative;
       z-index: 16;
@@ -1894,6 +2000,13 @@
       padding: 0 18px;
     }
 
+    .return-confirm-copy {
+      margin: 0;
+      color: #b8cedd;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
     .image-control-box {
       display: grid;
       gap: 12px;
@@ -2245,6 +2358,27 @@
     }
 
     @media (max-width: 600px) {
+      .start-screen {
+        padding: 22px 14px;
+      }
+
+      .start-card {
+        padding: 26px 20px;
+        border-radius: 21px;
+      }
+
+      .start-card > p {
+        font-size: 12px;
+      }
+
+      .start-options {
+        margin-top: 22px;
+      }
+
+      .start-choice {
+        padding: 14px 15px;
+      }
+
       .app-header {
         min-height: auto;
         padding: 10px 12px 9px;
@@ -2274,7 +2408,8 @@
       }
 
       .prototype-badge {
-        display: none;
+        padding: 3px 5px;
+        font-size: 8px;
       }
 
       .header-actions {
@@ -2318,42 +2453,22 @@
 
       .stage-toolbar {
         padding: 8px 12px;
+        align-items: stretch;
+        gap: 7px;
       }
 
       .project-crumb strong {
         max-width: 160px;
       }
 
-      .canvas-status > span:not(.safe-state) {
-        display: none;
-      }
-
       .canvas-status {
+        width: 100%;
         gap: 5px;
-      }
-
-      .import-file-button,
-      .return-demo-button {
-        padding-inline: 8px;
-        font-size: 10px;
       }
 
       .workbench {
         min-height: 565px;
         padding: 24px 14px;
-      }
-
-      .change-dock {
-        margin: 8px 10px 10px;
-        padding-left: 11px;
-      }
-
-      .change-copy span {
-        max-width: 180px;
-      }
-
-      .dock-button {
-        padding: 0 9px;
       }
 
       .canvas-tip {
@@ -2442,23 +2557,6 @@
         overscroll-behavior: contain;
       }
 
-      .change-dock {
-        min-height: 42px;
-        margin: 6px 10px 8px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-      }
-
-      .change-icon {
-        width: 24px;
-        height: 24px;
-        flex-basis: 24px;
-      }
-
-      .dock-button {
-        height: 30px;
-      }
-
       .inspector {
         height: 100%;
         max-height: none;
@@ -2519,12 +2617,12 @@
         </div>
         <div class="brand-copy">
           <h1>Little Things Studio</h1>
-          <p>直接碰畫面，把 CSS 留在背後</p>
+          <p id="brandSubtitle" hidden>可試玩內建範例，也能匯入自己的 HTML</p>
         </div>
         <span class="prototype-badge">v0.1.0-beta.1</span>
       </div>
 
-      <div class="header-center" aria-label="預覽裝置與縮放">
+      <div class="header-center" id="editorHeaderCenter" aria-label="預覽裝置與縮放" hidden>
         <div class="device-switch" role="group" aria-label="預覽裝置">
           <button class="device-button" type="button" data-device-button="phone" aria-pressed="true">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.4"/><path d="M10 5h4M11 18.5h2"/></svg>
@@ -2550,39 +2648,61 @@
       </div>
 
       <div class="header-actions">
-        <button class="icon-button" id="undoButton" type="button" title="復原" aria-label="復原" disabled>
+        <button class="icon-button" id="undoButton" type="button" title="復原" aria-label="復原" hidden disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5"/><path d="M5 12h8.5a5.5 5.5 0 0 1 5.5 5.5"/></svg>
         </button>
-        <button class="icon-button" id="redoButton" type="button" title="重做" aria-label="重做" disabled>
+        <button class="icon-button" id="redoButton" type="button" title="重做" aria-label="重做" hidden disabled>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 7 5 5-5 5"/><path d="M19 12h-8.5A5.5 5.5 0 0 0 5 17.5"/></svg>
         </button>
+        <button class="quiet-button language-button" id="languageButton" type="button" title="Switch to English" aria-label="Switch interface language to English">EN</button>
         <button class="icon-button" id="helpButton" type="button" title="使用指南" aria-label="使用指南">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.47 2.07c-.9.49-1.27.92-1.27 1.93M12 17h.01"/></svg>
         </button>
-        <button class="primary-button" id="summaryButton" type="button">
-          <span class="action-label">查看調整摘要</span>
-          <span aria-hidden="true">✓</span>
+        <button class="primary-button" id="summaryButton" type="button" title="開啟調整紀錄，目前 0 項" aria-label="開啟調整紀錄，目前 0 項" hidden>
+          <span class="action-label">調整紀錄</span>
+          <span aria-hidden="true">≡</span>
           <span class="count" id="headerChangeCount">0</span>
         </button>
       </div>
     </header>
 
-    <main class="workspace">
+    <input class="sr-only" id="htmlImportInput" type="file" accept=".html,.htm,text/html" aria-label="匯入 HTML 檔">
+
+    <main class="start-screen" id="startScreen">
+      <section class="start-card" aria-labelledby="startTitle">
+        <h2 id="startTitle">想從哪裡開始？</h2>
+        <p>匯入自己的 HTML 檔，或先用內建範例試玩。</p>
+        <div class="start-options">
+          <button class="start-choice is-primary" id="startImportButton" type="button">
+            <strong>匯入 HTML 檔</strong>
+            <span>從手機或電腦選擇單一 .html 檔案</span>
+          </button>
+          <button class="start-choice is-secondary" id="startDemoButton" type="button">
+            <strong>試玩內建範例</strong>
+            <span>看看可以調整哪些畫面元素</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <main class="workspace" id="workspace" hidden>
       <section class="stage" aria-label="預覽工作臺">
         <div class="stage-toolbar">
-          <div class="project-crumb">
-            <span class="demo-dot" aria-hidden="true"></span>
-            <span id="projectModeLabel">示範畫面</span>
-            <span aria-hidden="true">/</span>
-            <strong id="projectNameLabel">Little Things Demo・首頁</strong>
+          <div class="project-context">
+            <div class="project-crumb">
+              <span class="demo-dot" aria-hidden="true"></span>
+              <span id="projectModeLabel">試玩範例</span>
+              <span aria-hidden="true">/</span>
+              <strong id="projectNameLabel">Little Things Demo・首頁</strong>
+            </div>
+            <div class="canvas-status">
+              <span id="deviceDimensions">390 × 780</span>
+            </div>
           </div>
-          <div class="canvas-status">
-            <span id="deviceDimensions">390 × 780</span>
-            <span class="safe-state" id="safeStateLabel">不讀寫檔案</span>
-            <label class="quiet-button import-file-button" for="htmlImportInput" title="選擇一個單檔 HTML 副本">修改 HTML</label>
-            <input class="sr-only" id="htmlImportInput" type="file" accept=".html,.htm,text/html">
-            <button class="quiet-button" id="exportHtmlButton" type="button" hidden disabled>下載修改後 HTML</button>
-            <button class="quiet-button return-demo-button" id="returnDemoButton" type="button" hidden>返回內建示範</button>
+          <div class="editor-actions" id="editorActions" aria-label="編輯器檔案操作">
+            <label class="quiet-button import-file-button" id="editorImportButton" for="htmlImportInput" title="選擇手機或電腦裡的單檔 HTML 副本；檔案只會在瀏覽器中開啟，不會上傳。">匯入 HTML 檔</label>
+            <button class="primary-button editor-download-button" id="exportHtmlButton" type="button" hidden disabled>下載修改後 HTML</button>
+            <button class="quiet-button return-start-button" id="returnStartButton" type="button">回到開始</button>
           </div>
         </div>
 
@@ -2603,7 +2723,7 @@
               </div>
               <p class="import-safety-summary" id="importSafetySummary">選取本機 HTML 副本後，這裡會列出被停用或移除的能力。</p>
               <div class="import-edit-summary" aria-live="polite">
-                <strong><span id="importEditCount">0</span> 個匯入元素有調整</strong>
+                <strong id="importEditCountLabel">0 個匯入元素有調整</strong>
                 <span id="importEditSummary">尚未修改；所有變更只留在這次的清理後預覽副本。</span>
               </div>
               <div class="import-edit-summary" aria-live="polite">
@@ -2683,16 +2803,6 @@
           </div>
         </div>
 
-        <div class="change-dock" id="changeDock" aria-live="polite">
-          <div class="change-summary">
-            <span class="change-icon" aria-hidden="true">✦</span>
-            <div class="change-copy">
-              <strong><span id="dockChangeCount">0</span> 項本次調整</strong>
-              <span id="dockChangeText">還沒有修改；畫面現在只是安全的示範草稿。</span>
-            </div>
-          </div>
-          <button class="dock-button" id="dockSummaryButton" type="button">展開</button>
-        </div>
       </section>
 
       <aside class="inspector" id="inspector" aria-label="元素調整面板">
@@ -2944,14 +3054,14 @@
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle" tabindex="-1">
       <header class="modal-head">
         <div>
-          <h2 id="summaryTitle">本次調整摘要</h2>
-          <p>先用人話看懂，再決定要不要寫回原本的小程式。</p>
+          <h2 id="summaryTitle">本次調整紀錄</h2>
+          <p>整理目前這次編輯中做過的調整。</p>
         </div>
       </header>
       <div class="modal-body">
         <div class="prototype-notice">
           <span aria-hidden="true">◇</span>
-          <span><strong>這是介面操作原型。</strong>今天只會預覽與整理摘要，不會建立、覆蓋或讀取任何真實檔案。</span>
+          <span><strong>這是暫時工作階段。</strong>回到開始後，這次的調整紀錄會一起清除。</span>
         </div>
         <div id="summaryContent"></div>
         <div class="modal-actions">
@@ -2961,31 +3071,49 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="returnConfirmModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="returnConfirmTitle" tabindex="-1">
+      <header class="modal-head">
+        <div>
+          <h2 id="returnConfirmTitle">要回到開始嗎？</h2>
+          <p>目前這次調整還沒有保留下來。</p>
+        </div>
+      </header>
+      <div class="modal-body">
+        <p class="return-confirm-copy">回到開始會清除目前的暫時文件與這次調整；原始 HTML 檔案不受影響。</p>
+        <div class="modal-actions">
+          <button class="quiet-button" type="button" data-close-modal="returnConfirmModal">繼續編輯</button>
+          <button class="primary-button" id="confirmReturnStartButton" type="button">回到開始</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <div class="modal-backdrop" id="helpModal" hidden>
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
       <header class="modal-head">
         <div>
-          <h2 id="helpTitle">兩種開始方式</h2>
-          <p>先玩內建示範，或修改自己的單檔 HTML；不需要懂 CSS。</p>
+          <h2 id="helpTitle">從開始畫面選擇</h2>
+          <p>匯入自己的單檔 HTML，或先用內建範例熟悉調整方式。</p>
         </div>
       </header>
       <div class="modal-body">
         <section class="help-section">
-          <h3>先玩內建示範</h3>
-          <p>適合第一次打開 Studio，先熟悉點選、拖曳與右側調整面板。</p>
+          <h3>試玩內建範例</h3>
+          <p>在開始畫面選「試玩內建範例」，熟悉點選、拖曳與右側調整面板。</p>
           <ol class="help-steps">
             <li>點畫面上的文字、區塊、雙星光、摘要卡、按鈕或導覽項目。</li>
             <li>直接拖動選中的元素；拉選取框右下角，可以等比例放大或縮小。</li>
             <li>右側可以微調位置、大小、顏色、圓角與陰影；不同元素只顯示適合它的項目。</li>
-            <li>用復原／重做回頭；「查看調整摘要」會把 CSS 數字翻成容易理解的變更。</li>
+            <li>用復原／重做回頭；右上角「調整紀錄」會把 CSS 數字翻成容易理解的變更。</li>
           </ol>
         </section>
         <section class="help-section">
-          <h3>修改自己的頁面</h3>
+          <h3>匯入 HTML 檔</h3>
           <p>需要一個不超過 5 MiB、內容都放在同一個檔案裡的 <code>.html</code> 或 <code>.htm</code>。網址、ZIP、資料夾與框架專案不能直接匯入。</p>
           <ol class="help-steps">
-            <li>按工作臺上方的「修改 HTML」，選擇手機或電腦裡的 HTML 副本。</li>
-            <li>Studio 只會在瀏覽器裡讀取暫時副本，不會上傳，也不會覆寫原始檔。</li>
+            <li>在開始畫面按「匯入 HTML 檔」，或在工作臺使用同名按鈕，選擇手機或電腦裡的單檔 HTML 副本。</li>
+            <li>檔案只會在瀏覽器中開啟，不會上傳，也不會覆寫原始檔。</li>
             <li>在預覽裡點選「可修改 safe」元素，再從右側調整文字、外觀、位置或大小。</li>
             <li>完成後按「下載修改後 HTML」。若按鈕沒有開放，畫面會說明尚未通過哪一項安全檢查。</li>
             <li>下載的是新的 <code>.lts-edited.html</code> 檔案；Studio 不會自動替你發布網站。</li>
@@ -2998,7 +3126,7 @@
           <p class="help-support">遇到問題？請到 <a href="https://github.com/lexiansy/little-things-studio/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a> 回報。</p>
         </section>
         <div class="modal-actions">
-          <button class="primary-button" type="button" data-close-modal="helpModal">回到工作臺</button>
+          <button class="primary-button" type="button" data-close-modal="helpModal">回到畫面</button>
         </div>
       </div>
     </section>
@@ -3010,14 +3138,448 @@
     (() => {
       "use strict";
 
+      const LANGUAGE_STORAGE_KEY = "lts-interface-language";
+      const SUPPORTED_LANGUAGES = new Set(["zh-TW", "en"]);
+      const LOCALES = {
+        "zh-TW": {
+          "brand.subtitle": "可試玩內建範例，也能匯入自己的 HTML",
+          "device.phone": "手機",
+          "device.tablet": "平板",
+          "device.desktop": "電腦",
+          "header.deviceZoom": "預覽裝置與縮放",
+          "header.deviceGroup": "預覽裝置",
+          "header.canvasZoom": "畫布縮放",
+          "header.fitCanvas": "適合畫布",
+          "action.undo": "復原",
+          "action.redo": "重做",
+          "action.help": "使用指南",
+          "action.log": "調整紀錄",
+          "action.logOpen.one": "開啟調整紀錄，目前 {count} 項",
+          "action.logOpen.other": "開啟調整紀錄，目前 {count} 項",
+          "language.switchLabel": "切換介面語言為 English",
+          "start.title": "想從哪裡開始？",
+          "start.copy": "匯入自己的 HTML 檔，或先用內建範例試玩。",
+          "start.import": "匯入 HTML 檔",
+          "start.importHint": "從手機或電腦選擇單一 .html 檔案",
+          "start.demo": "試玩內建範例",
+          "start.demoHint": "看看可以調整哪些畫面元素",
+          "workspace.label": "預覽工作臺",
+          "mode.demo": "試玩範例",
+          "mode.import": "匯入預覽",
+          "project.demoHome": "Little Things Demo・首頁",
+          "actions.group": "編輯器檔案操作",
+          "import.open": "匯入 HTML 檔",
+          "import.replace": "更換 HTML 檔",
+          "import.hint": "選擇手機或電腦裡的單檔 HTML 副本；檔案只會在瀏覽器中開啟，不會上傳。",
+          "export.download": "下載修改後 HTML",
+          "return.start": "回到開始",
+          "import.previewLabel": "隔離的匯入 HTML 預覽",
+          "import.noFile": "尚未匯入 HTML",
+          "import.recognized.one": "可辨認元素 {count}",
+          "import.recognized.other": "可辨認元素 {count}",
+          "import.securityBadge": "腳本停用・外部連線封鎖",
+          "import.statusSummary": "元素支援狀態摘要",
+          "import.safeCount.one": "可修改 safe {count}",
+          "import.safeCount.other": "可修改 safe {count}",
+          "import.viewOnlyCount.one": "僅查看 view-only {count}",
+          "import.viewOnlyCount.other": "僅查看 view-only {count}",
+          "import.blockedCount.one": "已封鎖 blocked {count}",
+          "import.blockedCount.other": "已封鎖 blocked {count}",
+          "import.safetyDefault": "選取本機 HTML 副本後，這裡會列出被停用或移除的能力。",
+          "import.editCount.one": "{count} 個匯入元素有調整",
+          "import.editCount.other": "{count} 個匯入元素有調整",
+          "import.editEmpty": "尚未修改；所有變更只留在這次的清理後預覽副本。",
+          "import.safeDownload": "安全靜態下載",
+          "import.exportNeedsEdit": "匯入並修改「可修改 safe」元素後，才能下載新的 HTML 副本。",
+          "import.previewIsolated": "隔離預覽",
+          "import.modeNoticeStrong": "可另存一份修改後的 HTML。",
+          "import.modeNotice": "「可修改 safe」元素能調整文字與外觀；通過安全檢查後才會開放下載。「僅查看 view-only」元素與原始檔都不會被修改。",
+          "import.detailName": "名稱／文字",
+          "import.detailStatus": "支援狀態",
+          "import.detailReason": "說明",
+          "import.selectPrompt": "請點選預覽中的元素",
+          "import.selectableReason": "safe 與 view-only 元素都可以選取查看。",
+          "import.safeControls": "Safe 元素調整",
+          "import.selectSafe": "請先選取預覽中的 safe 元素。",
+          "import.control.text": "文字內容",
+          "import.control.fontSize": "字體大小（px）",
+          "import.control.radius": "圓角（px）",
+          "import.control.width": "寬度（px）",
+          "import.control.height": "高度（px）",
+          "import.control.x": "X 位移（px）",
+          "import.control.y": "Y 位移（px）",
+          "import.control.color": "文字顏色",
+          "import.control.background": "背景色",
+          "import.safeLeaf": "可修改文字與外觀；也可在預覽中直接拖曳，或拉右下角控制點 resize。",
+          "import.safeStructure": "這個 safe 元素含有子結構；為避免刪除內容，只開放外觀、位移、拖曳與 resize。",
+          "import.disabledReason": "此元素是 {status}：{reason}",
+          "import.copy": "匯入副本",
+          "import.previewOnly": "預覽限定",
+          "inspector.label": "元素調整面板",
+          "inspector.current": "目前選取",
+          "inspector.applyTo": "套用到",
+          "inspector.scope": "調整套用範圍",
+          "inspector.currentSize": "目前{device}尺寸",
+          "inspector.allSizes": "所有尺寸",
+          "inspector.scopeAll": "接下來的調整會同步套用到手機、平板與電腦預覽。",
+          "inspector.scopeOne": "接下來的移動與外觀調整，只會套用到{device}預覽。",
+          "inspector.positionSize": "位置與大小",
+          "inspector.resetElement": "重設此元素",
+          "inspector.x": "左右位置",
+          "inspector.y": "上下位置",
+          "inspector.scale": "整體大小",
+          "inspector.left": "向左移動 1 像素",
+          "inspector.right": "向右移動 1 像素",
+          "inspector.up": "向上移動 1 像素",
+          "inspector.down": "向下移動 1 像素",
+          "inspector.text": "文字",
+          "inspector.color": "顏色",
+          "inspector.fontSize": "字級",
+          "inspector.fontStyle": "字體氣質",
+          "font.clear": "清楚俐落",
+          "font.round": "柔和圓潤",
+          "font.serif": "安靜典雅",
+          "inspector.foreground": "文字／圖形顏色",
+          "inspector.surface": "外觀",
+          "inspector.background": "底色",
+          "inspector.radius": "圓角",
+          "inspector.shadow": "柔和陰影",
+          "inspector.shadowHint": "讓元素與背景稍微分開",
+          "inspector.image": "圖片",
+          "inspector.currentImage": "目前圖片",
+          "inspector.noImage": "尚未選擇圖片",
+          "inspector.uploadImage": "上傳／更換圖片",
+          "inspector.remove": "移除",
+          "inspector.imageFit": "圖片顯示方式",
+          "inspector.cover": "填滿框格",
+          "inspector.contain": "完整顯示",
+          "inspector.imageSession": "圖片只留在這次預覽裡；重新開啟檔案就會消失。",
+          "inspector.resetAll": "清除這一輪全部調整",
+          "selection.drag": "{label} · 拖曳移動",
+          "selection.resize": "拖曳縮放選取元素",
+          "selection.tip": "已選中雙星光：直接拖動，或拉右下角縮放。也可以點其他元素。",
+          "summary.title": "本次調整紀錄",
+          "summary.copy": "整理目前這次編輯中做過的調整。",
+          "summary.sessionStrong": "這是暫時工作階段。",
+          "summary.session": "回到開始後，這次的調整紀錄會一起清除。",
+          "summary.continue": "繼續調整",
+          "summary.empty": "還沒有調整",
+          "summary.import": "匯入",
+          "return.title": "要回到開始嗎？",
+          "return.pending": "目前這次調整還沒有保留下來。",
+          "return.copy": "回到開始會清除目前的暫時文件與這次調整；原始 HTML 檔案不受影響。",
+          "return.continue": "繼續編輯",
+          "help.title": "從開始畫面選擇",
+          "help.intro": "匯入自己的單檔 HTML，或先用內建範例熟悉調整方式。",
+          "help.demoTitle": "試玩內建範例",
+          "help.demoCopy": "在開始畫面選「試玩內建範例」，熟悉點選、拖曳與右側調整面板。",
+          "help.demo1": "點畫面上的文字、區塊、雙星光、摘要卡、按鈕或導覽項目。",
+          "help.demo2": "直接拖動選中的元素；拉選取框右下角，可以等比例放大或縮小。",
+          "help.demo3": "右側可以微調位置、大小、顏色、圓角與陰影；不同元素只顯示適合它的項目。",
+          "help.demo4": "用復原／重做回頭；右上角「調整紀錄」會把 CSS 數字翻成容易理解的變更。",
+          "help.importTitle": "匯入 HTML 檔",
+          "help.importCopy": "需要一個不超過 5 MiB、內容都放在同一個檔案裡的",
+          "help.importCopyEnd": "。網址、ZIP、資料夾與框架專案不能直接匯入。",
+          "help.import1": "在開始畫面按「匯入 HTML 檔」，或在工作臺使用同名按鈕，選擇手機或電腦裡的單檔 HTML 副本。",
+          "help.import2": "檔案只會在瀏覽器中開啟，不會上傳，也不會覆寫原始檔。",
+          "help.import3": "在預覽裡點選「可修改 safe」元素，再從右側調整文字、外觀、位置或大小。",
+          "help.import4": "完成後按「下載修改後 HTML」。若按鈕沒有開放，畫面會說明尚未通過哪一項安全檢查。",
+          "help.import5": "下載的是新的",
+          "help.import5End": "檔案；Studio 不會自動替你發布網站。",
+          "help.safe": "可修改 safe：",
+          "help.safeCopy": "可以選取並調整。",
+          "help.viewOnly": "僅查看 view-only：",
+          "help.viewOnlyCopy": "可以查看，但不會被改動。",
+          "help.blocked": "已封鎖 blocked：",
+          "help.blockedCopy": "危險或不支援的能力已停用，並且不能下載修改後的 HTML。",
+          "help.support": "遇到問題？請到",
+          "help.supportEnd": "回報。",
+          "help.close": "回到畫面",
+          "toast.returned": "已回到開始，這次調整已清除。",
+          "error.extension": "請選擇 .html 或 .htm 檔案。",
+          "error.empty": "這個 HTML 檔案是空的。",
+          "error.size": "HTML 檔案必須小於或等於 5 MiB。",
+          "error.utf8": "檔案不是可安全讀取的 UTF-8 HTML。",
+          "error.structure": "找不到可辨認的 HTML 結構。",
+          "error.read": "無法讀取這個 HTML 檔案。",
+          "toast.imported": "已建立「{file}」的隔離安全預覽。",
+          "toast.downloaded": "已下載「{file}」；原始檔案沒有被覆寫。",
+          "error.export": "無法建立安全的 HTML 副本。",
+          "export.noSession": "請先匯入 HTML 副本。",
+          "export.blocked": "來源含有已被安全清理的能力，不能匯出 active HTML 副本。",
+          "export.mapping": "來源元素無法完整且唯一對應，不能安全匯出。",
+          "export.noEdits": "尚未修改 safe 元素。",
+          "export.marker": "來源含有 Studio 保留標記，不能安全匯出。",
+          "export.invalid": "調整包含非 safe 元素或未通過驗證的值。",
+          "export.editMapping": "調整無法完整且唯一映射回來源元素。",
+          "export.allowed.one": "可下載 {count} 個 safe 元素的靜態修改副本。",
+          "export.allowed.other": "可下載 {count} 個 safe 元素的靜態修改副本。",
+          "export.viewOnlyChanged": "view-only 元素在匯出時發生非預期變更。",
+          "export.internalMarker": "匯出內容含有 Studio internal marker。",
+          "security.clean": "未偵測到需要移除的危險能力；預覽仍套用隔離 sandbox 與嚴格 CSP。",
+          "security.cssImport": "已移除 CSS @import", "security.externalCss": "已封鎖 CSS 外部資源", "security.unsafeCss": "已封鎖不安全的 CSS 行為",
+          "security.javascriptUrl": "已封鎖 javascript URL", "security.reservedMarker": "已移除 Studio 保留標記", "security.redirectMeta": "已移除 redirect 或 policy meta",
+          "security.inlineHandler": "已移除 inline event handler", "security.externalResource": "已封鎖導頁或外部資源", "security.formConfig": "已停用表單設定",
+          "security.removedTag": "已移除 <{tag}>",
+          "security.disabledAttribute": "已停用 {name} attribute",
+          "security.reasonCount": "{reason} × {count}",
+          "classify.complex": "複雜或互動結構只提供唯讀辨識。",
+          "classify.link": "連結導向已移除，只提供唯讀辨識。",
+          "classify.form": "表單與控制行為已停用，只提供唯讀辨識。",
+          "classify.custom": "自訂元素不執行元件程式，只提供唯讀辨識。",
+          "classify.editable": "contenteditable 已停用，只提供唯讀辨識。",
+          "classify.safe": "靜態 DOM 元素，可在隔離預覽中選取查看。",
+          "toast.undoImport": "已復原匯入調整：{description}",
+          "toast.redoImport": "已重做匯入調整：{description}",
+          "toast.undo": "已復原：{description}",
+          "toast.redo": "已重做：{description}",
+          "toast.undoGeneric": "已復原上一項調整。", "toast.redoGeneric": "已重做下一項調整。",
+          "toast.resetOne": "{label}已恢復原樣。",
+          "toast.nothingToReset": "這一輪目前沒有需要清除的調整。",
+          "toast.resetAll": "全部示範調整已清除。",
+          "toast.notImage": "這個檔案不是可顯示的圖片。",
+          "toast.imageSize": "圖片超過 20 MB，請先選一張小一點的圖片。",
+          "toast.imageChanged": "已在預覽中換成「{file}」。",
+          "toast.imageRemoved": "已從目前預覽移除圖片。",
+          "image.uploadedAlt": "已上傳的圖片：{file}",
+          "image.unnamed": "未命名圖片",
+          "summary.moveLeft": "向左 {value}px",
+          "summary.moveRight": "向右 {value}px",
+          "summary.moveUp": "向上 {value}px",
+          "summary.moveDown": "向下 {value}px",
+          "summary.scale": "{direction}至 {value}%",
+          "summary.enlarge": "放大",
+          "summary.shrink": "縮小",
+          "summary.fontSize": "字級改為 {value}px",
+          "summary.font": "字體改為「{value}」",
+          "summary.color": "文字／圖形顏色改為 {value}",
+          "summary.background": "底色改為 {value}",
+          "summary.radius": "圓角改為 {value}px",
+          "summary.shadowOn": "開啟柔和陰影",
+          "summary.shadowOff": "移除柔和陰影",
+          "summary.imageChanged": "圖片更換為「{file}」",
+          "summary.imageRemoved": "移除圖片",
+          "summary.imageContain": "圖片改為完整顯示",
+          "summary.imageCover": "圖片改為填滿框格",
+          "summary.adjust": "{device}・{label}：調整{changes}",
+          "summary.appearance": "外觀",
+          "summary.nudge": "{device}・{label}：微調位置",
+          "summary.drag": "拖動位置",
+          "summary.resize": "調整大小",
+          "summary.gesture": "{device}・{label}：{action}",
+          "summary.restore": "{device}・{label}：恢復原樣",
+          "summary.clearAll": "清除這一輪全部調整",
+          "import.editFallback": "匯入元素調整",
+          "import.elementFallback": "匯入元素",
+          "import.drag": "拖曳",
+          "import.resize": "resize",
+          "edit.text": "文字",
+          "edit.fontSize": "字級",
+          "edit.color": "文字色",
+          "edit.background": "背景",
+          "edit.width": "寬度",
+          "edit.height": "高度",
+          "edit.radius": "圓角",
+          "edit.x": "X 位移",
+          "edit.y": "Y 位移",
+          "element.header.label": "頁首區塊", "element.header.kind": "區塊", "element.header.help": "這是整個頁首區塊。點空白處就能選中它，調整整區位置、大小或背景色。",
+          "element.kicker.label": "英文眉題", "element.kicker.kind": "文字", "element.kicker.help": "這是標題上方的小字。可以單獨移動、縮放，也能調字級、字體與顏色。",
+          "element.title.label": "標題", "element.title.kind": "文字", "element.title.help": "這是主標題。可以拖動、縮放，也能在右側改字級、字體氣質與顏色。",
+          "element.subtitle.label": "副標文字", "element.subtitle.kind": "文字", "element.subtitle.help": "這是主標題下方的說明文字，可以單獨調整位置、大小、字體與顏色。",
+          "element.stars.label": "雙星光", "element.stars.kind": "裝飾", "element.stars.help": "這是一組裝飾。拖動畫面會改位置，拉右下角會等比例縮放；鍵盤方向鍵也能微調。",
+          "element.helloTitle.label": "今日標題", "element.helloTitle.kind": "文字", "element.helloTitle.help": "這是內容區的小標題，可以單獨移動、縮放與換色。",
+          "element.updateTime.label": "更新時間", "element.updateTime.kind": "文字", "element.updateTime.help": "這是更新時間文字，可以單獨調整，不會連帶移動旁邊的標題。",
+          "element.note.label": "最新紀錄卡", "element.note.kind": "卡片", "element.note.help": "這是整張最新紀錄卡。可以調位置、大小、底色、圓角和陰影；卡內文字也能分開選。",
+          "element.noteLabel.label": "紀錄標籤", "element.noteLabel.kind": "文字", "element.noteLabel.help": "這是紀錄卡上方的小標籤，可以獨立調整。",
+          "element.noteMain.label": "紀錄標題", "element.noteMain.kind": "文字", "element.noteMain.help": "這是紀錄卡的主要文字，可以單獨改大小、字體與顏色。",
+          "element.noteMeta.label": "紀錄內容", "element.noteMeta.kind": "文字", "element.noteMeta.help": "這是紀錄卡內的補充內容，可以獨立移動、縮放與換色。",
+          "element.waterCard.label": "閱讀摘要卡", "element.waterCard.kind": "卡片", "element.waterCard.help": "這是一張摘要卡，可以單獨移動、縮放並調整卡片外觀。",
+          "element.activityCard.label": "活動摘要卡", "element.activityCard.kind": "卡片", "element.activityCard.help": "這是一張摘要卡，可以單獨移動、縮放並調整卡片外觀。",
+          "element.photo.label": "最近片段卡", "element.photo.kind": "圖片", "element.photo.help": "這是圖片卡。除了位置與外觀，還能在右側上傳自己的圖片，或切換填滿與完整顯示。",
+          "element.record.label": "新增紀錄按鈕", "element.record.kind": "按鈕", "element.record.help": "這是主要按鈕。可以調位置、大小、文字與底色；這版不會觸發按鈕原本的功能。",
+          "element.nav.label": "底部導覽列", "element.nav.kind": "導覽", "element.nav.help": "這是整組底部導覽。點空白處會選整組；裡面的三個項目也能分開選。",
+          "element.navHome.label": "首頁導覽項目", "element.navHome.kind": "導覽項目", "element.navHome.help": "這是首頁導覽項目，可以單獨調位置、大小與文字顏色。",
+          "element.navWiki.label": "靈感導覽項目", "element.navWiki.kind": "導覽項目", "element.navWiki.help": "這是靈感導覽項目，可以單獨調位置、大小與文字顏色。",
+          "element.navRecords.label": "記錄導覽項目", "element.navRecords.kind": "導覽項目", "element.navRecords.help": "這是記錄導覽項目，可以單獨調位置、大小與文字顏色。",
+          "demo.kicker": "LITTLE THINGS DEMO", "demo.title": "一頁小日常", "demo.subtitle": "把今天的一件小事，留成可以慢慢看的頁面。",
+          "demo.hello": "今天的小事", "demo.time": "示範時間 15:20", "demo.cardLabel": "範例卡片", "demo.cardTitle": "午後的光落在桌角",
+          "demo.meta1": "窗邊角落 · 示範紀錄", "demo.meta2": "翻過一頁書，杯子裡的茶還有一點溫度。",
+          "demo.reading": "閱讀", "demo.readingValue": "20 分鐘", "demo.walk": "散步", "demo.walkValue": "天氣很好",
+          "demo.recent": "最近片段", "demo.photoHint": "點右側上傳更換", "demo.cta": "新增一筆小事",
+          "demo.home": "首頁", "demo.inspiration": "靈感", "demo.records": "記錄",
+          "demo.pageLabel": "Little Things 通用示範頁", "demo.starsLabel": "雙星光裝飾", "demo.quickSummary": "今日摘要", "demo.navLabel": "示範底部導覽"
+        },
+        "en": {
+          "brand.subtitle": "Try the built-in demo or import your own HTML",
+          "device.phone": "Phone", "device.tablet": "Tablet", "device.desktop": "Desktop",
+          "header.deviceZoom": "Preview device and zoom", "header.deviceGroup": "Preview device", "header.canvasZoom": "Canvas zoom", "header.fitCanvas": "Fit canvas",
+          "action.undo": "Undo", "action.redo": "Redo", "action.help": "Guide", "action.log": "Adjustment log",
+          "action.logOpen.one": "Open adjustment log, {count} item", "action.logOpen.other": "Open adjustment log, {count} items",
+          "language.switchLabel": "將介面切換為繁體中文",
+          "start.title": "How would you like to start?", "start.copy": "Import your own HTML file, or try the built-in demo first.",
+          "start.import": "Import HTML file", "start.importHint": "Choose one .html file from your phone or computer",
+          "start.demo": "Try the built-in demo", "start.demoHint": "Explore which page elements you can adjust",
+          "workspace.label": "Preview workbench", "mode.demo": "Demo", "mode.import": "Imported preview", "project.demoHome": "Little Things Demo · Home",
+          "actions.group": "Editor file actions", "import.open": "Import HTML file", "import.replace": "Replace HTML file",
+          "import.hint": "Choose a single-file HTML copy from your phone or computer. It opens only in this browser and is never uploaded.",
+          "export.download": "Download edited HTML", "return.start": "Back to start", "import.previewLabel": "Isolated imported HTML preview",
+          "import.noFile": "No HTML imported", "import.recognized.one": "{count} recognized element", "import.recognized.other": "{count} recognized elements",
+          "import.securityBadge": "Scripts disabled · external connections blocked", "import.statusSummary": "Element support summary",
+          "import.safeCount.one": "{count} editable safe", "import.safeCount.other": "{count} editable safe",
+          "import.viewOnlyCount.one": "{count} view-only", "import.viewOnlyCount.other": "{count} view-only",
+          "import.blockedCount.one": "{count} blocked", "import.blockedCount.other": "{count} blocked",
+          "import.safetyDefault": "After you choose a local HTML copy, disabled or removed capabilities appear here.",
+          "import.editCount.one": "{count} imported element adjusted", "import.editCount.other": "{count} imported elements adjusted",
+          "import.editEmpty": "No changes yet. All changes stay in this sanitized preview copy for this session.",
+          "import.safeDownload": "Safe static download", "import.exportNeedsEdit": "Import and edit an editable safe element before downloading a new HTML copy.",
+          "import.previewIsolated": "Isolated preview", "import.modeNoticeStrong": "Save a separate edited HTML copy.",
+          "import.modeNotice": "Editable safe elements can change text and appearance; download unlocks only after safety checks pass. View-only elements and the original file are never changed.",
+          "import.detailName": "Name / text", "import.detailStatus": "Support status", "import.detailReason": "Explanation",
+          "import.selectPrompt": "Select an element in the preview", "import.selectableReason": "Safe and view-only elements can both be selected for inspection.",
+          "import.safeControls": "Safe element adjustments", "import.selectSafe": "Select a safe element in the preview first.",
+          "import.control.text": "Text content", "import.control.fontSize": "Font size (px)", "import.control.radius": "Corner radius (px)",
+          "import.control.width": "Width (px)", "import.control.height": "Height (px)", "import.control.x": "X offset (px)", "import.control.y": "Y offset (px)",
+          "import.control.color": "Text color", "import.control.background": "Background color",
+          "import.safeLeaf": "Edit text and appearance, drag directly in the preview, or resize from the lower-right handle.",
+          "import.safeStructure": "This safe element contains child structure. To preserve it, only appearance, offset, drag, and resize are available.",
+          "import.disabledReason": "This element is {status}: {reason}", "import.copy": "Imported copy", "import.previewOnly": "Preview only",
+          "inspector.label": "Element adjustment panel", "inspector.current": "Selected", "inspector.applyTo": "Apply to", "inspector.scope": "Adjustment scope",
+          "inspector.currentSize": "Current {device} size", "inspector.allSizes": "All sizes",
+          "inspector.scopeAll": "New adjustments apply to phone, tablet, and desktop previews.", "inspector.scopeOne": "New position and appearance adjustments apply only to the {device} preview.",
+          "inspector.positionSize": "Position and size", "inspector.resetElement": "Reset element", "inspector.x": "Horizontal position", "inspector.y": "Vertical position", "inspector.scale": "Overall size",
+          "inspector.left": "Move left 1 pixel", "inspector.right": "Move right 1 pixel", "inspector.up": "Move up 1 pixel", "inspector.down": "Move down 1 pixel",
+          "inspector.text": "Text", "inspector.color": "Color", "inspector.fontSize": "Font size", "inspector.fontStyle": "Font style",
+          "font.clear": "Clean", "font.round": "Soft and rounded", "font.serif": "Quiet serif", "inspector.foreground": "Text / shape color",
+          "inspector.surface": "Appearance", "inspector.background": "Background", "inspector.radius": "Corner radius", "inspector.shadow": "Soft shadow", "inspector.shadowHint": "Separate the element gently from the background",
+          "inspector.image": "Image", "inspector.currentImage": "Current image", "inspector.noImage": "No image selected", "inspector.uploadImage": "Upload / replace image", "inspector.remove": "Remove",
+          "inspector.imageFit": "Image fit", "inspector.cover": "Fill frame", "inspector.contain": "Show full image", "inspector.imageSession": "The image stays only in this preview session and disappears after reopening the file.",
+          "inspector.resetAll": "Clear all session adjustments", "selection.drag": "{label} · Drag to move", "selection.resize": "Drag to resize selected element",
+          "selection.tip": "Twinkle pair selected: drag to move, use the lower-right handle to resize, or select another element.",
+          "summary.title": "Session adjustment log", "summary.copy": "A readable list of adjustments made in this editing session.",
+          "summary.sessionStrong": "This is a temporary session.", "summary.session": "Returning to start clears this adjustment log.", "summary.continue": "Continue editing", "summary.empty": "No adjustments yet", "summary.import": "Imported",
+          "return.title": "Return to start?", "return.pending": "Current adjustments have not been saved.", "return.copy": "Returning to start clears the temporary document and session changes. The original HTML file is unaffected.", "return.continue": "Keep editing",
+          "help.title": "Choose from the start screen", "help.intro": "Import your own single-file HTML or learn the controls with the built-in demo.",
+          "help.demoTitle": "Try the built-in demo", "help.demoCopy": "Choose Try the built-in demo on the start screen to explore selection, drag, and the adjustment panel.",
+          "help.demo1": "Select text, sections, the twinkle pair, summary cards, the button, or navigation items.",
+          "help.demo2": "Drag the selected element directly, or resize proportionally from the lower-right handle.",
+          "help.demo3": "Use the right panel for position, size, color, radius, and shadow. Each element shows only relevant controls.",
+          "help.demo4": "Use undo and redo to step back and forward. The Adjustment log turns CSS values into readable changes.",
+          "help.importTitle": "Import an HTML file", "help.importCopy": "Use one self-contained", "help.importCopyEnd": "file no larger than 5 MiB. URLs, ZIP files, folders, and framework projects cannot be imported directly.",
+          "help.import1": "Choose Import HTML file on the start screen or above the workbench, then select a single-file HTML copy from your phone or computer.",
+          "help.import2": "The file opens only in your browser. It is never uploaded or written back to the original.",
+          "help.import3": "Select an editable safe element in the preview, then adjust its text, appearance, position, or size from the right panel.",
+          "help.import4": "Choose Download edited HTML when finished. If it stays disabled, the screen explains which safety check is not yet satisfied.",
+          "help.import5": "The download is a new", "help.import5End": "file. Studio does not publish the page for you.",
+          "help.safe": "Editable safe:", "help.safeCopy": "Can be selected and adjusted.", "help.viewOnly": "View-only:", "help.viewOnlyCopy": "Can be inspected but not changed.",
+          "help.blocked": "Blocked:", "help.blockedCopy": "Unsafe or unsupported capabilities are disabled and prevent edited-HTML download.",
+          "help.support": "Need help? Report a reproducible issue in", "help.supportEnd": ".", "help.close": "Back to screen",
+          "toast.returned": "Returned to start and cleared this session's adjustments.", "error.extension": "Choose an .html or .htm file.", "error.empty": "This HTML file is empty.",
+          "error.size": "The HTML file must be 5 MiB or smaller.", "error.utf8": "The file is not readable as safe UTF-8 HTML.", "error.structure": "No recognizable HTML structure was found.", "error.read": "This HTML file could not be read.",
+          "toast.imported": "Created an isolated safe preview of “{file}”.", "toast.downloaded": "Downloaded “{file}”; the original file was not overwritten.", "error.export": "A safe HTML copy could not be created.",
+          "export.noSession": "Import an HTML copy first.", "export.blocked": "The source contained capabilities removed for safety, so an active HTML copy cannot be exported.",
+          "export.mapping": "Source elements do not map completely and uniquely, so export is disabled.", "export.noEdits": "No safe element has been edited.",
+          "export.marker": "The source contains a reserved Studio marker and cannot be exported safely.", "export.invalid": "An edit targets a non-safe element or contains an invalid value.",
+          "export.editMapping": "An edit cannot be mapped completely and uniquely back to its source element.",
+          "export.allowed.one": "Download a static edited copy with {count} safe element change.", "export.allowed.other": "Download a static edited copy with {count} safe element changes.",
+          "export.viewOnlyChanged": "A view-only element changed unexpectedly during export.", "export.internalMarker": "The export contains a Studio internal marker.",
+          "security.clean": "No dangerous capability needed removal. The preview still uses an isolated sandbox and strict CSP.",
+          "security.cssImport": "Removed CSS @import", "security.externalCss": "Blocked external CSS resource", "security.unsafeCss": "Blocked unsafe CSS behavior",
+          "security.javascriptUrl": "Blocked javascript URL", "security.reservedMarker": "Removed reserved Studio marker", "security.redirectMeta": "Removed redirect or policy meta",
+          "security.inlineHandler": "Removed inline event handler", "security.externalResource": "Blocked navigation or external resource", "security.formConfig": "Disabled form configuration",
+          "security.removedTag": "Removed <{tag}>", "security.disabledAttribute": "Disabled {name} attribute", "security.reasonCount": "{reason} × {count}",
+          "classify.complex": "Complex or interactive structure is available for view-only inspection.", "classify.link": "Link navigation was removed; the element is view-only.",
+          "classify.form": "Form and control behavior is disabled; the element is view-only.", "classify.custom": "Custom-element code does not run; the element is view-only.",
+          "classify.editable": "contenteditable is disabled; the element is view-only.", "classify.safe": "Static DOM element available for selection in the isolated preview.",
+          "toast.undoImport": "Undid imported adjustment: {description}", "toast.redoImport": "Redid imported adjustment: {description}",
+          "toast.undo": "Undid: {description}", "toast.redo": "Redid: {description}", "toast.resetOne": "Restored {label}.",
+          "toast.undoGeneric": "Undid the previous adjustment.", "toast.redoGeneric": "Redid the next adjustment.",
+          "toast.nothingToReset": "There are no demo adjustments to clear.", "toast.resetAll": "Cleared all demo adjustments.",
+          "toast.notImage": "This file is not a supported image.", "toast.imageSize": "The image is larger than 20 MB. Choose a smaller image.",
+          "toast.imageChanged": "Preview image changed to “{file}”.", "toast.imageRemoved": "Removed the image from the current preview.",
+          "image.uploadedAlt": "Uploaded image: {file}", "image.unnamed": "Unnamed image",
+          "summary.moveLeft": "Left {value}px", "summary.moveRight": "Right {value}px", "summary.moveUp": "Up {value}px", "summary.moveDown": "Down {value}px",
+          "summary.scale": "{direction} to {value}%", "summary.enlarge": "Scale up", "summary.shrink": "Scale down", "summary.fontSize": "Font size to {value}px", "summary.font": "Font to “{value}”",
+          "summary.color": "Text / shape color to {value}", "summary.background": "Background to {value}", "summary.radius": "Corner radius to {value}px",
+          "summary.shadowOn": "Enable soft shadow", "summary.shadowOff": "Remove soft shadow", "summary.imageChanged": "Image changed to “{file}”", "summary.imageRemoved": "Remove image",
+          "summary.imageContain": "Show full image", "summary.imageCover": "Fill image frame", "summary.adjust": "{device} · {label}: adjust {changes}", "summary.appearance": "appearance",
+          "summary.nudge": "{device} · {label}: nudge position", "summary.drag": "drag position", "summary.resize": "resize", "summary.gesture": "{device} · {label}: {action}",
+          "summary.restore": "{device} · {label}: restore", "summary.clearAll": "Clear all session adjustments",
+          "import.editFallback": "Imported element adjustment", "import.elementFallback": "Imported element", "import.drag": "drag", "import.resize": "resize",
+          "edit.text": "text", "edit.fontSize": "font size", "edit.color": "text color", "edit.background": "background", "edit.width": "width", "edit.height": "height", "edit.radius": "corner radius", "edit.x": "X offset", "edit.y": "Y offset",
+          "element.header.label": "Header section", "element.header.kind": "Section", "element.header.help": "Select empty space in the header to move, resize, or recolor the whole section.",
+          "element.kicker.label": "Eyebrow", "element.kicker.kind": "Text", "element.kicker.help": "Move, resize, or adjust the font size, style, and color of this small eyebrow text.",
+          "element.title.label": "Title", "element.title.kind": "Text", "element.title.help": "Drag or resize the main title, or adjust its font size, style, and color in the panel.",
+          "element.subtitle.label": "Subtitle", "element.subtitle.kind": "Text", "element.subtitle.help": "Adjust the subtitle's position, size, font, and color independently.",
+          "element.stars.label": "Twinkle pair", "element.stars.kind": "Decoration", "element.stars.help": "Drag this decoration to move it, resize proportionally from the handle, or nudge it with arrow keys.",
+          "element.helloTitle.label": "Section title", "element.helloTitle.kind": "Text", "element.helloTitle.help": "Move, resize, or recolor this content-section title independently.",
+          "element.updateTime.label": "Update time", "element.updateTime.kind": "Text", "element.updateTime.help": "Adjust this time label without moving the nearby title.",
+          "element.note.label": "Feature card", "element.note.kind": "Card", "element.note.help": "Adjust the whole card's position, size, background, radius, and shadow. Its text remains separately selectable.",
+          "element.noteLabel.label": "Card label", "element.noteLabel.kind": "Text", "element.noteLabel.help": "Adjust the small label above the card title independently.",
+          "element.noteMain.label": "Card title", "element.noteMain.kind": "Text", "element.noteMain.help": "Adjust the card title's size, font, and color independently.",
+          "element.noteMeta.label": "Card details", "element.noteMeta.kind": "Text", "element.noteMeta.help": "Move, resize, or recolor the supporting card details independently.",
+          "element.waterCard.label": "Reading summary card", "element.waterCard.kind": "Card", "element.waterCard.help": "Move, resize, and adjust this summary card's appearance independently.",
+          "element.activityCard.label": "Walk summary card", "element.activityCard.kind": "Card", "element.activityCard.help": "Move, resize, and adjust this summary card's appearance independently.",
+          "element.photo.label": "Recent moment card", "element.photo.kind": "Image", "element.photo.help": "Adjust position and appearance, upload your own image, or switch between fill and full-image display.",
+          "element.record.label": "Add-item button", "element.record.kind": "Button", "element.record.help": "Adjust this main button's position, size, text style, and background. Its original action does not run in this beta.",
+          "element.nav.label": "Bottom navigation", "element.nav.kind": "Navigation", "element.nav.help": "Select empty space to adjust the full navigation, or select its three items individually.",
+          "element.navHome.label": "Home navigation item", "element.navHome.kind": "Navigation item", "element.navHome.help": "Adjust this navigation item's position, size, and text color independently.",
+          "element.navWiki.label": "Inspiration navigation item", "element.navWiki.kind": "Navigation item", "element.navWiki.help": "Adjust this navigation item's position, size, and text color independently.",
+          "element.navRecords.label": "Notes navigation item", "element.navRecords.kind": "Navigation item", "element.navRecords.help": "Adjust this navigation item's position, size, and text color independently.",
+          "demo.kicker": "LITTLE THINGS DEMO", "demo.title": "One small page", "demo.subtitle": "Keep one small moment from today on a page you can revisit slowly.",
+          "demo.hello": "Today's small thing", "demo.time": "Demo time 15:20", "demo.cardLabel": "Sample card", "demo.cardTitle": "Afternoon light reaches the corner of the desk",
+          "demo.meta1": "Window corner · sample note", "demo.meta2": "A page turns, and the tea in the cup is still a little warm.",
+          "demo.reading": "Reading", "demo.readingValue": "20 minutes", "demo.walk": "Walk", "demo.walkValue": "Clear weather",
+          "demo.recent": "Recent moment", "demo.photoHint": "Use the panel to replace it", "demo.cta": "Add one small thing",
+          "demo.home": "Home", "demo.inspiration": "Ideas", "demo.records": "Notes",
+          "demo.pageLabel": "Little Things generic demo page", "demo.starsLabel": "Twinkle-pair decoration", "demo.quickSummary": "Today's summary", "demo.navLabel": "Demo bottom navigation"
+        }
+      };
+
+      function interpolate(message, values = {}) {
+        return String(message).replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ""));
+      }
+
+      function t(key, values) {
+        const language = state?.language || initialLanguage;
+        return interpolate(LOCALES[language]?.[key] ?? LOCALES["zh-TW"][key] ?? key, values);
+      }
+
+      function tp(key, count, values = {}) {
+        const form = count === 1 ? "one" : "other";
+        return t(`${key}.${form}`, { ...values, count });
+      }
+
+      function normalizeLanguage(value) {
+        if (!value) return null;
+        const normalized = String(value).trim();
+        if (/^zh(?:-|$)/i.test(normalized)) return "zh-TW";
+        if (/^en(?:-|$)/i.test(normalized)) return "en";
+        return SUPPORTED_LANGUAGES.has(normalized) ? normalized : null;
+      }
+
+      function resolveInitialLanguage() {
+        const queryLanguage = normalizeLanguage(new URL(window.location.href).searchParams.get("lang"));
+        if (queryLanguage) return queryLanguage;
+        try {
+          const savedLanguage = normalizeLanguage(window.localStorage.getItem(LANGUAGE_STORAGE_KEY));
+          if (savedLanguage) return savedLanguage;
+        } catch {}
+        const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
+          ? navigator.languages
+          : [navigator.language];
+        return browserLanguages.some(language => /^zh(?:-|$)/i.test(language || "")) ? "zh-TW" : "en";
+      }
+
+      const initialLanguage = resolveInitialLanguage();
+
       document.querySelectorAll('img[src^="data:image/png;base64,"]').forEach(image => {
         image.src = image.src.replace("HnByCnhyB", "HnByCnByB");
       });
 
-      const DEVICE_NAMES = {
-        phone: "手機",
-        tablet: "平板",
-        desktop: "電腦"
+      const DEVICE_KEYS = {
+        phone: "device.phone",
+        tablet: "device.tablet",
+        desktop: "device.desktop"
       };
 
       const DEVICE_SIZES = {
@@ -3046,27 +3608,18 @@
 
       const ELEMENTS = {
         header: {
-          label: "頁首區塊",
-          kind: "區塊",
           nodeId: "demo-header",
           controls: ["background"],
-          help: "這是整個頁首區塊。點空白處就能選中它，調整整區位置、大小或背景色。",
           defaults: sameDefaults({ background: "#f5e4c3" })
         },
         kicker: {
-          label: "英文眉題",
-          kind: "文字",
           nodeId: "demo-kicker",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是標題上方的小字。可以單獨移動、縮放，也能調字級、字體與顏色。",
           defaults: sameDefaults({ fontSize: 11, fontFamily: "clear", color: "#a27757" })
         },
         title: {
-          label: "標題",
-          kind: "文字",
           nodeId: "demo-title",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是主標題。可以拖動、縮放，也能在右側改字級、字體氣質與顏色。",
           defaults: responsiveDefaults(
             { fontSize: 31, fontFamily: "round", color: "#49392f" },
             { fontSize: 38, fontFamily: "round", color: "#49392f" },
@@ -3074,11 +3627,8 @@
           )
         },
         subtitle: {
-          label: "副標文字",
-          kind: "文字",
           nodeId: "demo-subtitle",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是主標題下方的說明文字，可以單獨調整位置、大小、字體與顏色。",
           defaults: responsiveDefaults(
             { fontSize: 12, fontFamily: "clear", color: "#8a705c" },
             { fontSize: 14, fontFamily: "clear", color: "#8a705c" },
@@ -3086,36 +3636,24 @@
           )
         },
         stars: {
-          label: "雙星光",
-          kind: "裝飾",
           nodeId: "demo-stars",
           controls: ["color"],
-          help: "這是一組裝飾。拖動畫面會改位置，拉右下角會等比例縮放；鍵盤方向鍵也能微調。",
           defaults: sameDefaults({ color: "#8a6a49" })
         },
         helloTitle: {
-          label: "今日標題",
-          kind: "文字",
           nodeId: "demo-hello-title",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是內容區的小標題，可以單獨移動、縮放與換色。",
           defaults: sameDefaults({ fontSize: 15, fontFamily: "round", color: "#56483f" })
         },
         updateTime: {
-          label: "更新時間",
-          kind: "文字",
           nodeId: "demo-update-time",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是更新時間文字，可以單獨調整，不會連帶移動旁邊的標題。",
           defaults: sameDefaults({ fontSize: 10, fontFamily: "clear", color: "#a48c78" })
         },
         note: {
-          label: "最新紀錄卡",
-          kind: "卡片",
           nodeId: "demo-note",
           controls: ["background", "radius", "shadow"],
           shadowStyle: "0 13px 30px rgba(106, 80, 50, 0.11)",
-          help: "這是整張最新紀錄卡。可以調位置、大小、底色、圓角和陰影；卡內文字也能分開選。",
           defaults: responsiveDefaults(
             { background: "#fff0b8", radius: 22, shadow: true },
             { background: "#fff0b8", radius: 22, shadow: true },
@@ -3123,19 +3661,13 @@
           )
         },
         noteLabel: {
-          label: "紀錄標籤",
-          kind: "文字",
           nodeId: "demo-note-label",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是紀錄卡上方的小標籤，可以獨立調整。",
           defaults: sameDefaults({ fontSize: 10, fontFamily: "clear", color: "#9b7450" })
         },
         noteMain: {
-          label: "紀錄標題",
-          kind: "文字",
           nodeId: "demo-note-main",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是紀錄卡的主要文字，可以單獨改大小、字體與顏色。",
           defaults: responsiveDefaults(
             { fontSize: 20, fontFamily: "round", color: "#5d4a36" },
             { fontSize: 20, fontFamily: "round", color: "#5d4a36" },
@@ -3143,38 +3675,26 @@
           )
         },
         noteMeta: {
-          label: "紀錄內容",
-          kind: "文字",
           nodeId: "demo-note-meta",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是紀錄卡內的補充內容，可以獨立移動、縮放與換色。",
           defaults: sameDefaults({ fontSize: 11, fontFamily: "clear", color: "#806b58" })
         },
         waterCard: {
-          label: "閱讀摘要卡",
-          kind: "卡片",
           nodeId: "demo-water-card",
           controls: ["color", "background", "radius", "shadow"],
           shadowStyle: "0 10px 24px rgba(80, 62, 45, 0.10)",
-          help: "這是一張摘要卡，可以單獨移動、縮放並調整卡片外觀。",
           defaults: sameDefaults({ color: "#69594d", background: "#fffdf8", radius: 18, shadow: false })
         },
         activityCard: {
-          label: "活動摘要卡",
-          kind: "卡片",
           nodeId: "demo-activity-card",
           controls: ["color", "background", "radius", "shadow"],
           shadowStyle: "0 10px 24px rgba(80, 62, 45, 0.10)",
-          help: "這是一張摘要卡，可以單獨移動、縮放並調整卡片外觀。",
           defaults: sameDefaults({ color: "#69594d", background: "#fffdf8", radius: 18, shadow: false })
         },
         photo: {
-          label: "最近片段卡",
-          kind: "圖片",
           nodeId: "demo-photo-card",
           controls: ["background", "radius", "shadow", "image"],
           shadowStyle: "0 10px 24px rgba(80, 62, 45, 0.10)",
-          help: "這是圖片卡。除了位置與外觀，還能在右側上傳自己的圖片，或切換填滿與完整顯示。",
           defaults: sameDefaults({
             background: "#fffdf8",
             radius: 18,
@@ -3185,12 +3705,9 @@
           })
         },
         record: {
-          label: "新增紀錄按鈕",
-          kind: "按鈕",
           nodeId: "demo-record",
           controls: ["fontSize", "fontFamily", "color", "background", "radius", "shadow"],
           shadowStyle: "0 12px 24px rgba(151, 78, 52, 0.20)",
-          help: "這是主要按鈕。可以調位置、大小、文字與底色；這版不會觸發按鈕原本的功能。",
           defaults: responsiveDefaults(
             { fontSize: 15, fontFamily: "round", color: "#fffaf4", background: "#c96f50", radius: 27, shadow: true },
             { fontSize: 16, fontFamily: "round", color: "#fffaf4", background: "#c96f50", radius: 29, shadow: true },
@@ -3198,49 +3715,45 @@
           )
         },
         nav: {
-          label: "底部導覽列",
-          kind: "導覽",
           nodeId: "demo-nav",
           controls: ["background", "radius", "shadow"],
           shadowStyle: "0 12px 35px rgba(84, 62, 45, 0.13)",
-          help: "這是整組底部導覽。點空白處會選整組；裡面的三個項目也能分開選。",
           defaults: sameDefaults({ background: "#fffaf1", radius: 28, shadow: true })
         },
         navHome: {
-          label: "首頁導覽項目",
-          kind: "導覽項目",
           nodeId: "demo-nav-home",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是首頁導覽項目，可以單獨調位置、大小與文字顏色。",
           defaults: sameDefaults({ fontSize: 9, fontFamily: "clear", color: "#9b583f" })
         },
         navWiki: {
-          label: "靈感導覽項目",
-          kind: "導覽項目",
           nodeId: "demo-nav-wiki",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是靈感導覽項目，可以單獨調位置、大小與文字顏色。",
           defaults: sameDefaults({ fontSize: 9, fontFamily: "clear", color: "#8e7968" })
         },
         navRecords: {
-          label: "記錄導覽項目",
-          kind: "導覽項目",
           nodeId: "demo-nav-records",
           controls: ["fontSize", "fontFamily", "color"],
-          help: "這是記錄導覽項目，可以單獨調位置、大小與文字顏色。",
           defaults: sameDefaults({ fontSize: 9, fontFamily: "clear", color: "#8e7968" })
         }
       };
 
       const dom = {
+        startScreen: document.getElementById("startScreen"),
+        workspace: document.getElementById("workspace"),
+        editorHeaderCenter: document.getElementById("editorHeaderCenter"),
+        brandSubtitle: document.getElementById("brandSubtitle"),
+        startImportButton: document.getElementById("startImportButton"),
+        startDemoButton: document.getElementById("startDemoButton"),
         workbench: document.getElementById("workbench"),
         canvasSizer: document.getElementById("canvasSizer"),
         projectModeLabel: document.getElementById("projectModeLabel"),
         projectNameLabel: document.getElementById("projectNameLabel"),
-        safeStateLabel: document.getElementById("safeStateLabel"),
+        editorActions: document.getElementById("editorActions"),
         htmlImportInput: document.getElementById("htmlImportInput"),
+        editorImportButton: document.getElementById("editorImportButton"),
         exportHtmlButton: document.getElementById("exportHtmlButton"),
-        returnDemoButton: document.getElementById("returnDemoButton"),
+        returnStartButton: document.getElementById("returnStartButton"),
+        confirmReturnStartButton: document.getElementById("confirmReturnStartButton"),
         importPreviewShell: document.getElementById("importPreviewShell"),
         importPreviewFrame: document.getElementById("importPreviewFrame"),
         importFileName: document.getElementById("importFileName"),
@@ -3249,7 +3762,7 @@
         importViewOnlyCount: document.getElementById("importViewOnlyCount"),
         importBlockedCount: document.getElementById("importBlockedCount"),
         importSafetySummary: document.getElementById("importSafetySummary"),
-        importEditCount: document.getElementById("importEditCount"),
+        importEditCountLabel: document.getElementById("importEditCountLabel"),
         importEditSummary: document.getElementById("importEditSummary"),
         importExportReason: document.getElementById("importExportReason"),
         importInspector: document.getElementById("importInspector"),
@@ -3271,7 +3784,6 @@
         importRadiusControl: document.getElementById("importRadiusControl"),
         importXControl: document.getElementById("importXControl"),
         importYControl: document.getElementById("importYControl"),
-        changeDock: document.getElementById("changeDock"),
         inspector: document.getElementById("inspector"),
         page: document.getElementById("demoPage"),
         overlay: document.getElementById("selectionOverlay"),
@@ -3283,10 +3795,7 @@
         undoButton: document.getElementById("undoButton"),
         redoButton: document.getElementById("redoButton"),
         summaryButton: document.getElementById("summaryButton"),
-        dockSummaryButton: document.getElementById("dockSummaryButton"),
         headerChangeCount: document.getElementById("headerChangeCount"),
-        dockChangeCount: document.getElementById("dockChangeCount"),
-        dockChangeText: document.getElementById("dockChangeText"),
         selectedName: document.getElementById("selectedName"),
         selectedKind: document.getElementById("selectedKind"),
         selectedHelp: document.getElementById("selectedHelp"),
@@ -3328,8 +3837,10 @@
         radiusControlRow: document.getElementById("radiusControlRow"),
         shadowControlRow: document.getElementById("shadowControlRow"),
         summaryModal: document.getElementById("summaryModal"),
+        returnConfirmModal: document.getElementById("returnConfirmModal"),
         helpModal: document.getElementById("helpModal"),
         summaryContent: document.getElementById("summaryContent"),
+        languageButton: document.getElementById("languageButton"),
         helpButton: document.getElementById("helpButton"),
         toast: document.getElementById("toast")
       };
@@ -3337,6 +3848,7 @@
       const clone = value => JSON.parse(JSON.stringify(value));
       const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
       const objectUrls = new Set();
+      let canvasTipTimer = null;
 
       const defaults = {};
       Object.entries(ELEMENTS).forEach(([id, config]) => {
@@ -3344,7 +3856,8 @@
       });
 
       const state = {
-        mode: "demo",
+        language: initialLanguage,
+        mode: "start",
         importSession: null,
         device: "phone",
         zoom: 1,
@@ -3359,6 +3872,179 @@
         gesture: null,
         lastModalTrigger: null
       };
+
+      function elementText(id, part) {
+        return t(`element.${id}.${part}`);
+      }
+
+      function localizedElementConfig(id) {
+        const config = ELEMENTS[id];
+        return config ? {
+          ...config,
+          label: elementText(id, "label"),
+          kind: elementText(id, "kind"),
+          help: elementText(id, "help")
+        } : null;
+      }
+
+      function localizeStaticUi() {
+        const valueToKey = new Map();
+        Object.values(LOCALES).forEach(dictionary => {
+          Object.entries(dictionary).forEach(([key, value]) => {
+            if (typeof value === "string" && !value.includes("{") && !valueToKey.has(value)) valueToKey.set(value, key);
+          });
+        });
+
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(node => {
+          const parent = node.parentElement;
+          if (!parent || parent.closest("#demoPage") || parent.closest("script, style")) return;
+          const trimmed = node.nodeValue.trim();
+          const key = valueToKey.get(trimmed);
+          if (!key) return;
+          node.nodeValue = node.nodeValue.replace(trimmed, t(key));
+        });
+
+        document.querySelectorAll("[title], [aria-label]").forEach(element => {
+          if (element.closest("#demoPage")) return;
+          ["title", "aria-label"].forEach(attribute => {
+            if (!element.hasAttribute(attribute)) return;
+            const key = valueToKey.get(element.getAttribute(attribute));
+            if (key) element.setAttribute(attribute, t(key));
+          });
+        });
+      }
+
+      const DEMO_TEXT_BINDINGS = Object.freeze({
+        "#demo-kicker": "demo.kicker",
+        "#demo-title": "demo.title",
+        "#demo-subtitle": "demo.subtitle",
+        "#demo-hello-title": "demo.hello",
+        "#demo-update-time": "demo.time",
+        "#demo-note-label": "demo.cardLabel",
+        "#demo-note-main": "demo.cardTitle",
+        "#demo-water-card strong": "demo.reading",
+        "#demo-water-card span": "demo.readingValue",
+        "#demo-activity-card strong": "demo.walk",
+        "#demo-activity-card span": "demo.walkValue",
+        "#demo-photo-card figcaption strong": "demo.recent",
+        "#photoCaption": "demo.photoHint",
+        "#demo-record": "demo.cta",
+        "#demo-nav-home > span:last-child": "demo.home",
+        "#demo-nav-wiki > span:last-child": "demo.inspiration",
+        "#demo-nav-records > span:last-child": "demo.records"
+      });
+
+      function applyDemoLanguage() {
+        Object.entries(DEMO_TEXT_BINDINGS).forEach(([selector, key]) => {
+          const element = document.querySelector(selector);
+          if (element) element.textContent = t(key);
+        });
+        const noteMeta = document.getElementById("demo-note-meta");
+        if (noteMeta) {
+          noteMeta.replaceChildren(document.createTextNode(t("demo.meta1")), document.createElement("br"), document.createTextNode(t("demo.meta2")));
+        }
+        applyDemoMetadata();
+        if (!getSelectedProps("phone")?.imageSrc && !getSelectedProps("tablet")?.imageSrc && !getSelectedProps("desktop")?.imageSrc) {
+          dom.photoCaption.textContent = t("demo.photoHint");
+        }
+      }
+
+      function applyDemoMetadata() {
+        Object.keys(ELEMENTS).forEach(id => {
+          const target = getTarget(id);
+          if (target) target.dataset.label = elementText(id, "label");
+        });
+        dom.page.setAttribute("aria-label", t("demo.pageLabel"));
+        document.getElementById("demo-stars")?.setAttribute("aria-label", t("demo.starsLabel"));
+        document.querySelector(".quick-grid")?.setAttribute("aria-label", t("demo.quickSummary"));
+        document.getElementById("demo-nav")?.setAttribute("aria-label", t("demo.navLabel"));
+      }
+
+      function localizeBlockedReason(reason) {
+        const removedTag = String(reason).match(/^removed <([^>]+)>$/);
+        if (removedTag) return t("security.removedTag", { tag: removedTag[1] });
+        const disabledAttribute = String(reason).match(/^disabled (.+) attribute$/);
+        if (disabledAttribute) return t("security.disabledAttribute", { name: disabledAttribute[1] });
+        const keys = {
+          "CSS @import": "security.cssImport",
+          "CSS external resource": "security.externalCss",
+          "unsafe CSS behavior": "security.unsafeCss",
+          "javascript URL": "security.javascriptUrl",
+          "reserved Studio marker": "security.reservedMarker",
+          "redirect or policy meta": "security.redirectMeta",
+          "inline event handler": "security.inlineHandler",
+          "navigation or external resource": "security.externalResource",
+          "disabled form configuration": "security.formConfig"
+        };
+        if (keys[reason]) return t(keys[reason]);
+        return reason;
+      }
+
+      function refreshLocalizedDynamicUi() {
+        dom.brandSubtitle.textContent = t("brand.subtitle");
+        dom.editorActions.setAttribute("aria-label", t("actions.group"));
+        dom.editorImportButton.title = t("import.hint");
+        dom.exportHtmlButton.textContent = t("export.download");
+        dom.returnStartButton.textContent = t("return.start");
+        dom.confirmReturnStartButton.textContent = t("return.start");
+        dom.resizeHandle.setAttribute("aria-label", t("selection.resize"));
+        updateAdjustmentLogButton(state.mode === "import" ? importEditedRecords().length : buildSummaries().length);
+        if (state.mode === "demo") {
+          dom.projectModeLabel.textContent = t("mode.demo");
+          dom.projectNameLabel.textContent = t("project.demoHome");
+          dom.editorImportButton.textContent = t("import.open");
+          dom.htmlImportInput.setAttribute("aria-label", t("import.open"));
+          renderInspector();
+          renderChangeSummary();
+        } else if (state.mode === "import" && state.importSession) {
+          const session = state.importSession;
+          session.resizeHandle?.setAttribute("aria-label", t("selection.resize"));
+          session.registry.forEach(record => {
+            if (record.reasonKey) record.reason = t(record.reasonKey);
+          });
+          dom.projectModeLabel.textContent = t("mode.import");
+          dom.editorImportButton.textContent = t("import.replace");
+          dom.htmlImportInput.setAttribute("aria-label", t("import.replace"));
+          dom.deviceDimensions.textContent = t("import.previewIsolated");
+          dom.importRecognizedCount.textContent = tp("import.recognized", session.registry.size);
+          dom.importSafeCount.textContent = tp("import.safeCount", session.statusCounts.safe);
+          dom.importViewOnlyCount.textContent = tp("import.viewOnlyCount", session.statusCounts["view-only"]);
+          dom.importBlockedCount.textContent = tp("import.blockedCount", session.blockedCount);
+          dom.importSafetySummary.textContent = importSafetySummary(session.blockedReasons);
+          const record = session.selectedRuntimeId ? session.registry.get(session.selectedRuntimeId) : null;
+          const element = session.selectedRuntimeId ? getImportElement(session.selectedRuntimeId) : null;
+          renderImportSelection(record, element);
+          renderImportChangeSummary();
+        } else {
+          dom.htmlImportInput.setAttribute("aria-label", t("import.open"));
+          dom.editorImportButton.textContent = t("import.open");
+        }
+      }
+
+      function applyLanguage(language, options = {}) {
+        const nextLanguage = normalizeLanguage(language) || "zh-TW";
+        state.language = nextLanguage;
+        document.documentElement.lang = nextLanguage;
+        localizeStaticUi();
+        dom.languageButton.textContent = nextLanguage === "zh-TW" ? "EN" : "中";
+        dom.languageButton.title = t("language.switchLabel");
+        dom.languageButton.setAttribute("aria-label", t("language.switchLabel"));
+        if (state.mode === "demo" && buildSummaries().length > 0) applyDemoMetadata();
+        else applyDemoLanguage();
+        refreshLocalizedDynamicUi();
+
+        if (options.persist !== false) {
+          try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage); } catch {}
+        }
+        if (options.syncUrl !== false) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("lang", nextLanguage);
+          window.history.replaceState(null, "", url);
+        }
+      }
 
       const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
       const IMPORT_CSP = [
@@ -3499,15 +4185,15 @@
         const isEditable = element.hasAttribute("contenteditable")
           && element.getAttribute("contenteditable") !== "false";
         if (IMPORT_VIEW_ONLY_TAGS.has(tag) || isCustom || isComplexDescendant || isEditable) {
-          let reason = "複雜或互動結構只提供唯讀辨識。";
-          if (tag === "a" || tag === "area") reason = "連結導向已移除，只提供唯讀辨識。";
+          let reasonKey = "classify.complex";
+          if (tag === "a" || tag === "area") reasonKey = "classify.link";
           else if (["button", "form", "fieldset", "input", "select", "option", "textarea"].includes(tag)) {
-            reason = "表單與控制行為已停用，只提供唯讀辨識。";
-          } else if (isCustom) reason = "自訂元素不執行元件程式，只提供唯讀辨識。";
-          else if (isEditable) reason = "contenteditable 已停用，只提供唯讀辨識。";
-          return { status: "view-only", reason };
+            reasonKey = "classify.form";
+          } else if (isCustom) reasonKey = "classify.custom";
+          else if (isEditable) reasonKey = "classify.editable";
+          return { status: "view-only", reasonKey, reason: t(reasonKey) };
         }
-        return { status: "safe", reason: "靜態 DOM 元素，可在隔離預覽中選取查看。" };
+        return { status: "safe", reasonKey: "classify.safe", reason: t("classify.safe") };
       }
 
       function sanitizeImportedHtml(sourceCopy) {
@@ -3626,6 +4312,7 @@
             label: importElementLabel(element),
             status: classification.status,
             reason: classification.reason,
+            reasonKey: classification.reasonKey,
             sourcePath: sourcePaths.get(element) || null
           });
         });
@@ -3660,12 +4347,12 @@
       }
 
       function importSafetySummary(blockedReasons) {
-        if (!blockedReasons.size) return "未偵測到需要移除的危險能力；預覽仍套用隔離 sandbox 與嚴格 CSP。";
+        if (!blockedReasons.size) return t("security.clean");
         return [...blockedReasons.entries()]
           .sort((a, b) => b[1] - a[1])
           .slice(0, 5)
-          .map(([reason, count]) => `${reason} × ${count}`)
-          .join("；");
+          .map(([reason, count]) => t("security.reasonCount", { reason: localizeBlockedReason(reason), count }))
+          .join(state.language === "en" ? "; " : "；");
       }
 
       function importColorToHex(value, fallback = "#000000") {
@@ -3819,38 +4506,40 @@
 
       function getImportExportGate() {
         const session = state.importSession;
-        if (!session) return { allowed: false, reason: "請先匯入 HTML 副本。" };
+        if (!session) return { allowed: false, reason: t("export.noSession") };
         if (session.blockedCount !== 0) {
-          return { allowed: false, reason: "來源含有已被安全清理的能力，不能匯出 active HTML 副本。" };
+          return { allowed: false, reason: t("export.blocked") };
         }
         if (!session.sourceMappingComplete || !session.sourceMappingUnique) {
-          return { allowed: false, reason: "來源元素無法完整且唯一對應，不能安全匯出。" };
+          return { allowed: false, reason: t("export.mapping") };
         }
         const edits = importEditedRecords();
-        if (!edits.length) return { allowed: false, reason: "尚未修改 safe 元素。" };
+        if (!edits.length) return { allowed: false, reason: t("export.noEdits") };
         const sourceDocument = new DOMParser().parseFromString(session.immutableSource.source, "text/html");
         if (sourceHasImportInternalMarkers(sourceDocument)) {
-          return { allowed: false, reason: "來源含有 Studio 保留標記，不能安全匯出。" };
+          return { allowed: false, reason: t("export.marker") };
         }
         const mappedPaths = new Set();
         for (const edit of edits) {
           const record = session.registry.get(edit.runtimeId);
           if (!record || record.status !== "safe" || !importEditValuesAreValid(edit)) {
-            return { allowed: false, reason: "調整包含非 safe 元素或未通過驗證的值。" };
+            return { allowed: false, reason: t("export.invalid") };
           }
           const pathKey = JSON.stringify(record.sourcePath);
           const sourceElement = resolveImportSourcePath(sourceDocument, record.sourcePath);
           if (!sourceElement || sourceElement.tagName.toLowerCase() !== record.tag || mappedPaths.has(pathKey)) {
-            return { allowed: false, reason: "調整無法完整且唯一映射回來源元素。" };
+            return { allowed: false, reason: t("export.editMapping") };
           }
           mappedPaths.add(pathKey);
         }
-        return { allowed: true, reason: `可下載 ${edits.length} 個 safe 元素的靜態修改副本。` };
+        return { allowed: true, reason: tp("export.allowed", edits.length) };
       }
 
       function renderImportExportGate() {
         const gate = getImportExportGate();
         dom.exportHtmlButton.disabled = !gate.allowed;
+        dom.exportHtmlButton.title = gate.reason;
+        dom.exportHtmlButton.setAttribute("aria-label", gate.allowed ? t("export.download") : `${t("export.download")}: ${gate.reason}`);
         dom.importExportReason.textContent = gate.reason;
       }
 
@@ -3892,15 +4581,15 @@
           const record = session.registry.get(runtimeId);
           const sourceElement = resolveImportSourcePath(sourceDocument, record.sourcePath);
           if (!sourceElement || sourceElement.outerHTML !== originalMarkup) {
-            throw new Error("view-only 元素在匯出時發生非預期變更。");
+            throw new Error(t("export.viewOnlyChanged"));
           }
         }
         if (sourceHasImportInternalMarkers(sourceDocument)) {
-          throw new Error("匯出內容含有 Studio internal marker。");
+          throw new Error(t("export.internalMarker"));
         }
         const exportedHtml = serializeImportExport(sourceDocument, session.immutableSource.source);
         if (/(?:data-lts-runtime-id|data-lts-source-key|lts-import-selected|lts-import-edit-overlay|lts-import-resize-handle)/i.test(exportedHtml)) {
-          throw new Error("匯出內容含有 Studio internal marker。");
+          throw new Error(t("export.internalMarker"));
         }
         const baseName = session.fileName.replace(/\.html?$/i, "") || "edited";
         return { exportedHtml, downloadName: `${baseName}.lts-edited.html` };
@@ -3919,34 +4608,49 @@
           link.click();
           link.remove();
           setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
-          showToast(`已下載「${downloadName}」；原始檔案沒有被覆寫。`);
+          state.importSession.lastDownloadedEdits = JSON.stringify(state.importSession.edits);
+          showToast(t("toast.downloaded", { file: downloadName }));
         } catch (error) {
-          showToast(error instanceof Error ? error.message : "無法建立安全的 HTML 副本。");
+          showToast(error instanceof Error ? error.message : t("error.export"));
         }
+      }
+
+      const IMPORT_EDIT_LABELS = Object.freeze({
+        text: "edit.text",
+        fontSize: "edit.fontSize",
+        color: "edit.color",
+        backgroundColor: "edit.background",
+        width: "edit.width",
+        height: "edit.height",
+        radius: "edit.radius",
+        x: "edit.x",
+        y: "edit.y"
+      });
+
+      function importEditLabel(key) {
+        return IMPORT_EDIT_LABELS[key] ? t(IMPORT_EDIT_LABELS[key]) : "";
+      }
+
+      function buildImportSummaries() {
+        return importEditedRecords().map(edit => ({
+          device: "import",
+          label: edit.label,
+          text: Object.keys(edit.active).map(importEditLabel).filter(Boolean).join(state.language === "en" ? ", " : "、")
+        }));
       }
 
       function renderImportChangeSummary() {
         const session = state.importSession;
         if (!session) return;
         const edits = importEditedRecords();
-        const labels = {
-          text: "文字",
-          fontSize: "字級",
-          color: "文字色",
-          backgroundColor: "背景",
-          width: "寬度",
-          height: "高度",
-          radius: "圓角",
-          x: "X 位移",
-          y: "Y 位移"
-        };
-        dom.importEditCount.textContent = String(edits.length);
+        dom.importEditCountLabel.textContent = tp("import.editCount", edits.length);
         dom.importEditSummary.textContent = edits.length
           ? edits.slice(0, 3).map(edit => {
-              const changed = Object.keys(edit.active).map(key => labels[key]).filter(Boolean).join("、");
-              return `${edit.label}：${changed}`;
-            }).join("；")
-          : "尚未修改；所有變更只留在這次的清理後預覽副本。";
+              const changed = Object.keys(edit.active).map(importEditLabel).filter(Boolean).join(state.language === "en" ? ", " : "、");
+              return `${edit.label}${state.language === "en" ? ": " : "："}${changed}`;
+            }).join(state.language === "en" ? "; " : "；")
+          : t("import.editEmpty");
+        updateAdjustmentLogButton(edits.length);
         dom.undoButton.disabled = session.history.length === 0;
         dom.redoButton.disabled = session.future.length === 0;
         renderImportExportGate();
@@ -3971,7 +4675,7 @@
         session.edits = clone(entry.before);
         applyAllImportEdits();
         renderImportChangeSummary();
-        showToast(`已復原匯入調整：${entry.description}`);
+        showToast(t("toast.undoGeneric"));
       }
 
       function redoImport() {
@@ -3982,7 +4686,7 @@
         session.edits = clone(entry.after);
         applyAllImportEdits();
         renderImportChangeSummary();
-        showToast(`已重做匯入調整：${entry.description}`);
+        showToast(t("toast.redoGeneric"));
       }
 
       function renderImportEditor(record, element) {
@@ -3990,15 +4694,15 @@
         dom.importEditControls.disabled = !isSafe;
         if (!isSafe || !element) {
           dom.importEditGate.textContent = record
-            ? `此元素是 ${record.status}：${record.reason}`
-            : "請先選取預覽中的 safe 元素。";
+            ? t("import.disabledReason", { status: record.status, reason: record.reason })
+            : t("import.selectSafe");
           dom.importTextControl.disabled = true;
           return;
         }
         const edit = getOrCreateImportEdit(record, element);
         dom.importEditGate.textContent = edit.hasLeafText
-          ? "可修改文字與外觀；也可在預覽中直接拖曳，或拉右下角控制點 resize。"
-          : "這個 safe 元素含有子結構；為避免刪除內容，只開放外觀、位移、拖曳與 resize。";
+          ? t("import.safeLeaf")
+          : t("import.safeStructure");
         dom.importTextControl.disabled = !edit.hasLeafText;
         dom.importTextControl.value = edit.values.text;
         dom.importFontSizeControl.value = String(edit.values.fontSize);
@@ -4048,7 +4752,7 @@
         const before = session.controlStart;
         session.controlStart = null;
         const record = session.selectedRuntimeId ? session.registry.get(session.selectedRuntimeId) : null;
-        commitImportSnapshot(before, record?.label || "匯入元素調整");
+        commitImportSnapshot(before, record?.label || t("import.editFallback"));
       }
 
       function startImportGesture(event, type) {
@@ -4114,7 +4818,8 @@
         session.gesture = null;
         if (gesture.moved) {
           const record = session.registry.get(session.selectedRuntimeId);
-          commitImportSnapshot(gesture.before, `${record?.label || "匯入元素"}：${gesture.type === "drag" ? "拖曳" : "resize"}`);
+          const separator = state.language === "en" ? ": " : "：";
+          commitImportSnapshot(gesture.before, `${record?.label || t("import.elementFallback")}${separator}${t(gesture.type === "drag" ? "import.drag" : "import.resize")}`);
         }
       }
 
@@ -4127,16 +4832,16 @@
         }
         if (selectedElement) selectedElement.classList.add("lts-import-selected");
         if (state.importSession) state.importSession.selectedRuntimeId = record?.runtimeId || null;
-        dom.selectedName.textContent = record ? record.label : "匯入副本";
-        dom.selectedKind.textContent = record ? record.status : "預覽限定";
+        dom.selectedName.textContent = record ? record.label : t("import.copy");
+        dom.selectedKind.textContent = record ? record.status : t("import.previewOnly");
         dom.importSelectedTag.textContent = record ? `<${record.tag}>` : "—";
-        dom.importSelectedLabel.textContent = record ? record.label : "請點選預覽中的元素";
+        dom.importSelectedLabel.textContent = record ? record.label : t("import.selectPrompt");
         dom.importSelectedRuntimeId.textContent = record ? record.runtimeId : "—";
         dom.importSelectedStatus.textContent = record ? record.status : "—";
         dom.importSelectedStatus.className = `import-support-chip${record ? ` is-${record.status}` : ""}`;
         dom.importSelectedReason.textContent = record
           ? record.reason
-          : "safe 與 view-only 元素都可以選取查看。";
+          : t("import.selectableReason");
         renderImportEditor(record, selectedElement);
         requestAnimationFrame(updateImportOverlay);
       }
@@ -4156,7 +4861,7 @@
         const resizeHandle = previewDocument.createElement("button");
         resizeHandle.id = "lts-import-resize-handle";
         resizeHandle.type = "button";
-        resizeHandle.setAttribute("aria-label", "Resize selected safe element");
+        resizeHandle.setAttribute("aria-label", t("selection.resize"));
         overlay.appendChild(resizeHandle);
         previewDocument.body.appendChild(overlay);
         state.importSession.overlay = overlay;
@@ -4197,8 +4902,87 @@
       function setDemoControlsDisabled(disabled) {
         document.querySelectorAll("[data-device-button]").forEach(button => { button.disabled = disabled; });
         dom.zoomSelect.disabled = disabled;
-        dom.summaryButton.disabled = disabled;
-        dom.dockSummaryButton.disabled = disabled;
+      }
+
+      function setEditorVisible(visible) {
+        dom.startScreen.hidden = visible;
+        dom.workspace.hidden = !visible;
+        dom.editorHeaderCenter.hidden = !visible;
+        dom.brandSubtitle.hidden = !visible;
+        dom.undoButton.hidden = !visible;
+        dom.redoButton.hidden = !visible;
+        dom.summaryButton.hidden = !visible;
+      }
+
+      function updateAdjustmentLogButton(count) {
+        const label = tp("action.logOpen", count);
+        dom.headerChangeCount.textContent = String(count);
+        dom.summaryButton.title = label;
+        dom.summaryButton.setAttribute("aria-label", label);
+      }
+
+      function resetTemporarySession() {
+        objectUrls.forEach(url => URL.revokeObjectURL(url));
+        objectUrls.clear();
+        state.importSession = null;
+        state.device = "phone";
+        state.zoom = 1;
+        state.fitScale = 1;
+        state.renderScale = 1;
+        state.scope = "current";
+        state.selected = "stars";
+        state.edits = clone(defaults);
+        state.history = [];
+        state.future = [];
+        state.controlStart = null;
+        state.gesture = null;
+        dom.page.dataset.device = "phone";
+        dom.zoomSelect.value = "1";
+        document.querySelectorAll("[data-device-button]").forEach(button => {
+          button.setAttribute("aria-pressed", String(button.dataset.deviceButton === "phone"));
+        });
+        document.querySelectorAll('input[name="scope"]').forEach(input => {
+          input.checked = input.value === "current";
+        });
+      }
+
+      function prepareDemoEditor() {
+        dom.importPreviewFrame.srcdoc = "";
+        dom.importPreviewShell.hidden = true;
+        dom.importInspector.hidden = true;
+        [...dom.inspector.querySelectorAll(":scope > .inspector-section")].forEach(section => {
+          section.hidden = false;
+        });
+        dom.canvasSizer.hidden = false;
+        dom.canvasTip.hidden = false;
+        dom.exportHtmlButton.hidden = false;
+        dom.exportHtmlButton.disabled = true;
+        dom.exportHtmlButton.title = t("import.exportNeedsEdit");
+        dom.exportHtmlButton.setAttribute("aria-label", `${t("export.download")}: ${t("import.exportNeedsEdit")}`);
+        dom.importExportReason.textContent = t("import.exportNeedsEdit");
+        dom.projectModeLabel.textContent = t("mode.demo");
+        dom.projectNameLabel.textContent = t("project.demoHome");
+        dom.editorImportButton.textContent = t("import.open");
+        dom.htmlImportInput.setAttribute("aria-label", t("import.open"));
+        dom.importEditControls.disabled = true;
+        dom.importEditGate.textContent = t("import.selectSafe");
+        applyDemoLanguage();
+        setDemoControlsDisabled(false);
+      }
+
+      function enterSampleMode() {
+        resetTemporarySession();
+        state.mode = "demo";
+        prepareDemoEditor();
+        setEditorVisible(true);
+        applyAllStyles();
+        renderInspector();
+        renderChangeSummary();
+        fitCanvas();
+        window.clearTimeout(canvasTipTimer);
+        dom.canvasTip.classList.remove("is-dismissed");
+        canvasTipTimer = window.setTimeout(() => dom.canvasTip.classList.add("is-dismissed"), 7000);
+        requestAnimationFrame(() => dom.page.focus({ preventScroll: true }));
       }
 
       function enterImportMode(immutableSource, sanitized) {
@@ -4218,38 +5002,51 @@
           future: [],
           controlStart: null,
           gesture: null,
+          lastDownloadedEdits: null,
           selectedRuntimeId: null,
           overlay: null,
           resizeHandle: null
         };
+        setEditorVisible(true);
         dom.canvasSizer.hidden = true;
         dom.canvasTip.hidden = true;
-        dom.changeDock.hidden = true;
         dom.importPreviewShell.hidden = false;
         dom.importInspector.hidden = false;
         [...dom.inspector.querySelectorAll(":scope > .inspector-section")].forEach(section => {
           section.hidden = true;
         });
-        dom.returnDemoButton.hidden = false;
         dom.exportHtmlButton.hidden = false;
-        dom.projectModeLabel.textContent = "匯入預覽";
+        dom.editorImportButton.textContent = t("import.replace");
+        dom.htmlImportInput.setAttribute("aria-label", t("import.replace"));
+        dom.projectModeLabel.textContent = t("mode.import");
         dom.projectNameLabel.textContent = fileName;
-        dom.safeStateLabel.textContent = "安全副本・另存下載";
-        dom.deviceDimensions.textContent = "隔離預覽";
+        dom.deviceDimensions.textContent = t("import.previewIsolated");
         dom.importFileName.textContent = fileName;
-        dom.importRecognizedCount.textContent = `可辨認元素 ${sanitized.registry.size}`;
-        dom.importSafeCount.textContent = `可修改 safe ${sanitized.statusCounts.safe}`;
-        dom.importViewOnlyCount.textContent = `僅查看 view-only ${sanitized.statusCounts["view-only"]}`;
-        dom.importBlockedCount.textContent = `已封鎖 blocked ${sanitized.blockedCount}`;
+        dom.importRecognizedCount.textContent = tp("import.recognized", sanitized.registry.size);
+        dom.importSafeCount.textContent = tp("import.safeCount", sanitized.statusCounts.safe);
+        dom.importViewOnlyCount.textContent = tp("import.viewOnlyCount", sanitized.statusCounts["view-only"]);
+        dom.importBlockedCount.textContent = tp("import.blockedCount", sanitized.blockedCount);
         dom.importSafetySummary.textContent = importSafetySummary(sanitized.blockedReasons);
         setDemoControlsDisabled(true);
         renderImportChangeSummary();
         dom.importPreviewFrame.srcdoc = sanitized.sanitizedHtml;
       }
 
-      function returnToDemo() {
-        state.mode = "demo";
-        state.importSession = null;
+      function hasPendingAdjustments() {
+        if (state.mode === "import") {
+          const session = state.importSession;
+          if (!session || importEditedRecords().length === 0) return false;
+          return JSON.stringify(session.edits) !== session.lastDownloadedEdits;
+        }
+        if (state.mode === "demo") return buildSummaries().length > 0;
+        return false;
+      }
+
+      function returnToStart() {
+        const hadEditor = state.mode !== "start";
+        window.clearTimeout(canvasTipTimer);
+        resetTemporarySession();
+        state.mode = "start";
         dom.importPreviewFrame.srcdoc = "";
         dom.importPreviewShell.hidden = true;
         dom.importInspector.hidden = true;
@@ -4258,53 +5055,56 @@
         });
         dom.canvasSizer.hidden = false;
         dom.canvasTip.hidden = false;
-        dom.changeDock.hidden = false;
-        dom.returnDemoButton.hidden = true;
         dom.exportHtmlButton.hidden = true;
         dom.exportHtmlButton.disabled = true;
-        dom.importExportReason.textContent = "匯入並修改「可修改 safe」元素後，才能下載新的 HTML 副本。";
-        dom.projectModeLabel.textContent = "示範畫面";
-        dom.projectNameLabel.textContent = "Little Things Demo・首頁";
-        dom.safeStateLabel.textContent = "不讀寫檔案";
         dom.htmlImportInput.value = "";
-        dom.importEditControls.disabled = true;
-        dom.importEditGate.textContent = "請先選取預覽中的 safe 元素。";
-        setDemoControlsDisabled(false);
+        dom.htmlImportInput.setAttribute("aria-label", t("import.open"));
+        dom.editorImportButton.textContent = t("import.open");
+        applyDemoLanguage();
+        updateAdjustmentLogButton(0);
+        setEditorVisible(false);
         applyAllStyles();
         renderInspector();
         renderChangeSummary();
-        fitCanvas();
-        showToast("已返回內建示範，原有調整仍保留。");
+        if (hadEditor) showToast(t("toast.returned"));
+      }
+
+      function requestReturnToStart(event) {
+        if (hasPendingAdjustments()) {
+          openModal(dom.returnConfirmModal, event?.currentTarget || dom.returnStartButton);
+          return;
+        }
+        returnToStart();
       }
 
       async function handleHtmlImport(event) {
         const [file] = event.currentTarget.files;
         if (!file) return;
         try {
-          if (!/\.html?$/i.test(file.name)) throw new Error("請選擇 .html 或 .htm 檔案。");
-          if (file.size === 0) throw new Error("這個 HTML 檔案是空的。");
-          if (file.size > MAX_IMPORT_BYTES) throw new Error("HTML 檔案必須小於或等於 5 MiB。");
+          if (!/\.html?$/i.test(file.name)) throw new Error(t("error.extension"));
+          if (file.size === 0) throw new Error(t("error.empty"));
+          if (file.size > MAX_IMPORT_BYTES) throw new Error(t("error.size"));
           const source = await file.text();
           if (source.includes("\uFFFD") || source.includes("\u0000")) {
-            throw new Error("檔案不是可安全讀取的 UTF-8 HTML。");
+            throw new Error(t("error.utf8"));
           }
           if (!/(?:<!doctype\s+html|<html\b|<body\b|<[a-z][^>]*>)/i.test(source)) {
-            throw new Error("找不到可辨認的 HTML 結構。");
+            throw new Error(t("error.structure"));
           }
           const immutableSource = Object.freeze({ fileName: file.name, source });
           const sanitized = sanitizeImportedHtml(immutableSource.source);
           enterImportMode(immutableSource, sanitized);
-          showToast(`已建立「${file.name}」的隔離安全預覽。`);
+          showToast(t("toast.imported", { file: file.name }));
         } catch (error) {
           event.currentTarget.value = "";
-          showToast(error instanceof Error ? error.message : "無法讀取這個 HTML 檔案。");
+          showToast(error instanceof Error ? error.message : t("error.read"));
         }
       }
 
       const shallowEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
       function getSelectedConfig() {
-        return ELEMENTS[state.selected];
+        return localizedElementConfig(state.selected);
       }
 
       function getSelectedProps(device = state.device) {
@@ -4352,9 +5152,9 @@
           dom.photoPlaceholder.hidden = hasImage;
           if (hasImage) dom.photoImage.src = props.imageSrc;
           else dom.photoImage.removeAttribute("src");
-          dom.photoImage.alt = hasImage ? `已上傳的圖片：${props.imageName || "未命名圖片"}` : "";
+          dom.photoImage.alt = hasImage ? t("image.uploadedAlt", { file: props.imageName || t("image.unnamed") }) : "";
           dom.photoImage.style.objectFit = props.imageFit || "cover";
-          dom.photoCaption.textContent = hasImage ? props.imageName : "點右側上傳更換";
+          dom.photoCaption.textContent = hasImage ? props.imageName : t("demo.photoHint");
         }
       }
 
@@ -4366,7 +5166,7 @@
       function selectElement(id, options = {}) {
         if (!ELEMENTS[id]) return;
         state.selected = id;
-        dom.selectionLabel.textContent = `${ELEMENTS[id].label} · 拖曳移動`;
+        dom.selectionLabel.textContent = t("selection.drag", { label: elementText(id, "label") });
         dom.canvasTip.classList.add("is-dismissed");
         renderInspector();
         applyAllStyles();
@@ -4425,7 +5225,7 @@
       }
 
       function deviceLabel() {
-        return DEVICE_NAMES[state.device];
+        return t(DEVICE_KEYS[state.device]);
       }
 
       function renderInspector() {
@@ -4436,10 +5236,10 @@
         dom.selectedName.textContent = config.label;
         dom.selectedKind.textContent = config.kind;
         dom.selectedHelp.textContent = config.help;
-        dom.currentDeviceScope.textContent = `目前${deviceLabel()}尺寸`;
+        dom.currentDeviceScope.textContent = t("inspector.currentSize", { device: deviceLabel() });
         dom.scopeMessage.textContent = state.scope === "all"
-          ? "接下來的調整會同步套用到手機、平板與電腦預覽。"
-          : `接下來的移動與外觀調整，只會套用到${deviceLabel()}預覽。`;
+          ? t("inspector.scopeAll")
+          : t("inspector.scopeOne", { device: deviceLabel() });
 
         dom.xControl.value = props.x;
         dom.yControl.value = props.y;
@@ -4452,7 +5252,7 @@
         const hasSurfaceControls = controls.some(item => ["background", "radius", "shadow"].includes(item));
         const hasImageControls = controls.includes("image");
         dom.textSection.hidden = !hasTextControls;
-        dom.textSectionTitle.textContent = controls.some(item => ["fontSize", "fontFamily"].includes(item)) ? "文字" : "顏色";
+        dom.textSectionTitle.textContent = controls.some(item => ["fontSize", "fontFamily"].includes(item)) ? t("inspector.text") : t("inspector.color");
         dom.surfaceSection.hidden = !hasSurfaceControls;
         dom.imageSection.hidden = !hasImageControls;
 
@@ -4487,7 +5287,7 @@
         }
         if (hasImageControls) {
           dom.imageFitControl.value = props.imageFit || "cover";
-          dom.imageFileName.textContent = props.imageName || "尚未選擇圖片";
+          dom.imageFileName.textContent = props.imageName || t("inspector.noImage");
           dom.removeImageButton.disabled = !props.imageSrc;
         }
       }
@@ -4502,10 +5302,10 @@
         const parts = [];
         const dx = Math.round(now.x - base.x);
         const dy = Math.round(now.y - base.y);
-        if (dx < 0) parts.push(`向左 ${Math.abs(dx)}px`);
-        if (dx > 0) parts.push(`向右 ${dx}px`);
-        if (dy < 0) parts.push(`向上 ${Math.abs(dy)}px`);
-        if (dy > 0) parts.push(`向下 ${dy}px`);
+        if (dx < 0) parts.push(t("summary.moveLeft", { value: Math.abs(dx) }));
+        if (dx > 0) parts.push(t("summary.moveRight", { value: dx }));
+        if (dy < 0) parts.push(t("summary.moveUp", { value: Math.abs(dy) }));
+        if (dy > 0) parts.push(t("summary.moveDown", { value: dy }));
         return parts;
       }
 
@@ -4519,28 +5319,28 @@
             if (!changed.length) return;
 
             const parts = movementParts(now, base);
-            if (changed.includes("scale")) parts.push(`${now.scale >= 1 ? "放大" : "縮小"}至 ${Math.round(now.scale * 100)}%`);
-            if (changed.includes("fontSize")) parts.push(`字級改為 ${now.fontSize}px`);
+            if (changed.includes("scale")) parts.push(t("summary.scale", { direction: t(now.scale >= 1 ? "summary.enlarge" : "summary.shrink"), value: Math.round(now.scale * 100) }));
+            if (changed.includes("fontSize")) parts.push(t("summary.fontSize", { value: now.fontSize }));
             if (changed.includes("fontFamily")) {
-              const fontName = { clear: "清楚俐落", round: "柔和圓潤", serif: "安靜典雅" }[now.fontFamily];
-              parts.push(`字體改為「${fontName}」`);
+              const fontName = t(`font.${now.fontFamily}`);
+              parts.push(t("summary.font", { value: fontName }));
             }
-            if (changed.includes("color")) parts.push(`文字／圖形顏色改為 ${now.color.toUpperCase()}`);
-            if (changed.includes("background")) parts.push(`底色改為 ${now.background.toUpperCase()}`);
-            if (changed.includes("radius")) parts.push(`圓角改為 ${now.radius}px`);
-            if (changed.includes("shadow")) parts.push(now.shadow ? "開啟柔和陰影" : "移除柔和陰影");
+            if (changed.includes("color")) parts.push(t("summary.color", { value: now.color.toUpperCase() }));
+            if (changed.includes("background")) parts.push(t("summary.background", { value: now.background.toUpperCase() }));
+            if (changed.includes("radius")) parts.push(t("summary.radius", { value: now.radius }));
+            if (changed.includes("shadow")) parts.push(t(now.shadow ? "summary.shadowOn" : "summary.shadowOff"));
             if (changed.includes("imageSrc")) {
-              parts.push(now.imageSrc ? `圖片更換為「${now.imageName || "未命名圖片"}」` : "移除圖片");
+              parts.push(now.imageSrc ? t("summary.imageChanged", { file: now.imageName || t("image.unnamed") }) : t("summary.imageRemoved"));
             }
             if (changed.includes("imageFit")) {
-              parts.push(now.imageFit === "contain" ? "圖片改為完整顯示" : "圖片改為填滿框格");
+              parts.push(t(now.imageFit === "contain" ? "summary.imageContain" : "summary.imageCover"));
             }
 
             rows.push({
               id,
               device,
-              label: config.label,
-              text: parts.join("、")
+              label: elementText(id, "label"),
+              text: parts.join(state.language === "en" ? ", " : "、")
             });
           });
         });
@@ -4549,42 +5349,39 @@
 
       function renderChangeSummary() {
         const summaries = buildSummaries();
-        dom.headerChangeCount.textContent = summaries.length;
-        dom.dockChangeCount.textContent = summaries.length;
+        updateAdjustmentLogButton(summaries.length);
         dom.undoButton.disabled = state.history.length === 0;
         dom.redoButton.disabled = state.future.length === 0;
-
-        if (!summaries.length) {
-          dom.dockChangeText.textContent = "還沒有修改；畫面現在只是安全的示範草稿。";
-        } else {
-          dom.dockChangeText.textContent = `${DEVICE_NAMES[summaries[0].device]}・${summaries[0].label}：${summaries[0].text}`;
-        }
       }
 
       function describeLatestChange(id, before, after) {
-        const config = ELEMENTS[id];
+        const config = localizedElementConfig(id);
         const devices = getScopedDevices();
-        const deviceText = devices.length === 3 ? "所有尺寸" : DEVICE_NAMES[devices[0]];
+        const deviceText = devices.length === 3 ? t("inspector.allSizes") : t(DEVICE_KEYS[devices[0]]);
         const changedLabels = [];
         const labelMap = {
-          x: "左右位置",
-          y: "上下位置",
-          scale: "大小",
-          fontSize: "字級",
-          fontFamily: "字體",
-          color: "顏色",
-          background: "底色",
-          radius: "圓角",
-          shadow: "陰影",
-          imageSrc: "圖片",
-          imageFit: "圖片顯示方式"
+          x: "inspector.x",
+          y: "inspector.y",
+          scale: "inspector.scale",
+          fontSize: "inspector.fontSize",
+          fontFamily: "inspector.fontStyle",
+          color: "inspector.color",
+          background: "inspector.background",
+          radius: "inspector.radius",
+          shadow: "inspector.shadow",
+          imageSrc: "inspector.image",
+          imageFit: "inspector.imageFit"
         };
 
         Object.keys(after[id][devices[0]]).forEach(prop => {
           const didChange = devices.some(device => before[id][device][prop] !== after[id][device][prop]);
-          if (didChange && labelMap[prop]) changedLabels.push(labelMap[prop]);
+          if (didChange && labelMap[prop]) changedLabels.push(t(labelMap[prop]));
         });
-        return `${deviceText}・${config.label}：調整${changedLabels.join("、") || "外觀"}`;
+        return t("summary.adjust", {
+          device: deviceText,
+          label: config.label,
+          changes: changedLabels.join(state.language === "en" ? ", " : "、") || t("summary.appearance")
+        });
       }
 
       function commitSnapshot(before, description) {
@@ -4597,6 +5394,7 @@
       }
 
       function undo() {
+        if (state.mode === "start") return;
         if (state.mode === "import") {
           undoImport();
           return;
@@ -4608,10 +5406,11 @@
         applyAllStyles();
         renderInspector();
         renderChangeSummary();
-        showToast(`已復原：${entry.description}`);
+        showToast(t("toast.undoGeneric"));
       }
 
       function redo() {
+        if (state.mode === "start") return;
         if (state.mode === "import") {
           redoImport();
           return;
@@ -4623,7 +5422,7 @@
         applyAllStyles();
         renderInspector();
         renderChangeSummary();
-        showToast(`已重做：${entry.description}`);
+        showToast(t("toast.redoGeneric"));
       }
 
       function beginControlChange() {
@@ -4660,7 +5459,10 @@
           const current = state.edits[state.selected][device][prop];
           state.edits[state.selected][device][prop] = clamp(current + amount, -100, 100);
         });
-        commitSnapshot(before, `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・${getSelectedConfig().label}：微調位置`);
+        commitSnapshot(before, t("summary.nudge", {
+          device: state.scope === "all" ? t("inspector.allSizes") : deviceLabel(),
+          label: getSelectedConfig().label
+        }));
         applyAllStyles();
         renderInspector();
       }
@@ -4729,10 +5531,14 @@
         state.gesture = null;
 
         if (gesture.moved) {
-          const action = gesture.type === "drag" ? "拖動位置" : "調整大小";
+          const action = t(gesture.type === "drag" ? "summary.drag" : "summary.resize");
           commitSnapshot(
             gesture.before,
-            `${gesture.devices.length === 3 ? "所有尺寸" : deviceLabel()}・${getSelectedConfig().label}：${action}`
+            t("summary.gesture", {
+              device: gesture.devices.length === 3 ? t("inspector.allSizes") : deviceLabel(),
+              label: getSelectedConfig().label,
+              action
+            })
           );
         }
       }
@@ -4744,24 +5550,27 @@
         });
         commitSnapshot(
           before,
-          `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・${getSelectedConfig().label}：恢復原樣`
+          t("summary.restore", {
+            device: state.scope === "all" ? t("inspector.allSizes") : deviceLabel(),
+            label: getSelectedConfig().label
+          })
         );
         applyAllStyles();
         renderInspector();
-        showToast(`${getSelectedConfig().label}已恢復原樣。`);
+        showToast(t("toast.resetOne", { label: getSelectedConfig().label }));
       }
 
       function resetAll() {
         if (shallowEqual(state.edits, defaults)) {
-          showToast("這一輪目前沒有需要清除的調整。");
+          showToast(t("toast.nothingToReset"));
           return;
         }
         const before = clone(state.edits);
         state.edits = clone(defaults);
-        commitSnapshot(before, "清除這一輪全部調整");
+        commitSnapshot(before, t("summary.clearAll"));
         applyAllStyles();
         renderInspector();
-        showToast("全部示範調整已清除。");
+        showToast(t("toast.resetAll"));
       }
 
       function handleImageUpload(event) {
@@ -4770,11 +5579,11 @@
         if (!file) return;
 
         if (!file.type.startsWith("image/")) {
-          showToast("這個檔案不是可顯示的圖片。");
+          showToast(t("toast.notImage"));
           return;
         }
         if (file.size > 20 * 1024 * 1024) {
-          showToast("圖片超過 20 MB，請先選一張小一點的圖片。");
+          showToast(t("toast.imageSize"));
           return;
         }
 
@@ -4788,11 +5597,15 @@
 
         commitSnapshot(
           before,
-          `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・最近片段卡：更換圖片`
+          t("summary.gesture", {
+            device: state.scope === "all" ? t("inspector.allSizes") : deviceLabel(),
+            label: elementText("photo", "label"),
+            action: t("summary.imageChanged", { file: file.name })
+          })
         );
         applyAllStyles();
         renderInspector();
-        showToast(`已在預覽中換成「${file.name}」。`);
+        showToast(t("toast.imageChanged", { file: file.name }));
       }
 
       function removeImage() {
@@ -4803,11 +5616,15 @@
         });
         commitSnapshot(
           before,
-          `${state.scope === "all" ? "所有尺寸" : deviceLabel()}・最近片段卡：移除圖片`
+          t("summary.gesture", {
+            device: state.scope === "all" ? t("inspector.allSizes") : deviceLabel(),
+            label: elementText("photo", "label"),
+            action: t("summary.imageRemoved")
+          })
         );
         applyAllStyles();
         renderInspector();
-        showToast("已從目前預覽移除圖片。");
+        showToast(t("toast.imageRemoved"));
       }
 
       function switchDevice(device) {
@@ -4824,13 +5641,13 @@
       }
 
       function renderSummaryModal() {
-        const summaries = buildSummaries();
+        const summaries = state.mode === "import" ? buildImportSummaries() : buildSummaries();
         dom.summaryContent.replaceChildren();
 
         if (!summaries.length) {
           const empty = document.createElement("div");
           empty.className = "empty-summary";
-          empty.textContent = "還沒有任何調整。關閉這裡，試著把雙星光往左拖一點，或點選卡片改圓角。";
+          empty.textContent = t("summary.empty");
           dom.summaryContent.appendChild(empty);
           return;
         }
@@ -4842,9 +5659,9 @@
           item.className = "summary-item";
           const device = document.createElement("span");
           device.className = "summary-device";
-          device.textContent = DEVICE_NAMES[summary.device];
+          device.textContent = summary.device === "import" ? t("summary.import") : t(DEVICE_KEYS[summary.device]);
           const text = document.createElement("span");
-          text.textContent = `${summary.label}：${summary.text}`;
+          text.textContent = `${summary.label}${state.language === "en" ? ": " : "："}${summary.text}`;
           item.append(device, text);
           list.appendChild(item);
         });
@@ -4978,16 +5795,24 @@
       dom.imageUpload.addEventListener("change", handleImageUpload);
       dom.removeImageButton.addEventListener("click", removeImage);
       dom.photoImage.addEventListener("load", () => requestAnimationFrame(updateOverlay));
+      dom.startImportButton.addEventListener("click", () => dom.htmlImportInput.click());
       dom.htmlImportInput.addEventListener("change", handleHtmlImport);
       dom.exportHtmlButton.addEventListener("click", downloadImportStaticExport);
-      dom.returnDemoButton.addEventListener("click", returnToDemo);
+      dom.startDemoButton.addEventListener("click", enterSampleMode);
+      dom.returnStartButton.addEventListener("click", requestReturnToStart);
+      dom.confirmReturnStartButton.addEventListener("click", () => {
+        closeModal(dom.returnConfirmModal);
+        returnToStart();
+      });
       dom.importPreviewFrame.addEventListener("load", connectImportPreview);
       dom.undoButton.addEventListener("click", undo);
       dom.redoButton.addEventListener("click", redo);
       dom.resetElementButton.addEventListener("click", resetSelected);
       dom.resetAllButton.addEventListener("click", resetAll);
       dom.summaryButton.addEventListener("click", event => openModal(dom.summaryModal, event.currentTarget));
-      dom.dockSummaryButton.addEventListener("click", event => openModal(dom.summaryModal, event.currentTarget));
+      dom.languageButton.addEventListener("click", () => {
+        applyLanguage(state.language === "zh-TW" ? "en" : "zh-TW");
+      });
       dom.helpButton.addEventListener("click", event => openModal(dom.helpModal, event.currentTarget));
 
       document.querySelectorAll("[data-close-modal]").forEach(button => {
@@ -4997,7 +5822,7 @@
         });
       });
 
-      [dom.summaryModal, dom.helpModal].forEach(modal => {
+      [dom.summaryModal, dom.returnConfirmModal, dom.helpModal].forEach(modal => {
         modal.addEventListener("pointerdown", event => {
           if (event.target === modal) closeModal(modal);
         });
@@ -5005,7 +5830,7 @@
 
       document.addEventListener("keydown", event => {
         if (event.key === "Escape") {
-          const openModalElement = [dom.summaryModal, dom.helpModal].find(modal => !modal.hidden);
+          const openModalElement = [dom.summaryModal, dom.returnConfirmModal, dom.helpModal].find(modal => !modal.hidden);
           if (openModalElement) closeModal(openModalElement);
         }
         if ((event.ctrlKey || event.metaKey) && !event.shiftKey && event.key.toLowerCase() === "z") {
@@ -5052,12 +5877,8 @@
         objectUrls.forEach(url => URL.revokeObjectURL(url));
       });
 
-      setTimeout(() => dom.canvasTip.classList.add("is-dismissed"), 7000);
-
-      switchDevice("phone");
-      selectElement("stars");
-      renderChangeSummary();
-      fitCanvas();
+      returnToStart();
+      applyLanguage(initialLanguage);
     })();
   </script>
 </body>

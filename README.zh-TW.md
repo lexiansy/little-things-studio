@@ -1,5 +1,9 @@
 # Little Things Studio
 
+**網頁版：** [立即開啟 Little Things Studio →](https://lexiansy.github.io/little-things-studio/?lang=zh-TW)
+
+手機與電腦都不用安裝或登入。開啟後先選擇「匯入 HTML 檔」或「試玩內建範例」；右上角的 **EN** 可切換英文介面。切換 Studio 介面語言不會翻譯或改寫匯入頁面的文字。
+
 [English](README.md)
 
 Little Things Studio 是一個低依賴、local-first 的視覺編輯器原型，用來理解與有界調整單一、自包含的 HTML 檔案。Owner 已接受的 `v0.1.0-beta.1` 功能 baseline 完全在瀏覽器內運作，匯入後的修改只存在暫時預覽 session；內建預覽使用虛構、通用的示範內容。
@@ -7,8 +11,6 @@ Little Things Studio 是一個低依賴、local-first 的視覺編輯器原型�
 Little Things Studio 由 Lexian 與 Yao 共同創作，OpenAI Codex 協助實作。
 
 ![Little Things Studio v0.1.0-beta.1 內建示範](docs/assets/little-things-studio-v0.1.0-beta.1.png)
-
-想直接使用：開啟 [Little Things Studio 線上版](https://lexiansy.github.io/little-things-studio/)，不需要安裝或登入；右上角「？」有完整使用指南。
 
 ## 這個 beta 能做什麼
 
@@ -32,10 +34,10 @@ Little Things Studio 由 Lexian 與 Yao 共同創作，OpenAI Codex 協助實作
 
 ## 不懂程式也能開始
 
-1. 使用手機或電腦瀏覽器開啟 GitHub Pages [線上版](https://lexiansy.github.io/little-things-studio/)。不需要安裝軟體，也不需要登入。
-2. 第一次使用時，先按右上角的「？」查看使用指南，或直接操作內建示範。
+1. 使用手機或電腦瀏覽器開啟 GitHub Pages [線上版](https://lexiansy.github.io/little-things-studio/?lang=zh-TW)。不需要安裝軟體，也不需要登入。
+2. 開啟後會先看到簡單的開始畫面。選「試玩內建範例」熟悉編輯器，或選「匯入 HTML 檔」處理自己的頁面；右上角 **EN** 可切換英文，完整說明則在「？」使用指南。
 3. 要修改自己的頁面，請準備一個不超過 5 MiB、內容都放在同一個檔案裡的 `.html` 或 `.htm`。網址、ZIP、資料夾、React／Vue 等框架專案不能直接匯入。
-4. 按工作臺上方的「修改 HTML」選擇檔案。Studio 只會在瀏覽器裡讀取暫時副本，不會上傳，也不會覆寫原始檔。
+4. 在開始畫面或工作臺上方按「匯入 HTML 檔」選擇檔案。Studio 只會在瀏覽器裡讀取暫時副本，不會上傳、翻譯或覆寫原始檔。
 5. 選取「可修改 safe」元素後調整文字與外觀。「僅查看 view-only」只能查看；「已封鎖 blocked」代表危險或不支援的能力已停用。
 6. 通過安全檢查後，按「下載修改後 HTML」取得新的 `.lts-edited.html` 檔案。Studio 不會自動替你發布網站。
 

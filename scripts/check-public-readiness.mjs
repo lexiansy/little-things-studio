@@ -29,7 +29,8 @@ const requiredPaths = [
   "docs/ROADMAP.md",
   "docs/assets/little-things-studio-v0.1.0-beta.1.png",
   "index.html",
-  "package.json"
+  "package.json",
+  "scripts/check-i18n.mjs"
 ];
 
 async function walk(directory, relative = "") {
@@ -87,10 +88,20 @@ assert.equal(createHash("sha256").update(footerMark).digest("hex"), "50c22d2d0be
 
 const readme = await readFile(path.join(root, "README.md"), "utf8");
 assert.match(readme, /Little Things Studio was created together by Lexian & Yao, with implementation assistance from OpenAI Codex\./);
+assert.match(readme, /^# Little Things Studio\s+\*\*Live app:\*\* \[Open Little Things Studio →\]\(https:\/\/lexiansy\.github\.io\/little-things-studio\/\?lang=en\)/);
+assert.match(readme, /choose \*\*Import HTML file\*\*[^\n]+\*\*Try the built-in demo\*\*/);
+assert.match(readme, /top-right \*\*中\*\* switch/);
+assert.match(readme, /never translates or rewrites imported page text/);
 assert.match(readme, /docs\/assets\/little-things-studio-v0\.1\.0-beta\.1\.png/);
 assert.match(readme, /docs\/ASSET_PROVENANCE\.md/);
 assert.match(readme, /https:\/\/lexiansy\.github\.io\/little-things-studio\//);
 assert.match(readme, /https:\/\/github\.com\/lexiansy\/little-things-studio\/releases\/tag\/v0\.1\.0-beta\.1/);
+
+const readmeZh = await readFile(path.join(root, "README.zh-TW.md"), "utf8");
+assert.match(readmeZh, /^# Little Things Studio\s+\*\*網頁版：\*\* \[立即開啟 Little Things Studio →\]\(https:\/\/lexiansy\.github\.io\/little-things-studio\/\?lang=zh-TW\)/);
+assert.match(readmeZh, /不用安裝或登入。[\s\S]*?「匯入 HTML 檔」[\s\S]*?「試玩內建範例」/);
+assert.match(readmeZh, /右上角的 \*\*EN\*\*/);
+assert.match(readmeZh, /不會翻譯或改寫匯入頁面的文字/);
 
 const provenance = await readFile(path.join(root, "docs/ASSET_PROVENANCE.md"), "utf8");
 assert.match(provenance, /Project-authored CSS\/text product mark/);
@@ -103,7 +114,7 @@ assert.deepEqual([...screenshot.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 1
 assert.equal(screenshot.readUInt32BE(16), 1280, "README screenshot width changed");
 assert.equal(screenshot.readUInt32BE(20), 720, "README screenshot height changed");
 assert.ok(screenshot.length < 750_000, "README screenshot is unexpectedly large");
-assert.equal(createHash("sha256").update(screenshot).digest("hex"), "9805a0e1898c7d121141a32583f1861f3be3d367be14cbefe56236e74343193d", "generic README screenshot changed");
+assert.equal(createHash("sha256").update(screenshot).digest("hex"), "0507e1d07fd8e1aaaedd6248a3b4e6bc75fc378afad77c62183d924fe5463e82", "generic README screenshot changed");
 
 const workflow = await readFile(path.join(root, ".github/workflows/ci.yml"), "utf8");
 assert.match(workflow, /actions\/checkout@[0-9a-f]{40} # v\d+\.\d+\.\d+/);

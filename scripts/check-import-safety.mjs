@@ -35,7 +35,7 @@ requireMatch(index, /style-src 'unsafe-inline'/, "CSP inline-style permission is
 requireMatch(index, /img-src data: blob:/, "CSP safe image source rule is missing");
 requireMatch(index, /data-lts-runtime-id/, "runtime registry marker is missing");
 requireMatch(index, /CSS external resource/, "CSS external-resource neutralization is missing");
-requireMatch(index, /function returnToDemo\(\)/, "return-to-demo path is missing");
+requireMatch(index, /function returnToStart\(\)/, "return-to-start cleanup path is missing");
 requireAbsent(index, /\b(?:fetch|XMLHttpRequest|WebSocket)\s*\(/, "network API was added to the prototype");
 
 requireMatch(simple, /data:image\/png;base64,/, "simple fixture needs a data URI image");

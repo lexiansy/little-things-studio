@@ -1,5 +1,9 @@
 # Little Things Studio
 
+**Live app:** [Open Little Things Studio →](https://lexiansy.github.io/little-things-studio/?lang=en)
+
+No installation or sign-in is required on phone or desktop. On the start screen, choose **Import HTML file** or **Try the built-in demo**; use the top-right **中** switch for Traditional Chinese. Changing the Studio interface language never translates or rewrites imported page text.
+
 [繁體中文](README.zh-TW.md)
 
 Little Things Studio is a dependency-light, local-first visual editor prototype for learning from and making bounded adjustments to a single self-contained HTML file. The owner-accepted `v0.1.0-beta.1` functional baseline runs entirely in the browser and keeps imported work in a temporary preview session. Its built-in preview uses fictional, generic sample content.
@@ -7,8 +11,6 @@ Little Things Studio is a dependency-light, local-first visual editor prototype 
 Little Things Studio was created together by Lexian & Yao, with implementation assistance from OpenAI Codex.
 
 ![Little Things Studio v0.1.0-beta.1 built-in demo](docs/assets/little-things-studio-v0.1.0-beta.1.png)
-
-Want to use it now? Open the [Little Things Studio live app](https://lexiansy.github.io/little-things-studio/). There is nothing to install and no account is required; the `?` button in the upper-right corner opens the complete guide.
 
 ## What this beta can do
 
@@ -32,10 +34,10 @@ This beta is not a general-purpose website importer. It does not support arbitra
 
 ## Start without coding
 
-1. Open the GitHub Pages [live app](https://lexiansy.github.io/little-things-studio/) in a phone or computer browser. There is nothing to install and no account is required.
-2. On your first visit, open the `?` guide in the upper-right corner or begin with the built-in demo.
+1. Open the GitHub Pages [live app](https://lexiansy.github.io/little-things-studio/?lang=en) in a phone or computer browser. There is nothing to install and no account is required.
+2. The app opens on a simple start screen. Choose **Try the built-in demo** to explore the editor, or **Import HTML file** to work with your own page. Use the top-right **中** language switch or open the `?` guide whenever needed.
 3. To edit your own page, prepare one self-contained `.html` or `.htm` file no larger than 5 MiB. A live URL, ZIP, folder, or framework project such as React or Vue cannot be imported directly.
-4. Choose **修改 HTML (Edit HTML)** above the workbench and select the file. Studio reads a temporary copy in your browser; it does not upload or overwrite the original.
+4. Choose **Import HTML file** on the start screen or above the workbench, then select the file. Studio reads a temporary copy in your browser; it does not upload, translate, or overwrite the original.
 5. Select elements labelled **editable safe** to change text or appearance. **view-only** elements can only be inspected, and **blocked** means an unsafe or unsupported capability was disabled.
 6. When the safety checks pass, choose **下載修改後 HTML (Download edited HTML)** to receive a new `.lts-edited.html` file. Studio does not publish the site for you.
 
