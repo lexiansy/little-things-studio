@@ -9,6 +9,7 @@ All notable public changes will be documented in this file.
 - Added an experimental compatibility model that separates disabled original interaction from supported visual editing, including bounded appearance controls for inert buttons, links, and form controls.
 - Added structure-preserving nested-text editing, preview-only navigation for detected panels, and a bilingual compatibility summary for JavaScript, resource, graphics, and multi-view limits.
 - Added a generic compatibility corpus and a deterministic zero-dependency source build with tracked standalone-artifact parity checks.
+- Published the compatibility architecture from `main` as a public review candidate after automated and controlled browser checks; Yao's phone, owner-chosen HTML, and final owner acceptance remain pending.
 
 ## [0.1.0-beta.1] - 2026-08-19
 

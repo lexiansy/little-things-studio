@@ -1,6 +1,6 @@
 # Little Things Studio
 
-**網頁版：** [立即開啟 Little Things Studio →](https://lexiansy.github.io/little-things-studio/?lang=zh-TW)
+**網頁版：** [立即開啟 Little Things Studio](https://lexiansy.github.io/little-things-studio/)——免安裝、免登入。
 
 手機與電腦都不用安裝或登入。開啟後先選擇「匯入 HTML 檔」或「試玩內建範例」；右上角的 **EN** 可切換英文介面。切換 Studio 介面語言不會翻譯或改寫匯入頁面的文字。
 
@@ -14,7 +14,7 @@ Little Things Studio 由 Lexian 與 Yao 共同創作，OpenAI Codex 協助實作
 
 ## 這個 beta 能做什麼
 
-> Branch note：下列相容性能力屬於 local Unreleased experiment，仍待 owner acceptance。線上版與 `main` 仍是已接受的 `v0.1.0-beta.1` baseline。
+> Review candidate note：下列相容性能力已從 `main` 公開供 review。Automated checks 與 controlled browser checks 已通過；Yao 的手機、owner 自有 HTML 與最終 owner acceptance 仍待補。Package 與畫面版本維持 `v0.1.0-beta.1`。
 
 - 操作內建視覺編輯示範。
 - 匯入不超過 5 MiB 的本機單檔 `.html` 或 `.htm`。
@@ -74,7 +74,7 @@ Repository 沒有 runtime dependencies，也不會安裝 packages。`npm run bui
 
 ## 目前狀態
 
-`v0.1.0-beta.1` 仍是 `main` 上已接受的公開 beta prerelease，已於 2026-08-19 在外部採用前，以虛構、通用的內建示範重新發行。功能 baseline、通用 live sample 與 public readback 均已完成；這份 baseline 仍可從 [GitHub repository](https://github.com/lexiansy/little-things-studio)、[release 頁面](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1)與上方 live app 取得。Local `experiment/compatibility-architecture-v0.2` 是 Unreleased 的相容性與架構候選；它尚未改變 public baseline，也仍待 owner acceptance，且尚未決定下一個版本名稱。請見[目前狀態](docs/CURRENT_STATUS.md)、[HTML 相容性](docs/COMPATIBILITY.md)與[下一步](docs/NEXT_STEPS.md)。
+Package 與畫面版本仍是 `v0.1.0-beta.1`，其 generic 功能 baseline 先前已由 owner 接受。`main` 與線上版現在也包含 v0.2 相容性架構，作為 public review candidate：automated checks 與 controlled browser checks 已通過，但 Yao 的手機、owner 自有 HTML 與最終 owner acceptance 仍待補。這不是新的 tag 或 release，也尚未決定下一個版本名稱；既有 prerelease 仍可從 [release 頁面](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1)取得。請見[目前狀態](docs/CURRENT_STATUS.md)、[HTML 相容性](docs/COMPATIBILITY.md)與[下一步](docs/NEXT_STEPS.md)。
 
 ## 貢獻、安全與授權
 

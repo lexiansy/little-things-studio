@@ -1,28 +1,31 @@
 # Current status
 
-Last verified baseline: 2026-08-19
-Local experiment prepared: 2026-08-24
+Last verified public review candidate: 2026-08-28
 
-## Accepted public baseline
+## Current public review candidate
 
-- Phase: `v0.1.0-beta.1` public beta prerelease
-- Status: functional baseline and reissued generic live sample owner accepted; release/public readback complete
+- Phase: v0.2 compatibility architecture public review candidate
+- Status: automated checks and controlled browser checks passed; owner acceptance pending
 - Canonical branch: `main`
 - Canonical executable: `/index.html`
 - Canonical repository: `https://github.com/lexiansy/little-things-studio`
 - Live demo: `https://lexiansy.github.io/little-things-studio/`
-- Release tag: `v0.1.0-beta.1`
+- Package and interface version: `v0.1.0-beta.1` (unchanged)
+- Existing release tag: `v0.1.0-beta.1` (not moved or recreated)
+- Candidate source branch: `experiment/compatibility-architecture-v0.2`
 
-The public baseline remains unchanged by the local experiment. Its built-in preview uses fictional, generic sample content. Private construction history, local reports, and collaboration data are not part of the public repository history.
+The previously accepted generic `v0.1.0-beta.1` functional baseline remains historical evidence. The compatibility architecture is now published from `main` for public review, not recorded as owner accepted and not assigned a new release version. Private construction reports and collaboration data remain outside public Git history.
 
-## Unreleased compatibility experiment
+## Evidence and pending owner acceptance
 
-- Branch: `experiment/compatibility-architecture-v0.2`
-- Status: local engineering candidate; owner acceptance pending
-- Version: still `v0.1.0-beta.1`; no next-version name has been assigned
-- Publication: not merged, pushed, released, tagged, or deployed
+- Automated checks: passed, including deterministic build parity, module graph, baseline, import safety/editing/export, i18n, compatibility corpus, architecture, and public-readiness checks.
+- Controlled browser checks: passed for the synthetic compatibility corpus, export/re-import probes, desktop/narrow/mobile viewports, and zero console warnings/errors in the observed flows.
+- Publication: feature branch and fast-forwarded `main` are the public review path; no tag, release, version bump, or repository-visibility change is part of this checkpoint.
+- Pending owner evidence: Yao's phone interaction, owner-chosen real HTML files, and final owner acceptance.
 
-The experiment keeps imported content static and isolated while separating two questions that were previously represented by one label:
+Automated and controlled-browser evidence must not be described as owner evidence. No physical-device matrix, native file-picker automation, owner-file corpus, network/HAR capture, broad external adoption, or third-party security audit is claimed.
+
+The candidate keeps imported content static and isolated while separating two questions that were previously represented by one label:
 
 - **Interaction safety:** whether original navigation, form, script, popup, download, or other active behavior is inert or blocked.
 - **Visual editability:** whether the whole element, a bounded text unit, or allowlisted appearance properties are editable, limited, or unsupported.
@@ -36,7 +39,7 @@ This allows supported text and appearance changes on inert buttons, links, and f
 - `fixtures/compatibility/manifest.json` defines generic expected display, edit, diagnostic, network, export, and re-import outcomes for static, nested-interactive, multi-view, CSS-cascade, dependency, dynamic-DOM, graphics, and unsafe-capability fixtures.
 - Automated contracts cover the corpus schema and hashes, independent interaction/visual states, nested-text preservation, preview-only navigation, CSS override validation, marker removal, and security invariants.
 
-These are engineering artifacts, not owner evidence. The local candidate still requires owner testing with ordinary static HTML, the multi-view fixture, export/re-import, a phone viewport, and owner-chosen HTML samples. No real cross-model corpus, physical-device matrix, network/HAR capture, broad external adoption, or third-party security audit is claimed.
+These are engineering artifacts, not owner evidence. The public review candidate still requires owner testing with ordinary static HTML, the multi-view fixture, export/re-import, a phone viewport, and owner-chosen HTML samples.
 
 ## Compatibility boundaries
 

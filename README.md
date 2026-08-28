@@ -1,6 +1,6 @@
 # Little Things Studio
 
-**Live app:** [Open Little Things Studio →](https://lexiansy.github.io/little-things-studio/?lang=en)
+**Use it online:** [Open Little Things Studio](https://lexiansy.github.io/little-things-studio/) — no installation or account required.
 
 No installation or sign-in is required on phone or desktop. On the start screen, choose **Import HTML file** or **Try the built-in demo**; use the top-right **中** switch for Traditional Chinese. Changing the Studio interface language never translates or rewrites imported page text.
 
@@ -14,7 +14,7 @@ Little Things Studio was created together by Lexian & Yao, with implementation a
 
 ## What this beta can do
 
-> Branch note: the compatibility capabilities below are part of the local Unreleased experiment and still await owner acceptance. The live app and `main` remain the accepted `v0.1.0-beta.1` baseline.
+> Review candidate note: the compatibility capabilities below are published from `main` for public review. Automated checks and controlled browser checks passed; Yao's phone, owner-chosen HTML, and owner acceptance remain pending. The package and interface version stay `v0.1.0-beta.1`.
 
 - Open the built-in visual editing demo.
 - Import a local, single-file `.html` or `.htm` document up to 5 MiB.
@@ -74,7 +74,7 @@ The repository has no runtime dependencies and installs no packages. `npm run bu
 
 ## Project status
 
-`v0.1.0-beta.1` remains the accepted public beta prerelease on `main`, reissued on 2026-08-19 with a generic fictional built-in sample before external adoption. The functional baseline and reissued generic live sample are owner accepted, and release/public readback is complete. That baseline remains available from the [GitHub repository](https://github.com/lexiansy/little-things-studio), [release page](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1), and live app above. The local `experiment/compatibility-architecture-v0.2` branch is an Unreleased compatibility and architecture candidate; it has not changed the public baseline and still requires owner acceptance. No next version has been assigned. See [Current status](docs/CURRENT_STATUS.md), [HTML compatibility](docs/COMPATIBILITY.md), and [Next steps](docs/NEXT_STEPS.md).
+The package and interface version remain `v0.1.0-beta.1`, whose generic functional baseline was previously owner accepted. `main` and the live app now also carry the v0.2 compatibility architecture as a public review candidate: automated checks and controlled browser checks passed, but Yao's phone, owner-chosen HTML, and final owner acceptance remain pending. This is not a new tag or release, and no next version has been assigned. The existing prerelease remains available from the [release page](https://github.com/lexiansy/little-things-studio/releases/tag/v0.1.0-beta.1). See [Current status](docs/CURRENT_STATUS.md), [HTML compatibility](docs/COMPATIBILITY.md), and [Next steps](docs/NEXT_STEPS.md).
 
 ## Contributing and security
 

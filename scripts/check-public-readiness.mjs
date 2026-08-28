@@ -130,7 +130,7 @@ assert.equal(createHash("sha256").update(footerMark).digest("hex"), "50c22d2d0be
 
 const readme = await readFile(path.join(root, "README.md"), "utf8");
 assert.match(readme, /Little Things Studio was created together by Lexian & Yao, with implementation assistance from OpenAI Codex\./);
-assert.match(readme, /^# Little Things Studio\s+\*\*Live app:\*\* \[Open Little Things Studio →\]\(https:\/\/lexiansy\.github\.io\/little-things-studio\/\?lang=en\)/);
+assert.match(readme, /^# Little Things Studio\s+\*\*Use it online:\*\* \[Open Little Things Studio\]\(https:\/\/lexiansy\.github\.io\/little-things-studio\/\) — no installation or account required\./);
 assert.match(readme, /choose \*\*Import HTML file\*\*[^\n]+\*\*Try the built-in demo\*\*/);
 assert.match(readme, /top-right \*\*中\*\* switch/);
 assert.match(readme, /never translates or rewrites imported page text/);
@@ -140,7 +140,7 @@ assert.match(readme, /https:\/\/lexiansy\.github\.io\/little-things-studio\//);
 assert.match(readme, /https:\/\/github\.com\/lexiansy\/little-things-studio\/releases\/tag\/v0\.1\.0-beta\.1/);
 
 const readmeZh = await readFile(path.join(root, "README.zh-TW.md"), "utf8");
-assert.match(readmeZh, /^# Little Things Studio\s+\*\*網頁版：\*\* \[立即開啟 Little Things Studio →\]\(https:\/\/lexiansy\.github\.io\/little-things-studio\/\?lang=zh-TW\)/);
+assert.match(readmeZh, /^# Little Things Studio\s+\*\*網頁版：\*\* \[立即開啟 Little Things Studio\]\(https:\/\/lexiansy\.github\.io\/little-things-studio\/\)——免安裝、免登入。/);
 assert.match(readmeZh, /不用安裝或登入。[\s\S]*?「匯入 HTML 檔」[\s\S]*?「試玩內建範例」/);
 assert.match(readmeZh, /右上角的 \*\*EN\*\*/);
 assert.match(readmeZh, /不會翻譯或改寫匯入頁面的文字/);

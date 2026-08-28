@@ -13,7 +13,7 @@
 
 ## Current implementation
 
-`main` and the public site remain the accepted `v0.1.0-beta.1` baseline. The local `experiment/compatibility-architecture-v0.2` branch is an Unreleased engineering candidate awaiting owner acceptance. It does not assign or publish a new version.
+`main` and the public site now expose the v0.2 compatibility architecture as a public review candidate. Automated checks and controlled browser checks passed; Yao's phone, owner-chosen real HTML, and final owner acceptance remain pending. Package and interface version remain `v0.1.0-beta.1`; this checkpoint does not create a new tag or release.
 
 The experiment keeps the local-first single-file boundary and adds a two-axis element model: original interaction is `safe` or `inert`, while visual editing is `editable`, `limited`, or `unsupported`. Supported appearance editing no longer implies that imported interaction may execute. Buttons, links, and form controls can remain inert while their allowlisted text or appearance is adjusted. Blocked scripts, handlers, navigation, forms, downloads, popups, embedded contexts, and network targets are never restored by export.
 
@@ -52,4 +52,4 @@ See [HTML compatibility](COMPATIBILITY.md) for the maintained support matrix.
 
 ## Next safe point
 
-Stop at owner acceptance of the local experiment. Owner checks should cover both languages, a normal static file, public tabs and unsafe fixtures, inert-button visual editing, actual export/re-import, phone layout, and owner-chosen HTML samples. Do not merge, push, rename the version, release, deploy, or widen the security model without a separate authorization.
+Stop at owner acceptance of the public review candidate. Owner checks should cover both languages, a normal static file, public tabs and unsafe fixtures, inert-button visual editing, actual export/re-import, phone layout, and owner-chosen HTML samples. Do not describe controlled browser evidence as owner evidence. Do not rename the version, tag, release, broaden support claims, or widen the security model without a separate authorization.
